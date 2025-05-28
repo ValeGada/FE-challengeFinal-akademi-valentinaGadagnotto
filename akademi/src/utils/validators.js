@@ -1,3 +1,55 @@
+export const validateLogInForm = (formData) => {
+    const errors = {};
+    const emailFormat = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+    if (!formData.email) {
+        errors.email = '* El email es obligatorio.';
+    } else if (!formData.email.match(emailFormat)) {
+        errors.email = '* El email debe tener un formato válido (Ej: test@test.com).';
+    }
+
+    if (!formData.password) {
+        errors.password = '* La contraseña es obligatoria.';
+    } else if (formData.password.length < 6) {
+        errors.password = '* La contraseña debe contener al menos 6 caracteres.';
+    } else if (formData.password.toLowerCase().includes('password') ||
+        formData.password.toLowerCase().includes('contraseña')) {
+        errors.password = '* La contraseña no puede incluir la palabra "contraseña" o "password".';
+    }
+
+    return errors;
+};
+
+export const validateRegisterForm = (formData, validatePassword = true) => {
+    const errors = {};
+    const emailFormat = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+    if (!formData.name) {
+        errors.name = '* El nombre es obligatorio';
+    }
+
+    if (!formData.email) {
+        errors.email = '* El email es obligatorio.';
+    } else if (!formData.email.match(emailFormat)) {
+        errors.email = '* El email debe tener un formato válido (Ej: test@test.com).';
+    }
+
+    if (validatePassword) {
+        if (!formData.password) {
+        errors.password = '* La contraseña es obligatoria.';
+        } else if (formData.password.length < 6) {
+        errors.password = '* La contraseña debe contener al menos 6 caracteres.';
+        } else if (
+        formData.password.toLowerCase().includes('password') ||
+        formData.password.toLowerCase().includes('contraseña')
+        ) {
+        errors.password = '* La contraseña no puede incluir la palabra "contraseña" o "password".';
+        }
+    }
+
+    return errors;
+};
+
 export const validateUserForm = (formData, validatePassword = true) => {
     const errors = {};
     const emailFormat = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -69,27 +121,7 @@ export const validateProductForm = (formData) => {
     return errors;
 };
 
-export const validateLogInForm = (formData) => {
-    const errors = {};
-    const emailFormat = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-    if (!formData.email) {
-        errors.email = '* El email es obligatorio.';
-    } else if (!formData.email.match(emailFormat)) {
-        errors.email = '* El email debe tener un formato válido (Ej: test@test.com).';
-    }
-
-    if (!formData.password) {
-        errors.password = '* La contraseña es obligatoria.';
-    } else if (formData.password.length < 6) {
-        errors.password = '* La contraseña debe contener al menos 6 caracteres.';
-    } else if (formData.password.toLowerCase().includes('password') ||
-        formData.password.toLowerCase().includes('contraseña')) {
-        errors.password = '* La contraseña no puede incluir la palabra "contraseña" o "password".';
-    }
-
-    return errors;
-};
 
 export const validatePassword = (password) => {
     const errors = {};
