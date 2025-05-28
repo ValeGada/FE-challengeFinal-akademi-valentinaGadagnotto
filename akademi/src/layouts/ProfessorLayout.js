@@ -1,13 +1,7 @@
-import {
-  LayoutContainer,
-  Sidebar,
-  ContentWrapper,
-  Navbar,
-  MainContent,
-} from "../styles";
-import { Outlet } from "react-router-dom";
+import ProfessorSidebar from "../components/nav/ProfessorSidebar";
+import ProfessorNavbar from "../components/nav/ProfessorNavbar";
 
-const AdminLayout = () => {
+const ProfessorLayout = () => {
   return (
     <LayoutContainer>
       <Sidebar>
@@ -24,6 +18,3 @@ const AdminLayout = () => {
     </LayoutContainer>
   );
 };
-
-export default AdminLayout;
-

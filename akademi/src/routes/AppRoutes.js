@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 // import AdminLayout from "../layouts/AdminLayout";
-// import StudentLayout from "../layouts/StudentLayout";
+import StudentLayout from "../layouts/StudentLayout";
 // import ProfLayout from "../layouts/ProfLayout";
 import AuthLayout from "../layouts/AuthLayout";
 
@@ -8,7 +8,7 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 // import AdminDashboard from "../pages/dashboard/AdminDashboard";
 // import ProfDashboard from "../pages/dashboard/ProfDashboard";
-// import StudentDashboard from "../pages/dashboard/StudentDashboard";
+import StudentDashboard from "../pages/dashboard/StudentDashboard";
 // import MyCourses from "../pages/prof/MyCourses";
 // import Catalog from "../pages/student/Catalog";
 
@@ -35,14 +35,14 @@ const AppRoutes = () => {
         {/* </Route> */}
 
         {/* Rutas de alumno */}
-        {/* <Route path="/student/*" element={<StudentLayout />}>
+        <Route path="/student/*" element={<StudentLayout />}>
         <Route path="dashboard" element={<StudentDashboard />} />
-        <Route path="catalog" element={<Catalog />} /> */}
+        {/* <Route path="catalog" element={<Catalog />} /> */}
         {/* más rutas alumno */}
-        {/* </Route> */}
+        </Route>
 
         {/* Redirección por defecto */}
-        {/* <Route path="*" element={<Navigate to="/login" />} /> */}
+        <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );
 }
