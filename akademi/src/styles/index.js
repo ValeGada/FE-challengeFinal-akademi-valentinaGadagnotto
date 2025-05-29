@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { createGlobalStyle } from 'styled-components';
+import { NavLink } from "react-router-dom";
 
 export const colors = {
     lightMint: "#d9f5f1",
@@ -18,7 +19,7 @@ export const colors = {
     adminContent: "#32291d",
     adminHover: "#e65100",
     professor: "#009688",
-    professorNavbar: "#f6ffff",
+    professorNavbar: "#e0f2ef",
     professorDeep: "#00695c",
     professorHover: "#01503a",
     lightBg: "#e3fcf7",
@@ -55,6 +56,16 @@ export const AppContainer = styled.div`
     background-color: ${colors.lightBg};
     display: flex;
     flex-direction: column;
+`;
+
+// Errors
+export const Error = styled.p`
+    color: ${colors.error};
+`;
+
+// Success messages
+export const Success = styled.p`
+    color: ${colors.success};
 `;
 
 // UI
@@ -130,22 +141,10 @@ export const AuthCard = styled.div`
 `;
 
 // Admin, Student, Professor
-export const StudentLayoutContainer = styled.div`
+export const LayoutContainer = styled.div`
     min-height: 100vh;
     display: flex;
     background-color: ${colors.lightBg};
-`;
-
-export const ProfessorLayoutContainer = styled.div`
-    min-height: 100vh;
-    display: flex;
-    background-color: white;
-`;
-
-export const AdminLayoutContainer = styled.div`
-    min-height: 100vh;
-    display: flex;
-    background-color: ${colors.adminBg};
 `;
 
 export const ContentWrapper = styled.div`
@@ -163,8 +162,13 @@ export const MainContent = styled.main`
 // Navbars
 // Student Navbar
 export const StudentNavbarContainer = styled.header`
-    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 60px;
+    width: 100%;
+    z-index: 1000;
     color: ${colors.darkMint};
     background-color: white;
     border-bottom: 1px solid ${colors.lightMint};
@@ -200,11 +204,16 @@ export const StudentLogoutButton = styled.button`
 
 // Professor Navbar
 export const ProfessorNavbarContainer = styled.header`
-    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 60px;
+    width: 100%;
+    z-index: 1000;
     color: ${colors.professor};
     background-color: ${colors.professorNavbar};
-    border-bottom: 1px solid ${colors.lightMint};
+    border-bottom: 1px solid ${colors.mint};
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -237,8 +246,13 @@ export const ProfessorLogoutButton = styled.button`
 
 // Admin Navbar
 export const AdminNavbarContainer = styled.header`
-    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 60px;
+    width: 100%;
+    z-index: 1000;
     background-color: ${colors.adminNavbarBg};
     border-bottom: 1px solid ${colors.lightAdmin};
     display: flex;
@@ -269,6 +283,98 @@ export const AdminLogoutButton = styled.button`
     &:hover {
         background-color: ${colors.adminHover};
     }
+    `;
+    
+// Sidebars
+export const SidebarItem = styled.div`
+    padding: 0.75rem 1.5rem;
+`;
+
+// Student sidebar
+export const StudentSidebarContainer = styled.nav`
+    margin-top: 60px;
+    width: 240px;
+    min-height: calc(100vh - 60px);
+    background-color: white;
+    border-right: 1px solid ${colors.lightMint};
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+    box-shadow: ${softShadow};
+`;
+
+export const StudentSidebarLink = styled(NavLink)`
+    text-decoration: none;
+    color: ${colors.darkMint};
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.2s ease;
+
+    &.active {
+        color: ${colors.deepMint};
+    }
+
+    &:hover {
+        color: ${colors.studentHover};
+    }
+`;
+
+// Professor sidebar
+export const ProfessorSidebarContainer = styled.nav`
+    margin-top: 60px;
+    width: 240px;
+    min-height: calc(100vh - 60px);
+    background-color: ${colors.professorNavbar};
+    border-right: 1px solid ${colors.lightMint};
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+    box-shadow: ${softShadow};
+`;
+
+export const ProfessorSidebarLink = styled(NavLink)`
+    text-decoration: none;
+    color: ${colors.professor};
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.2s ease;
+
+    &.active {
+        color: ${colors.professorDeep};
+    }
+
+    &:hover {
+        color: ${colors.professorHover};
+    }
+`;
+
+// Admin sidebar
+export const AdminSidebarContainer = styled.nav`
+    margin-top: 60px;
+    width: 240px;
+    min-height: calc(100vh - 60px);
+    background-color: ${colors.adminNavbarBg};
+    border-right: 1px solid ${colors.lightAdmin};
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+    box-shadow: ${softShadow};
+`;
+
+export const AdminSidebarLink = styled(NavLink)`
+    text-decoration: none;
+    color: ${colors.adminText};
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.2s ease;
+
+    &.active {
+        color: ${colors.adminDeep};
+    }
+
+    &:hover {
+        color: ${colors.adminHover};
+    }
 `;
 
 // Dashboards
@@ -282,14 +388,13 @@ export const WelcomeText = styled.p`
     line-height: 1.6;
 `;
 
-// Dashboard 
-// Student & Professor
+// Student & Professor Dashboard
 export const DashboardContainer = styled.div`
     padding: 2rem;
     color: ${colors.professorDeep};
 `;
 
-// Admin
+// Admin Dashboard
 export const AdminDashboardContainer = styled.div`
     padding: 2rem;
     color: ${colors.adminContent};
@@ -297,6 +402,7 @@ export const AdminDashboardContainer = styled.div`
 
 // Courses list
 export const CourseListTitle = styled.h2`
+    margin-top: 60px;
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 1rem;
@@ -393,3 +499,5 @@ export const CourseCardButton = styled.button`
         background-color: ${colors.deepMint};
     }
 `;
+
+

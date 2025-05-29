@@ -3,7 +3,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../store/actions/authActions";
 import AdminNavbar from "../components/nav/AdminNavbar";
-import { AdminLayoutContainer, ContentWrapper, MainContent } from "../styles";
+import AdminSidebar from "../components/nav/AdminSidebar";
+import { LayoutContainer, ContentWrapper, MainContent } from "../styles";
 
 const AdminLayout = ({ user, logout }) => {
     const navigate = useNavigate();
@@ -21,7 +22,8 @@ const AdminLayout = ({ user, logout }) => {
     if (!user) return null;
 
     return (
-        <AdminLayoutContainer>
+        <LayoutContainer>
+            <AdminSidebar />
             <ContentWrapper>
                 <AdminNavbar adminName={user.name} onLogout={handleLogout}>
                 </AdminNavbar>
@@ -29,7 +31,7 @@ const AdminLayout = ({ user, logout }) => {
                     <Outlet />
                 </MainContent>
             </ContentWrapper>
-        </AdminLayoutContainer>
+        </LayoutContainer>
     );
 };
 

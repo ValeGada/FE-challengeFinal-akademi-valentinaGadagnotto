@@ -3,7 +3,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../store/actions/authActions";
 import ProfessorNavbar from "../components/nav/ProfessorNavbar";
-import { ProfessorLayoutContainer, ContentWrapper, MainContent } from "../styles";
+import ProfessorSidebar from "../components/nav/ProfessorSidebar";
+import { LayoutContainer, ContentWrapper, MainContent } from "../styles";
 
 const ProfessorLayout = ({ user, logout }) => {
     const navigate = useNavigate();
@@ -21,7 +22,8 @@ const ProfessorLayout = ({ user, logout }) => {
     if (!user) return null;
 
     return (
-        <ProfessorLayoutContainer>
+        <LayoutContainer>
+            <ProfessorSidebar />
             <ContentWrapper>
                 <ProfessorNavbar professorName={user.name} onLogout={handleLogout}>
                 </ProfessorNavbar>
@@ -29,7 +31,7 @@ const ProfessorLayout = ({ user, logout }) => {
                     <Outlet />
                 </MainContent>
             </ContentWrapper>
-        </ProfessorLayoutContainer>
+        </LayoutContainer>
     );
 };
 

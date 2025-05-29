@@ -9,7 +9,8 @@ import Spinner from "./UI/Spinner";
 import Modal from "./UI/Modal";
 import { 
   GlobalStyles,
-  AppContainer 
+  AppContainer,
+  Success 
 } from "./styles";
 
 const App = ({ message }) => {
@@ -47,7 +48,7 @@ const App = ({ message }) => {
           <AppRoutes />
         </BrowserRouter>
         <Modal isOpen={Boolean(message)}>
-          <p>{message}</p>
+          <Success>{message}</Success>
         </Modal>
       </AppContainer>
     </>

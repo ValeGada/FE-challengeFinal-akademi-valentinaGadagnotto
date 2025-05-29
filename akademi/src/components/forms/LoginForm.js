@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import { Error } from "../../styles";
 
 const LoginForm = ({ formData, errors, onChange, onSubmit }) => {
     return (
@@ -13,7 +14,7 @@ const LoginForm = ({ formData, errors, onChange, onSubmit }) => {
                     value={formData.email || ''}
                     onChange={onChange}
                 />
-                {errors.email && <p>{errors.email}</p>}
+                {errors.email && <Error>{errors.email}</Error>}
             </div>
             <div>
                 <label>Contraseña:</label>
@@ -24,7 +25,7 @@ const LoginForm = ({ formData, errors, onChange, onSubmit }) => {
                     value={formData.password || ''}
                     onChange={onChange}
                 />
-                {errors.password && <p>{errors.password}</p>}
+                {errors.password && <Error>{errors.password}</Error>}
             </div>
             <div>
                 <Link to="/password-recovery">¿Olvidaste tu contraseña?</Link>

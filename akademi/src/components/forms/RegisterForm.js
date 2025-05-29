@@ -1,4 +1,5 @@
 import React from "react";
+import { Error } from "../../styles";
 
 const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
     return (
@@ -12,7 +13,7 @@ const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
                     value={formData.name || ''}
                     onChange={onChange}
                 />
-                {errors.name && <p>{errors.name}</p>}
+                {errors.name && <Error>{errors.name}</Error>}
             </div>
             <div>
                 <label>Email:</label>
@@ -23,7 +24,7 @@ const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
                     value={formData.email || ''}
                     onChange={onChange}
                 />
-                {errors.email && <p>{errors.email}</p>}
+                {errors.email && <Error>{errors.email}</Error>}
             </div>
             <div>
                 <label>Contraseña:</label>
@@ -34,7 +35,7 @@ const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
                     value={formData.password || ''}
                     onChange={onChange}
                 />
-                {errors.password && <p>{errors.password}</p>}
+                {errors.password && <Error>{errors.password}</Error>}
             </div>
             <button type="submit">SIGN UP</button>
         </form>

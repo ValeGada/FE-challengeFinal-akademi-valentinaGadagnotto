@@ -32,6 +32,7 @@ const AppRoutes = () => {
       <Route path="/prof/*" element={<ProfessorLayout />}>
         <Route path="dashboard" element={<ProfessorDashboard />} />
         <Route path="my-courses" element={<CoursesList />} />
+        {/* <Route path="grades" element={<GradesList />} /> */}
         {/* <Route path="new-course" element={<NewCourse />} /> */}
         {/* más rutas teacher */}
       </Route>
@@ -39,7 +40,10 @@ const AppRoutes = () => {
       {/* Rutas de alumno */}
       <Route path="/student/*" element={<StudentLayout />}>
         <Route path="dashboard" element={<StudentDashboard />} />
+        {/* <Route path="profile" element={<UserProfile />} /> */}
         <Route path="catalog" element={<CoursesList />} />
+        {/* <Route path="grades" element={<GradesList />} /> */}
+        {/* <Route path="enrollments" element={<EnrollmentsList />} /> */}
         {/* más rutas alumno */}
       </Route>
 

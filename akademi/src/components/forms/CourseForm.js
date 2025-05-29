@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { validateCourseForm } from '../../util/form/validators';
 import { handleInputChange } from '../../util/form/handlers';
-import { StyledForm, StyledLabel, StyledInput, StyledTextarea, StyledErrorDiv, StyledSelect, StyledImgInput, ButtonsDiv, ConfirmButton, CancelButton } from '../../styles';
+import { Error, StyledForm, StyledLabel, StyledInput, StyledTextarea, StyledErrorDiv, StyledSelect, StyledImgInput, ButtonsDiv, ConfirmButton, CancelButton } from '../../styles';
 
 const CourseForm = ({ 
     course, 
@@ -62,7 +62,7 @@ const CourseForm = ({
                 onChange={handleChange}
                 readOnly={!isEditable}
             />
-            <StyledErrorDiv>{errors.title}</StyledErrorDiv>
+            <Error>{errors.title}</Error>
             </div>
             <div>
             <StyledLabel>Descripción:</StyledLabel>
@@ -76,7 +76,7 @@ const CourseForm = ({
                 readOnly={!isEditable}
                 rows={3}
             />
-            <StyledErrorDiv>{errors.description}</StyledErrorDiv>
+            <Error>{errors.description}</Error>
             </div>
             <div>
             <StyledLabel>Capacidad:</StyledLabel>
@@ -89,7 +89,7 @@ const CourseForm = ({
                 onChange={handleChange}
                 readOnly={!isEditable}
             />
-            <StyledErrorDiv>{errors.capacity}</StyledErrorDiv>
+            <Error>{errors.capacity}</Error>
             </div>
             <div>
             <StyledLabel>Profesor:</StyledLabel>
@@ -101,6 +101,7 @@ const CourseForm = ({
                 onChange={handleChange}
                 readOnly={!isEditable}
             />
+            <Error>{errors.professor}</Error>
             </div>
             <br />
             <ButtonsDiv>
