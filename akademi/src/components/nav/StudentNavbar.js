@@ -1,14 +1,14 @@
-import { NavbarContainer, UserInfo, LogoutButton } from "../../styles";
+import { StudentNavbarContainer, StudentUserInfo, StudentLogoutButton } from "../../styles";
 
 const StudentNavbar = ({ studentName, onLogout }) => {
   return (
-    <NavbarContainer>
+    <StudentNavbarContainer>
       <div>Hola, {studentName}!</div>
-      <UserInfo>
+      <StudentUserInfo>
         <span>Estudiante</span>
-        <LogoutButton onClick={onLogout}>Cerrar sesión</LogoutButton>
-      </UserInfo>
-    </NavbarContainer>
+        <StudentLogoutButton onClick={onLogout}>Cerrar sesión</StudentLogoutButton>
+      </StudentUserInfo>
+    </StudentNavbarContainer>
   );
 };
 

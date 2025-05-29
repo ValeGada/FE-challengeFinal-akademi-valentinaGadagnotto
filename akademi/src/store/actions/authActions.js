@@ -1,4 +1,4 @@
-import axios from '../../api/axios';
+import axiosInstance from '../../api/axios';
 import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
@@ -15,7 +15,7 @@ import { setMessage } from './messagesAction';
 export const login = credentials => async dispatch => {
     dispatch({ type: LOGIN_REQUEST });
     try {
-        const response = await axios.post('/auth/login', credentials);
+        const response = await axiosInstance.post('/auth/login', credentials);
 
         const { token, expiration, user } = response.data;
 
@@ -48,7 +48,7 @@ export const logout = (message = 'Sesión cerrada') => dispatch => {
 
 export const passwordRecovery = email => async dispatch => {
     try {
-        const response = await axios.post('/auth/forgot-password', {email});
+        const response = await axiosInstance.post('/auth/forgot-password', {email});
         dispatch({ type: PASSWORD_RECOVERY, payload: response.data });
         
         dispatch(setMessage('Email de recuperación de contraseña enviado.'));
@@ -59,7 +59,7 @@ export const passwordRecovery = email => async dispatch => {
 
 export const passwordReset = ({ recoveryToken, newPassword }) => async dispatch => {
     try {
-        const response = await axios.patch('/auth/password-reset', { recoveryToken, newPassword });
+        const response = await axiosInstance.patch('/auth/password-reset', { recoveryToken, newPassword });
         dispatch({ type: PASSWORD_RESET, payload: response.data });
 
         dispatch(setMessage(response?.data?.message || 'Contraseña restablecida con éxito.'));
@@ -71,7 +71,7 @@ export const passwordReset = ({ recoveryToken, newPassword }) => async dispatch 
 export const register = formData => async dispatch => {
     dispatch({ type: REGISTER_REQUEST });
     try {
-        const response = await axios.post('/auth/register', formData);
+        const response = await axiosInstance.post('/auth/register', formData);
         dispatch({ type: REGISTER_SUCCESS, payload: response.data });
 
         dispatch(setMessage('Nuevo usuario registrado.'));

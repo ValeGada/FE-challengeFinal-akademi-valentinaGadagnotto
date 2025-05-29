@@ -1,29 +1,42 @@
-import {
-  LayoutContainer,
-  Sidebar,
-  ContentWrapper,
-  Navbar,
-  MainContent,
-} from "../styles";
-import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
+import { logout } from "../store/actions/authActions";
+import AdminNavbar from "../components/nav/AdminNavbar";
+import { AdminLayoutContainer, ContentWrapper, MainContent } from "../styles";
 
-const AdminLayout = () => {
-  return (
-    <LayoutContainer>
-      <Sidebar>
-        {/* Aquí tu menú de navegación para admin */}
-      </Sidebar>
-      <ContentWrapper>
-        <Navbar>
-          {/* Aquí el nombre del usuario, logout, etc. */}
-        </Navbar>
-        <MainContent>
-          <Outlet />
-        </MainContent>
-      </ContentWrapper>
-    </LayoutContainer>
-  );
+const AdminLayout = ({ user, logout }) => {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+    }
+
+    useEffect(() => {
+        if (!user) {
+            navigate('/login');
+        }
+    }, [user, navigate]);
+
+    if (!user) return null;
+
+    return (
+        <AdminLayoutContainer>
+            <ContentWrapper>
+                <AdminNavbar adminName={user.name} onLogout={handleLogout}>
+                </AdminNavbar>
+                <MainContent>
+                    <Outlet />
+                </MainContent>
+            </ContentWrapper>
+        </AdminLayoutContainer>
+    );
 };
 
-export default AdminLayout;
+const mapStateToProps = state => {
+    return {
+        user: state.auth.user
+    }
+}
 
+export default connect(mapStateToProps, { logout })(AdminLayout);

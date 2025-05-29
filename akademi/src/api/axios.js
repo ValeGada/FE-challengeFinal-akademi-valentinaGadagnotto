@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const instance = axios.create({ 
+const axiosInstance = axios.create({ 
     baseURL: 'http://localhost:5000/',
     headers: {
         'Content-Type': 'application/json',
     }
 });
 
-instance.interceptors.request.use(config => {
+axiosInstance.interceptors.request.use(config => {
     const token = localStorage.getItem("token");
 
     if (token) {
@@ -17,4 +17,4 @@ instance.interceptors.request.use(config => {
     return config;
 });
 
-export default instance;
+export default axiosInstance;

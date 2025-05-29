@@ -1,48 +1,50 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-// import AdminLayout from "../layouts/AdminLayout";
-import StudentLayout from "../layouts/StudentLayout";
-// import ProfLayout from "../layouts/ProfLayout";
 import AuthLayout from "../layouts/AuthLayout";
+import AdminLayout from "../layouts/AdminLayout";
+import ProfessorLayout from "../layouts/ProfessorLayout";
+import StudentLayout from "../layouts/StudentLayout";
 
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
-// import AdminDashboard from "../pages/dashboard/AdminDashboard";
-// import ProfDashboard from "../pages/dashboard/ProfDashboard";
+import AdminDashboard from "../pages/dashboard/AdminDashboard";
+import ProfessorDashboard from "../pages/dashboard/ProfessorDashboard";
 import StudentDashboard from "../pages/dashboard/StudentDashboard";
-// import MyCourses from "../pages/prof/MyCourses";
-// import Catalog from "../pages/student/Catalog";
+import CoursesList from "../pages/courses/CoursesList";
 
 const AppRoutes = () => {
   return (
     <Routes>
       {/* Rutas públicas */}
       <Route path="/" element={<AuthLayout />}>
+        <Route path="/" element={<Login />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
       </Route>
 
-        {/* Rutas de superadmin */}
-        {/* <Route path="/admin/*" element={<AdminLayout />}>
-        <Route path="dashboard" element={<AdminDashboard />} /> */}
+      {/* Rutas de superadmin */}
+      <Route path="/admin/*" element={<AdminLayout />}>
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="courses" element={<CoursesList />} />
         {/* más rutas admin */}
-        {/* </Route> */}
+      </Route>
 
-        {/* Rutas de profesor */}
-        {/* <Route path="/prof/*" element={<ProfLayout />}>
-        <Route path="dashboard" element={<ProfDashboard />} />
-        <Route path="courses" element={<MyCourses />} /> */}
+      {/* Rutas de profesor */}
+      <Route path="/prof/*" element={<ProfessorLayout />}>
+        <Route path="dashboard" element={<ProfessorDashboard />} />
+        <Route path="my-courses" element={<CoursesList />} />
+        {/* <Route path="new-course" element={<NewCourse />} /> */}
         {/* más rutas teacher */}
-        {/* </Route> */}
+      </Route>
 
-        {/* Rutas de alumno */}
-        <Route path="/student/*" element={<StudentLayout />}>
+      {/* Rutas de alumno */}
+      <Route path="/student/*" element={<StudentLayout />}>
         <Route path="dashboard" element={<StudentDashboard />} />
-        {/* <Route path="catalog" element={<Catalog />} /> */}
+        <Route path="catalog" element={<CoursesList />} />
         {/* más rutas alumno */}
-        </Route>
+      </Route>
 
-        {/* Redirección por defecto */}
-        <Route path="*" element={<Navigate to="/login" />} />
+      {/* Redirección por defecto */}
+      <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );
 }
