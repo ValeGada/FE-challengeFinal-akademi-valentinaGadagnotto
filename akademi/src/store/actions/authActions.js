@@ -21,7 +21,6 @@ export const login = credentials => async dispatch => {
 
         // Guardar sólo token en localStorage
         localStorage.setItem('token', token);
-        localStorage.setItem('role', user.role);
 
         dispatch({
             type: LOGIN_SUCCESS,

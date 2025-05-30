@@ -1,4 +1,5 @@
 import React from "react";
+import { jwtDecode } from 'jwt-decode';
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
@@ -7,31 +8,41 @@ import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
 import Spinner from "./UI/Spinner";
 import Modal from "./UI/Modal";
+import useTokenExpirationChecker from "./utils/hooks/useTokenExpirationChecker";
 import { 
   GlobalStyles,
   AppContainer,
   Success 
 } from "./styles";
+import { setMessage } from "./store/actions/messagesAction";
 
 const App = ({ message }) => {
   const dispatch = useDispatch();
   const [authInitialized, setAuthInitialized] = useState(false);
-  // useTokenExpirationChecker();
+  useTokenExpirationChecker();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
 
-    if (token && role) {
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: {
-          token,
-          user: {
-            role
-          }
-        },
-      });
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: {
+            token,
+            user: {
+              id: decoded.userId,
+              name: decoded.name,
+              role: decoded.role
+            }
+          },
+        });
+      } catch (error) {
+        dispatch(setMessage('Token inválido o expirado'))
+        localStorage.clear();
+      }
     }
 
     setAuthInitialized(true);

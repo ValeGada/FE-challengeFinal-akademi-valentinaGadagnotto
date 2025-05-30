@@ -55,7 +55,7 @@ export const validateUserForm = (formData, validatePassword = true) => {
     const emailFormat = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
 
     if (!formData.name) {
-        errors.name = '* El nombre es obligatorio';
+        errors.name = '* El nombre es obligatorio.';
     }
 
     if (!formData.email) {
@@ -78,44 +78,37 @@ export const validateUserForm = (formData, validatePassword = true) => {
     }
 
     if (!formData.role) {
-        errors.role = '* El rol es obligatorio';
+        errors.role = '* El rol es obligatorio.';
     }
 
     return errors;
 };
 
-export const validateProductForm = (formData) => {
+export const validateCourseForm = (formData) => {
     const errors = {};
-    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
 
-    if (!formData.name) {
-        errors.name = '* El nombre es obligatorio';
+    if (!formData.title) {
+        errors.title = '* El título es obligatorio.';
     }
 
     if (!formData.description) {
-        errors.description = '* La descripción es obligatoria';
-    } else if (formData.description.length < 5) {
-        errors.description = '* La descripción debe contener al menos 5 caracteres';
+        errors.description = '* La descripción es obligatoria.';
+    } else if (formData.description.trim().length < 5) {
+        errors.description = '* La descripción debe contener al menos 5 caracteres.';
     }
 
-    if (!formData.price) {
-        errors.price = '* El precio es obligatorio';
-    } else if (formData.price <= 0) {
-        errors.price = '* El precio debe ser un número mayor a 0';
-    } 
-
-    if (!formData.stock) {
-        errors.stock = '* El stock es obligatorio';
-    } else if (formData.stock < 0) {
-        errors.stock = '* El stock no puede ser negativo';
-    } 
-
-    if (!formData.category) {
-        errors.category = '* La categoría es obligatoria';
+    if (!formData.maximumCapacity) {
+        errors.maximumCapacity = '* La capacidad máxima es obligatorio.';
+    } else if (formData.maximumCapacity < 0) {
+        errors.maximumCapacity = '* La capacidad máxima no puede ser un número negativo.';
+    } else if (formData.maximumCapacity < 2) {
+        errors.maximumCapacity = '* La capacidad máxima no puede ser menor a 2 personas.';
+    } else if (formData.maximumCapacity > 10) {
+        errors.maximumCapacity = '* La capacidad máxima no puede exceder de 10 personas.';
     }
 
-    if (formData.image_url && !formData.image_url.match(urlRegex)) {
-        errors.image_url = '* La URL de imagen debe ser válida'
+    if (!formData.professor) {
+        errors.professor = '* El nombre es obligatorio.';
     }
 
     return errors;
@@ -135,8 +128,9 @@ export const validatePassword = (password) => {
         password.toLowerCase().includes('contraseña')
     ) {
         errors.password = '* La contraseña no puede incluir la palabra "contraseña" o "password".';
+    } else if (password.includes(' ')) {
+        errors.password = '* La contraseña no puede incluir espacios en blanco.';
     }
-
     return errors;
 };
 

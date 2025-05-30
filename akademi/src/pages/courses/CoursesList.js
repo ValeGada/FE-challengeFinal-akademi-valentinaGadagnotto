@@ -1,18 +1,20 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { getCourses, getCoursesByProfId } from "../../store/actions/coursesActions";
 import { CourseListTitle } from "../../styles";
+import Spinner from "../../UI/Spinner";
 import CourseCardsView from "./CourseCardsView";
 import CourseTableView from "./CourseTableView";
 
-const CoursesList = ({ user, courses, getCourses,getCoursesByProfId }) => {
+const CoursesList = ({ user, courses, isLoading, getCourses, getCoursesByProfId }) => {
     useEffect(() => {
-        if (user.role === 'professor') {
+        if (user && user.role === 'professor' && user.id) {
             getCoursesByProfId(user.id);
-        } else {
+        } else if (user && user.role !== 'professor') {
             getCourses();
         }
-    }, [user.role, user.id, getCourses, getCoursesByProfId])
+    }, [user, getCourses, getCoursesByProfId])
 
     return (
         <div>
@@ -23,9 +25,11 @@ const CoursesList = ({ user, courses, getCourses,getCoursesByProfId }) => {
                     ? 'Mis cursos'
                     : 'Todos los cursos'}
             </CourseListTitle>
-            {user.role === 'student'
-            ? <CourseCardsView courses={courses} />
-            : <CourseTableView courses={courses} />
+            {isLoading ? (
+                <Spinner />
+            ) : user.role === 'student'
+                ? <CourseCardsView courses={courses} />
+                : <CourseTableView courses={courses} />
             }
         </div>
     );
@@ -34,6 +38,7 @@ const CoursesList = ({ user, courses, getCourses,getCoursesByProfId }) => {
 const mapStateToProps = state => {
     return {
         user: state.auth.user,
+        isLoading: state.courses.isLoading,
         courses: state.courses.all
     }
 };

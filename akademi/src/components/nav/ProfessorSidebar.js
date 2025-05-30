@@ -8,10 +8,11 @@ import {
 
 const ProfessorSidebar = () => {
     const navigate = useNavigate();
+
     return (
         <ProfessorSidebarContainer>
             <SidebarItem>
-                <ProfessorSidebarLink to="/prfo/profile">Mi perfil</ProfessorSidebarLink>
+                <ProfessorSidebarLink to="/prof/profile">Mi perfil</ProfessorSidebarLink>
             </SidebarItem>
             <SidebarItem>
                 <ProfessorSidebarLink to="/prof/grades">Mis calificaciones</ProfessorSidebarLink>
@@ -27,5 +28,6 @@ const ProfessorSidebar = () => {
         </ProfessorSidebarContainer>
     );
 };
+
 
 export default ProfessorSidebar;

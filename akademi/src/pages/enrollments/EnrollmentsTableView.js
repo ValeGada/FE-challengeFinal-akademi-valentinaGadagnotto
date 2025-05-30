@@ -2,25 +2,25 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
-import { deleteCourse } from "../../store/actions/coursesActions";
+import { cancelEnrollment } from "../../store/actions/enrollmentsActions";
 import { CoursesTable, CoursesTd, CoursesTh, CoursesActions, ProfessorLogoutButton, AdminLogoutButton } from "../../styles";
 import Modal from "../../UI/Modal";
 import Spinner from "../../UI/Spinner";
 
-const CourseTableView = ({ user, courses, deleteCourse, isLoading }) => {
+const EnrollmentTableView = ({ user, enrollments, cancelEnrollment, isLoading }) => {
     const navigate = useNavigate();
 
     // Modal states
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedCourse, setSelectedCourse] = useState(null);
+    const [selectedEnrollment, setSelectedEnrollment] = useState(null);
 
-    const handleDeleteCourse = (course) => {
-        setSelectedCourse(course);
+    const handleDeleteEnrollment = (enrollment) => {
+        setSelectedEnrollment(enrollment);
         setIsModalOpen(true);
     }
 
     const confirmDelete = () => {
-        deleteCourse(selectedCourse.id);
+        cancelEnrollment(selectedEnrollment.id);
         setIsModalOpen(false);
     }
     
@@ -31,42 +31,41 @@ const CourseTableView = ({ user, courses, deleteCourse, isLoading }) => {
                 <CoursesTable>
                     <thead>
                         <tr>
-                            <CoursesTh>Título</CoursesTh>
-                            <CoursesTh>Descripción</CoursesTh>
+                            <CoursesTh>Suscripciones</CoursesTh>
+                            <CoursesTh>Curso</CoursesTh>
                             {user.role === 'superadmin' && <CoursesTh>Profesor</CoursesTh>}
                             <CoursesTh>Capacidad</CoursesTh>
-                            <CoursesTh>Suscripciones</CoursesTh>
                             {/* <CoursesTh>Duración</CoursesTh> */}
                             <CoursesTh>Acciones</CoursesTh>
                         </tr>
                     </thead>
                     <tbody>
-                        {courses.map(course => (
-                            <tr key={course._id}>
-                                <CoursesTd>{course.title}</CoursesTd>
-                                <CoursesTd>{course.description}</CoursesTd>
+                        {enrollments?.map(e => (
+                            <tr key={e.course._id}>
+                                <CoursesTd>{enrollments?.length || 0}</CoursesTd>
+                                <CoursesTd>{e.course.title}</CoursesTd>
                                 {user.role === 'superadmin' &&
-                                    <CoursesTd>{course.professor?.name}</CoursesTd>
+                                    <CoursesTd>{e.course.professor?.name}</CoursesTd>
                                 }
-                                <CoursesTd>{course.maximumCapacity}</CoursesTd>
-                                <CoursesTd>{course.enrollments?.length || 0}</CoursesTd>
+                                <CoursesTd>{e.course.maximumCapacity}</CoursesTd>
+                                <CoursesTd>{e.course.maximumCapacity}</CoursesTd>
                                 {/* <CoursesTd>{course.duration} hs</CoursesTd> */}
                                 <CoursesActions>
                                     {user.role === 'professor' ? 
                                         <>
-                                            <ProfessorLogoutButton onClick={() => navigate(`/prof/courses/${course.id}`)}>
+                                            <ProfessorLogoutButton onClick={() => navigate(`/prof/enrollments/${e.id}`)}>
                                                 Ver/Editar ✏️
                                             </ProfessorLogoutButton>
-                                            <ProfessorLogoutButton onClick={() => handleDeleteCourse(course)}>
+                                            <ProfessorLogoutButton onClick={() => handleDeleteEnrollment(e)}>
                                                 Eliminar 🗑️
                                             </ProfessorLogoutButton>
                                         </>
                                     :
                                         <>
-                                            <AdminLogoutButton onClick={() => navigate(`/admin/courses/${course.id}`)}>
+                                            <AdminLogoutButton onClick={() => navigate(`/admin/enrollments/${e.id}`)}>
                                                 Ver/Editar ✏️
                                             </AdminLogoutButton>
-                                            <AdminLogoutButton onClick={() => handleDeleteCourse(course)}>
+                                            <AdminLogoutButton onClick={() => handleDeleteEnrollment(e)}>
                                                 Eliminar 🗑️
                                             </AdminLogoutButton>
                                         </>
@@ -78,8 +77,8 @@ const CourseTableView = ({ user, courses, deleteCourse, isLoading }) => {
                 </CoursesTable>
             }
             <Modal isOpen={isModalOpen}>
-                <h2>¿Seguro que deseas eliminar este curso?</h2>
-                <h3 style={{textAlign: 'center'}}>{selectedCourse?.title}</h3>
+                <h2>¿Seguro que deseas eliminar esta suscripción?</h2>
+                <h3 style={{textAlign: 'center'}}>{selectedEnrollment?.title}</h3>
                 <br />
                 <button className="ui button negative" onClick={confirmDelete} style={{justifySelf: 'center'}}>Eliminar</button>
                 <button className="ui button" onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</button>
@@ -95,4 +94,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { deleteCourse })(CourseTableView);
+export default connect(mapStateToProps, { cancelEnrollment })(EnrollmentTableView);

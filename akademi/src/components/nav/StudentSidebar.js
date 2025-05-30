@@ -14,10 +14,10 @@ const StudentSidebar = () => {
                 <StudentSidebarLink to="/student/catalog">Catálogo</StudentSidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <StudentSidebarLink to="/student/grades">Mis calificaciones</StudentSidebarLink>
+                <StudentSidebarLink to="/student/my-grades">Mis calificaciones</StudentSidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <StudentSidebarLink to="/student/enrollments">Mis suscripciones</StudentSidebarLink>
+                <StudentSidebarLink to="/student/my-enrollments">Mis suscripciones</StudentSidebarLink>
             </SidebarItem>
         </StudentSidebarContainer>
     );

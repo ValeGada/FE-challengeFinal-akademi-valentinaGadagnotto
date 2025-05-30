@@ -10,6 +10,9 @@ import AdminDashboard from "../pages/dashboard/AdminDashboard";
 import ProfessorDashboard from "../pages/dashboard/ProfessorDashboard";
 import StudentDashboard from "../pages/dashboard/StudentDashboard";
 import CoursesList from "../pages/courses/CoursesList";
+import CourseDetail from "../pages/courses/CourseDetail";
+import NewCourse from "../pages/courses/NewCourse";
+import EnrollmentsList from "../pages/enrollments/EnrollmentsList";
 
 const AppRoutes = () => {
   return (
@@ -25,6 +28,8 @@ const AppRoutes = () => {
       <Route path="/admin/*" element={<AdminLayout />}>
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="courses" element={<CoursesList />} />
+        <Route path="courses/:id" element={<CourseDetail />} />
+        <Route path="enrollments" element={<EnrollmentsList />} />
         {/* más rutas admin */}
       </Route>
 
@@ -32,8 +37,9 @@ const AppRoutes = () => {
       <Route path="/prof/*" element={<ProfessorLayout />}>
         <Route path="dashboard" element={<ProfessorDashboard />} />
         <Route path="my-courses" element={<CoursesList />} />
+        <Route path="courses/:id" element={<CourseDetail />} />
+        <Route path="new-course" element={<NewCourse />} />
         {/* <Route path="grades" element={<GradesList />} /> */}
-        {/* <Route path="new-course" element={<NewCourse />} /> */}
         {/* más rutas teacher */}
       </Route>
 
@@ -42,8 +48,9 @@ const AppRoutes = () => {
         <Route path="dashboard" element={<StudentDashboard />} />
         {/* <Route path="profile" element={<UserProfile />} /> */}
         <Route path="catalog" element={<CoursesList />} />
-        {/* <Route path="grades" element={<GradesList />} /> */}
-        {/* <Route path="enrollments" element={<EnrollmentsList />} /> */}
+        <Route path="courses/:id" element={<CourseDetail />} />
+        <Route path="my-enrollments" element={<EnrollmentsList />} />
+        {/* <Route path="my-grades" element={<GradesList />} /> */}
         {/* más rutas alumno */}
       </Route>
 

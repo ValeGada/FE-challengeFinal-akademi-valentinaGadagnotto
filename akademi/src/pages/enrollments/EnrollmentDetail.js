@@ -2,16 +2,18 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { connect } from "react-redux";
-import { getCourse, editCourse } from "../../store/actions/coursesActions";
-import { enroll, cancelEnrollment } from "../../store/actions/enrollmentsActions";
+import { getEnrollments, enroll, cancelEnrollment } from "../../store/actions/enrollmentsActions";
 import CourseForm from "../../components/forms/CourseForm";
 import Spinner from "../../UI/Spinner";
 import { CourseCardButton } from "../../styles";
 
-const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, cancelEnrollment }) => {
+const EnrollmentDetail = ({ user, course, isLoading, getCourse, editCourse, deleteCourse, enroll, cancelEnrollment }) => {
     const { id } = useParams();
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedCourse, setSelectedCourse] = useState(null);
 
     const isStudent = user.role === 'student';
     const isEnrolled = user.enrollments?.includes(course?.id);
@@ -22,11 +24,9 @@ const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, 
         }
     }, [id, course, getCourse]);
 
-    const handleUpdateCourse = async (updatedCourse) => {
-        const { professor, ...cleanCourseUpdates } = updatedCourse;
-        await editCourse(course.id, cleanCourseUpdates);
+    const handleUpdateCourse = (updatedCourse) => {
+        editCourse(course.id, updatedCourse);
         setIsEditing(false);
-        getCourse(course.id);
     };
 
     const handleCancelEdit = () => {
@@ -42,14 +42,6 @@ const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, 
     const handleUnenroll = () => {
         cancelEnrollment(course.id);
         navigate('/student/my-enrollments');
-    }
-
-    const handleCancelNavigation = () => {
-        if (user.role === 'professor') {
-            navigate('/prof/my-courses')
-        } else if (user.role === 'superadmin') {
-            navigate('/admin/courses')
-        }
     }
 
     return (
@@ -73,7 +65,7 @@ const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, 
                     {!isEditing && !isStudent && (
                         <>
                         <CourseCardButton onClick={() => setIsEditing(true)}>Editar</CourseCardButton>
-                        <CourseCardButton onClick={handleCancelNavigation}>Cancelar</CourseCardButton>
+                        <CourseCardButton onClick={() => navigate('/prof/my-courses')}>Cancelar</CourseCardButton>
                         </>
                     )}
                 </>  
@@ -84,8 +76,14 @@ const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, 
 
 const mapStateToProps = state => ({
     user: state.auth.user,
-    course: state.courses.selected,
-    isLoading: state.courses.isLoading
+    enrollment: state.enrollments.selected,
+    isLoading: state.enrollments.isLoading
 });
 
-export default connect(mapStateToProps, { getCourse, editCourse, enroll, cancelEnrollment })(CourseDetail);
+export default connect(mapStateToProps, { 
+    getCourse, 
+    editCourse, 
+    deleteCourse, 
+    enroll, 
+    cancelEnrollment 
+})(EnrollmentDetail);

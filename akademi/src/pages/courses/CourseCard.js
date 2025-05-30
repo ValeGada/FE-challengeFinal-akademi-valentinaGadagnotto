@@ -11,14 +11,14 @@ import {
 const CoursesCardsView = ({ course }) => {
     const navigate = useNavigate();
     const handleCourseView = () => {
-        navigate(`courses/${course.id}`)
+        navigate(`/student/courses/${course.id}`)
     }
 
     return (
         <CourseCardContainer>
             <CourseCardTitle>{course.title}</CourseCardTitle>
             <CourseCardDescription>{course.description}</CourseCardDescription>
-            <CourseCardProfessor>{course.professor.name}</CourseCardProfessor>
+            <CourseCardProfessor>Prof. {course.professor.name}</CourseCardProfessor>
             <CourseCardButton onClick={handleCourseView}>Ver curso</CourseCardButton>
         </CourseCardContainer>
     );
