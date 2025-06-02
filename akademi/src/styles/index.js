@@ -477,6 +477,12 @@ export const CourseCardDescription = styled.p`
     flex-grow: 1;
 `;
 
+export const CourseCardCapacity = styled.p`
+    font-size: 0.85rem;
+    color: ${colors.textSecondary};
+    margin-bottom: 1rem;
+`;
+
 export const CourseCardProfessor = styled.span`
     font-size: 0.9rem;
     color: ${colors.professor};
@@ -498,6 +504,19 @@ export const CourseCardButton = styled.button`
     &:hover {
         background-color: ${colors.deepMint};
     }
+`;
+
+// Enrollment card (no animation)
+export const EnrollmentCardContainer = styled.div`
+    background-color: ${colors.cardBg};
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid ${colors.lightBg};
 `;
 
 

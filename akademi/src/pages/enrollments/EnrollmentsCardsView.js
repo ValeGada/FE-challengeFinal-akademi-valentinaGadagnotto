@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Spinner from "../../UI/Spinner";
-import EnrollmentCard from "./EnrollmentCard";
+import EnrollmentCard from "../../components/cards/EnrollmentCard";
 import { CourseGridContainer } from "../../styles";
 
 const EnrollmentsCardsView = ({ isLoading, enrollments }) => {
@@ -17,7 +17,6 @@ const EnrollmentsCardsView = ({ isLoading, enrollments }) => {
             }
         </div>
     );
-
 };
 
 const mapStateToProps = state => {

@@ -11,6 +11,9 @@ const AdminSidebar = () => {
     return (
         <AdminSidebarContainer>
             <SidebarItem>
+                <AdminSidebarLink to="/admin/dashboard">🏠 Home</AdminSidebarLink>
+            </SidebarItem>
+            <SidebarItem>
                 <AdminSidebarLink to="/admin/profile">Mi perfil</AdminSidebarLink>
             </SidebarItem>
             <SidebarItem>

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Spinner from "../../UI/Spinner";
-import CourseCard from "./CourseCard";
+import CourseCard from "../../components/cards/CourseCard";
 import { CourseGridContainer } from "../../styles";
 
 const CoursesCardsView = ({ isLoading, courses }) => {

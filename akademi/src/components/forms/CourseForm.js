@@ -92,7 +92,7 @@ const CourseForm = ({
                 <Error>{errors.description}</Error>
             </div>
             <div>
-                <label>Capacidad:</label>
+                <label>Capacidad máxima:</label>
                 <br />
                 <input
                     type="number"

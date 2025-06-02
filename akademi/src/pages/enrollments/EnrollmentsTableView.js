@@ -48,7 +48,6 @@ const EnrollmentTableView = ({ user, enrollments, cancelEnrollment, isLoading })
                                     <CoursesTd>{e.course.professor?.name}</CoursesTd>
                                 }
                                 <CoursesTd>{e.course.maximumCapacity}</CoursesTd>
-                                <CoursesTd>{e.course.maximumCapacity}</CoursesTd>
                                 {/* <CoursesTd>{course.duration} hs</CoursesTd> */}
                                 <CoursesActions>
                                     {user.role === 'professor' ? 

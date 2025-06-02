@@ -8,6 +8,9 @@ const StudentSidebar = () => {
   return (
         <StudentSidebarContainer>
             <SidebarItem>
+                <StudentSidebarLink to="/student/dashboard">🏠 Home</StudentSidebarLink>
+            </SidebarItem>
+            <SidebarItem>
                 <StudentSidebarLink to="/student/profile">Mi perfil</StudentSidebarLink>
             </SidebarItem>
             <SidebarItem>

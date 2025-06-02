@@ -28,7 +28,7 @@ const LoginForm = ({ formData, errors, onChange, onSubmit }) => {
                 {errors.password && <Error>{errors.password}</Error>}
             </div>
             <div>
-                <Link to="/password-recovery">¿Olvidaste tu contraseña?</Link>
+                <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
             </div>
             <div>
                 <Link to="/register">Registrarse</Link>

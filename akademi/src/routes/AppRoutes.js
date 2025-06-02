@@ -6,6 +6,8 @@ import StudentLayout from "../layouts/StudentLayout";
 
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import PasswordReset from "../pages/auth/PasswordReset";
 import AdminDashboard from "../pages/dashboard/AdminDashboard";
 import ProfessorDashboard from "../pages/dashboard/ProfessorDashboard";
 import StudentDashboard from "../pages/dashboard/StudentDashboard";
@@ -22,6 +24,8 @@ const AppRoutes = () => {
         <Route path="/" element={<Login />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="password-reset/:recoveryToken" element={<PasswordReset />} />
       </Route>
 
       {/* Rutas de superadmin */}
@@ -38,6 +42,7 @@ const AppRoutes = () => {
         <Route path="dashboard" element={<ProfessorDashboard />} />
         <Route path="my-courses" element={<CoursesList />} />
         <Route path="courses/:id" element={<CourseDetail />} />
+        <Route path="course-enrollments" element={<EnrollmentsList />} />
         <Route path="new-course" element={<NewCourse />} />
         {/* <Route path="grades" element={<GradesList />} /> */}
         {/* más rutas teacher */}

@@ -22,30 +22,30 @@ const App = ({ message }) => {
   useTokenExpirationChecker();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
+      if (token) {
+        try {
+          const decoded = jwtDecode(token);
 
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: {
-            token,
-            user: {
-              id: decoded.userId,
-              name: decoded.name,
-              role: decoded.role
-            }
-          },
-        });
-      } catch (error) {
-        dispatch(setMessage('Token inválido o expirado'))
-        localStorage.clear();
+          dispatch({
+            type: LOGIN_SUCCESS,
+            payload: {
+              token,
+              user: {
+                id: decoded.id,
+                name: decoded.name,
+                role: decoded.role
+              }
+            },
+          });
+        } catch (error) {
+          dispatch(setMessage('Token inválido o expirado'))
+          localStorage.clear();
+        }
       }
-    }
 
-    setAuthInitialized(true);
+      setAuthInitialized(true);
   }, [dispatch]);
 
   if (!authInitialized) {

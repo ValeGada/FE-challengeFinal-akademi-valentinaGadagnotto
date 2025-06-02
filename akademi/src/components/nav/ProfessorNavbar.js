@@ -1,9 +1,15 @@
-import { ProfessorNavbarContainer, ProfessorUserInfo, ProfessorLogoutButton } from "../../styles";
+import { ProfessorNavbarContainer, ProfessorUserInfo, ProfessorLogoutButton, ProfessorSidebarLink } from "../../styles";
 
 const ProfessorNavbar = ({ professorName, onLogout }) => {
   return (
     <ProfessorNavbarContainer>
-      <div>Hola, {professorName}!</div>
+      <div>
+        Hola,{' '} 
+        <ProfessorSidebarLink to="/prof/profile">
+          {professorName}
+        </ProfessorSidebarLink>
+        !
+      </div>
       <ProfessorUserInfo>
         <span>Profesor</span>
         <ProfessorLogoutButton onClick={onLogout}>Cerrar sesión</ProfessorLogoutButton>

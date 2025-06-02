@@ -4,11 +4,12 @@ import {
     CourseCardContainer, 
     CourseCardTitle, 
     CourseCardDescription,
+    CourseCardCapacity,
     CourseCardProfessor, 
     CourseCardButton 
 } from "../../styles";
 
-const CoursesCardsView = ({ course }) => {
+const CourseCard = ({ course }) => {
     const navigate = useNavigate();
     const handleCourseView = () => {
         navigate(`/student/courses/${course.id}`)
@@ -18,6 +19,7 @@ const CoursesCardsView = ({ course }) => {
         <CourseCardContainer>
             <CourseCardTitle>{course.title}</CourseCardTitle>
             <CourseCardDescription>{course.description}</CourseCardDescription>
+            <CourseCardCapacity>Suscripciones: {course.enrollmentsCount} / {course.maximumCapacity}</CourseCardCapacity>
             <CourseCardProfessor>Prof. {course.professor.name}</CourseCardProfessor>
             <CourseCardButton onClick={handleCourseView}>Ver curso</CourseCardButton>
         </CourseCardContainer>
@@ -25,4 +27,4 @@ const CoursesCardsView = ({ course }) => {
 
 };
 
-export default CoursesCardsView;
+export default CourseCard;

@@ -49,7 +49,7 @@ const CourseTableView = ({ user, courses, deleteCourse, isLoading }) => {
                                     <CoursesTd>{course.professor?.name}</CoursesTd>
                                 }
                                 <CoursesTd>{course.maximumCapacity}</CoursesTd>
-                                <CoursesTd>{course.enrollments?.length || 0}</CoursesTd>
+                                <CoursesTd>{course.enrollmentsCount ?? 0}</CoursesTd>
                                 {/* <CoursesTd>{course.duration} hs</CoursesTd> */}
                                 <CoursesActions>
                                     {user.role === 'professor' ? 

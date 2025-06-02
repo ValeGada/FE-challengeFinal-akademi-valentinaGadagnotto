@@ -58,7 +58,7 @@ export const passwordRecovery = email => async dispatch => {
 
 export const passwordReset = ({ recoveryToken, newPassword }) => async dispatch => {
     try {
-        const response = await axiosInstance.patch('/auth/password-reset', { recoveryToken, newPassword });
+        const response = await axiosInstance.post('/auth/password-reset', { recoveryToken, newPassword });
         dispatch({ type: PASSWORD_RESET, payload: response.data });
 
         dispatch(setMessage(response?.data?.message || 'Contraseña restablecida con éxito.'));
