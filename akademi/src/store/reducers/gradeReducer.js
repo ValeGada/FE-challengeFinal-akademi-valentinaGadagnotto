@@ -44,11 +44,11 @@ export default (state = initialState, action) => {
         case GET_GRADES_SUCCESS:
             return { 
                 ...state, 
-                all: action.payload.courses, 
+                all: action.payload.grades, 
                 pagination: {
-                ...state.pagination,
-                currentPage: action.payload.currentPage,
-                totalPages: action.payload.totalPages
+                    ...state.pagination,
+                    currentPage: action.payload.currentPage,
+                    totalPages: action.payload.totalPages
                 },
                 isLoading: false, 
                 error: null 

@@ -21,11 +21,11 @@ export const setGradeQueries = (queryParams) => ({
 export const getGrades = (id, queryParams) => async dispatch => { 
     dispatch ({ type: GET_GRADES_REQUEST});
     try {
-        const response = await axiosInstance.get(`/student/${id}`, { params: queryParams }); 
+        const response = await axiosInstance.get(`/grades/student/${id}`, { params: queryParams }); 
         dispatch({
             type: GET_GRADES_SUCCESS,
             payload: {
-                courses: response.data.courses,
+                grades: response.data.grades,
                 totalPages: response.data.totalPages,
                 currentPage: response.data.currentPage
             }
@@ -54,7 +54,7 @@ export const editGrade = (id, values) => async dispatch => {
     try {
         const response = await axiosInstance.put(`/grades/${id}`, values);
 
-        dispatch ({ type: EDIT_GRADE_SUCCESS, payload: response.data.courseObj });
+        dispatch ({ type: EDIT_GRADE_SUCCESS, payload: response.data.gradeObj });
         dispatch(setMessage('Nota editada correctamente.'));
     } catch (error) {
         dispatch({ type: EDIT_GRADE_FAILURE, payload: error.message });

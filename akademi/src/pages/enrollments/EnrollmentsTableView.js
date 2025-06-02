@@ -10,7 +10,6 @@ const EnrollmentTableView = ({ enrollments, isLoading, canEditGrades, editGrade,
     
     return (
         <>
-
             <CoursesTable>
                 <thead>
                     <tr>

@@ -74,9 +74,9 @@ export default (state = initialState, action) => {
                 ...state, 
                 all: action.payload.courses, 
                 pagination: {
-                ...state.pagination,
-                currentPage: action.payload.currentPage,
-                totalPages: action.payload.totalPages
+                    ...state.pagination,
+                    currentPage: action.payload.currentPage,
+                    totalPages: action.payload.totalPages
                 },
                 isLoading: false, 
                 error: null 
