@@ -53,7 +53,7 @@ const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, 
     }
 
     return (
-        <div>
+        <>
             <h2>Detalle del Curso</h2>
             {isLoading ?
                 <Spinner /> :         
@@ -78,7 +78,7 @@ const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, 
                     )}
                 </>  
             }
-        </div>
+        </>
     );
 };
 

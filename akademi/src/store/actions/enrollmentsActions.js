@@ -49,7 +49,7 @@ export const getCourseEnrollments = (id, queryParams) => async dispatch => {
         dispatch({
             type: GET_COURSE_ENROLLMENTS_SUCCESS,
             payload: {
-                courses: response.data.courses,
+                courses: response.data.enrollments,
                 totalPages: response.data.totalPages,
                 currentPage: response.data.currentPage
             }

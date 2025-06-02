@@ -53,9 +53,15 @@ const CourseTableView = ({ user, courses, deleteCourse, isLoading }) => {
                                 {/* <CoursesTd>{course.duration} hs</CoursesTd> */}
                                 <CoursesActions>
                                     {user.role === 'professor' ? 
-                                        <>
+                                        <>  
+                                            <ProfessorLogoutButton onClick={() => navigate(`/prof/enrollments/course/${course.id}`)}>
+                                                Ver inscriptos 👁️
+                                            </ProfessorLogoutButton>
+                                            <ProfessorLogoutButton onClick={() => navigate(`/prof/grades/course/${course.id}`)}>
+                                                Calificaciones 💯
+                                            </ProfessorLogoutButton>
                                             <ProfessorLogoutButton onClick={() => navigate(`/prof/courses/${course.id}`)}>
-                                                Ver/Editar ✏️
+                                                Editar ✏️
                                             </ProfessorLogoutButton>
                                             <ProfessorLogoutButton onClick={() => handleDeleteCourse(course)}>
                                                 Eliminar 🗑️

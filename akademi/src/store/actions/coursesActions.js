@@ -97,10 +97,10 @@ export const editCourse = (id, values) => async dispatch => {
         const response = await axiosInstance.put(`/courses/${id}`, values);
 
         dispatch ({ type: EDIT_COURSE_SUCCESS, payload: response.data.courseObj });
-        dispatch(setMessage('Curso editado correctamente'));
+        dispatch(setMessage('Curso editado correctamente.'));
     } catch (error) {
         dispatch({ type: EDIT_COURSE_FAILURE, payload: error.message });
-        dispatch(setMessage(error.response?.data?.message || 'No se pudo editar el curso'));
+        dispatch(setMessage(error.response?.data?.message || 'No se pudo editar el curso.'));
     }
 };
 
@@ -110,7 +110,7 @@ export const deleteCourse = id => async dispatch => {
         await axiosInstance.delete(`/courses/${id}`);
 
         dispatch ({ type: DELETE_COURSE_SUCCESS, payload: id });
-        dispatch(setMessage('Curso eliminado correctamente'));
+        dispatch(setMessage('Curso eliminado correctamente.'));
     } catch (error) {
         dispatch({ type: DELETE_COURSE_FAILURE, payload: error.message });
         dispatch(setMessage(error.response?.data?.message || 'No se pudo eliminar el curso.'));

@@ -15,6 +15,8 @@ import CoursesList from "../pages/courses/CoursesList";
 import CourseDetail from "../pages/courses/CourseDetail";
 import NewCourse from "../pages/courses/NewCourse";
 import EnrollmentsList from "../pages/enrollments/EnrollmentsList";
+import EnrollmentsTableView from "../pages/enrollments/EnrollmentsTableView";
+import GradesList from "../pages/grades/GradesList";
 
 const AppRoutes = () => {
   return (
@@ -34,6 +36,7 @@ const AppRoutes = () => {
         <Route path="courses" element={<CoursesList />} />
         <Route path="courses/:id" element={<CourseDetail />} />
         <Route path="enrollments" element={<EnrollmentsList />} />
+        <Route path="grades" element={<EnrollmentsTableView />} />
         {/* más rutas admin */}
       </Route>
 
@@ -42,9 +45,10 @@ const AppRoutes = () => {
         <Route path="dashboard" element={<ProfessorDashboard />} />
         <Route path="my-courses" element={<CoursesList />} />
         <Route path="courses/:id" element={<CourseDetail />} />
-        <Route path="course-enrollments" element={<EnrollmentsList />} />
+        <Route path="enrollments/course/:id" element={<EnrollmentsList />} />
+        <Route path="grades/course/:id" element={<EnrollmentsList />} />
         <Route path="new-course" element={<NewCourse />} />
-        {/* <Route path="grades" element={<GradesList />} /> */}
+
         {/* más rutas teacher */}
       </Route>
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { cancelEnrollment } from "../../store/actions/enrollmentsActions";
 import Modal from "../../UI/Modal";
@@ -12,11 +13,16 @@ import {
 } from "../../styles";
 
 const EnrollmentCard = ({ enrollment, cancelEnrollment }) => {
+    const navigate = useNavigate();
     // Modal states
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedEnrollment, setSelectedEnrollment] = useState(null);
 
     if (!enrollment.course || !enrollment.student) return null;
+
+    const handleCourseView = () => {
+        navigate(`/student/courses/${enrollment.course.id}`)
+    }
 
     const handleUnenroll = (enrollment) => {
         setSelectedEnrollment(enrollment);
@@ -35,7 +41,10 @@ const EnrollmentCard = ({ enrollment, cancelEnrollment }) => {
                 <CourseCardDescription>{enrollment.course?.description}</CourseCardDescription>
                 <CourseCardDescription>{enrollment.student?.receivedGrades}</CourseCardDescription>
                 <CourseCardProfessor>Prof. {enrollment.course?.professor?.name}</CourseCardProfessor>
-                <CourseCardButton onClick={() => handleUnenroll(enrollment)}>Desuscribirse</CourseCardButton>
+                <>
+                    <CourseCardButton onClick={handleCourseView}>Ver curso</CourseCardButton>
+                    <CourseCardButton onClick={() => handleUnenroll(enrollment)}>Desuscribirse</CourseCardButton>
+                </>
             </EnrollmentCardContainer>
             <Modal isOpen={isModalOpen}>
                 <h2>¿Seguro que deseas cancelar tu suscripción a este curso?</h2>

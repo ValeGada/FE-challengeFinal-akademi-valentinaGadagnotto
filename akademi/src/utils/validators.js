@@ -114,8 +114,6 @@ export const validateCourseForm = (formData) => {
     return errors;
 };
 
-
-
 export const validatePassword = (password) => {
     const errors = {};
 

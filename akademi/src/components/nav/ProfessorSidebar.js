@@ -32,11 +32,6 @@ const ProfessorSidebar = () => {
                 </ProfessorSidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <ProfessorSidebarLink to="/prof/course-enrollments">
-                    Suscripciones por curso
-                </ProfessorSidebarLink>
-            </SidebarItem>
-            <SidebarItem>
                 <ProfessorLogoutButton onClick={() => navigate("/prof/new-course")}>
                     Crear Nuevo Curso
                 </ProfessorLogoutButton>
