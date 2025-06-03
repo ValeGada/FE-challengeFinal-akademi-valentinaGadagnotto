@@ -1,8 +1,8 @@
 import axiosInstance from "../../api/axios";
 import { 
-    GET_GRADES_REQUEST,
-    GET_GRADES_SUCCESS,
-    GET_GRADES_FAILURE,
+    GET_STUDENT_GRADES_REQUEST,
+    GET_STUDENT_GRADES_SUCCESS,
+    GET_STUDENT_GRADES_FAILURE,
     POST_GRADE_REQUEST,
     POST_GRADE_SUCCESS,
     POST_GRADE_FAILURE,
@@ -18,12 +18,12 @@ export const setGradeQueries = (queryParams) => ({
     payload: queryParams
 });
 
-export const getGrades = (id, queryParams) => async dispatch => { 
-    dispatch ({ type: GET_GRADES_REQUEST});
+export const getStudentGrades = (id, queryParams) => async dispatch => { 
+    dispatch ({ type: GET_STUDENT_GRADES_REQUEST});
     try {
         const response = await axiosInstance.get(`/grades/student/${id}`, { params: queryParams }); 
         dispatch({
-            type: GET_GRADES_SUCCESS,
+            type: GET_STUDENT_GRADES_SUCCESS,
             payload: {
                 grades: response.data.grades,
                 totalPages: response.data.totalPages,
@@ -31,7 +31,7 @@ export const getGrades = (id, queryParams) => async dispatch => {
             }
         });
     } catch (error) {
-        dispatch({ type: GET_GRADES_FAILURE, payload: error.message });
+        dispatch({ type: GET_STUDENT_GRADES_FAILURE, payload: error.message });
         dispatch(setMessage(error.response?.data?.message || 'Error al obtener las notas.'));
     }
 };

@@ -28,9 +28,13 @@ const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
         }
 
         if (gradeId) {
-            editGrade(gradeId, parsed);
+            editGrade(gradeId, { score: parsed });
         } else {
-            postGrade(parsed);
+            postGrade({
+                score: parsed,
+                student: enroll.student.id,
+                course: enroll.course.id
+            });
         }
 
         setError('');

@@ -9,7 +9,7 @@ import EnrollmentsCardsView from "./EnrollmentsCardsView";
 import EnrollmentsTableView from "./EnrollmentsTableView";
 import GradesTable from "../grades/GradesTable";
 
-const EnrollmentsList = ({ user, enrollments, isLoading, getCourseEnrollments, getEnrollments }) => {
+const EnrollmentsList = ({ user, grades, enrollments, isLoading, getCourseEnrollments, getEnrollments }) => {
     const { id } = useParams();
     const location = useLocation();
 
@@ -57,7 +57,7 @@ const EnrollmentsList = ({ user, enrollments, isLoading, getCourseEnrollments, g
         } else {
             getEnrollments(user.id);
         }
-    }, [id, user, user?.id, user?.role, getEnrollments, getCourseEnrollments]);
+    }, [id, grades, user, user?.id, user?.role, getEnrollments, getCourseEnrollments]);
 
     return (
         <div>
@@ -86,7 +86,8 @@ const mapStateToProps = state => {
     return {
         user: state.auth.user,
         isLoading: state.enrollments.isLoading,
-        enrollments: state.enrollments.all
+        enrollments: state.enrollments.all,
+        grades: state.grades.all
     }
 };
 

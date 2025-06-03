@@ -1,7 +1,7 @@
 import {
-    GET_GRADES_REQUEST,
-    GET_GRADES_SUCCESS,
-    GET_GRADES_FAILURE,
+    GET_STUDENT_GRADES_REQUEST,
+    GET_STUDENT_GRADES_SUCCESS,
+    GET_STUDENT_GRADES_FAILURE,
     POST_GRADE_REQUEST,
     POST_GRADE_SUCCESS,
     POST_GRADE_FAILURE,
@@ -38,10 +38,10 @@ export default (state = initialState, action) => {
                 queryParams: { ...state.queryParams, ...action.payload },
             };
 
-        case GET_GRADES_REQUEST:
+        case GET_STUDENT_GRADES_REQUEST:
             return { ...state, isLoading: true, error: null };
         
-        case GET_GRADES_SUCCESS:
+        case GET_STUDENT_GRADES_SUCCESS:
             return { 
                 ...state, 
                 all: action.payload.grades, 
@@ -54,7 +54,7 @@ export default (state = initialState, action) => {
                 error: null 
             };
 
-        case GET_GRADES_FAILURE:
+        case GET_STUDENT_GRADES_FAILURE:
             return { ...state, isLoading: false, error: action.payload };
 
         case POST_GRADE_REQUEST:

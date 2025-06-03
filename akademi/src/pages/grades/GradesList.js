@@ -2,15 +2,15 @@ import React from "react";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import { getCoursesByProfId } from "../../store/actions/coursesActions";
-import { getGrades, editGrade, postGrade } from "../../store/actions/gradesActions";
+import { editGrade, postGrade } from "../../store/actions/gradesActions";
 import { CoursesTable, CoursesTd, CoursesTh, CourseListTitle } from "../../styles";
 import Spinner from "../../UI/Spinner";
 import GradeScoreInput from "../../components/forms/GradeScoreInput";
 
-const GradesList = ({ user, courses, editGrade, postGrade, getCoursesByProfId, isLoading }) => {   
+const GradesList = ({ user, grades, courses, editGrade, postGrade, getCoursesByProfId, isLoading }) => {   
     useEffect(() => {
         getCoursesByProfId(user.id);
-    }, [user, getCoursesByProfId])
+    }, [user, grades, getCoursesByProfId])
 
     return (
         <div>
@@ -69,8 +69,9 @@ const mapStateToProps = state => {
     return {
         user: state.auth.user,
         isLoading: state.grades.isLoading,
-        courses: state.courses.all
+        courses: state.courses.all,
+        grades: state.grades.all
     }
 }
 
-export default connect(mapStateToProps, { getCoursesByProfId, getGrades, editGrade, postGrade })(GradesList);
+export default connect(mapStateToProps, { getCoursesByProfId, editGrade, postGrade })(GradesList);
