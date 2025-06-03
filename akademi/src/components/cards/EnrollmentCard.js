@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import { cancelEnrollment } from "../../store/actions/enrollmentsActions";
 import Modal from "../../UI/Modal";
@@ -14,6 +14,8 @@ import {
 
 const EnrollmentCard = ({ enrollment, cancelEnrollment }) => {
     const navigate = useNavigate();
+    const location = useLocation();
+
     // Modal states
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedEnrollment, setSelectedEnrollment] = useState(null);
@@ -38,13 +40,22 @@ const EnrollmentCard = ({ enrollment, cancelEnrollment }) => {
         <>
             <EnrollmentCardContainer>
                 <CourseCardTitle>{enrollment.course?.title}</CourseCardTitle>
-                <CourseCardDescription>{enrollment.course?.description}</CourseCardDescription>
-                <CourseCardDescription>{enrollment.student?.receivedGrades}</CourseCardDescription>
+                {location.pathname.includes('/my-enrollments') ?
+                    <CourseCardDescription>{enrollment.course?.description}</CourseCardDescription>
+                    : null
+                }
+                <CourseCardDescription>{enrollment.student?.profile?.receivedGrades?.[0]}</CourseCardDescription>
                 <CourseCardProfessor>Prof. {enrollment.course?.professor?.name}</CourseCardProfessor>
-                <>
-                    <CourseCardButton onClick={handleCourseView}>Ver curso</CourseCardButton>
-                    <CourseCardButton onClick={() => handleUnenroll(enrollment)}>Desuscribirse</CourseCardButton>
-                </>
+                {location.pathname.includes('/my-enrollments') ? (
+                    <>
+                        <CourseCardButton onClick={handleCourseView}>Ver curso</CourseCardButton>
+                        <CourseCardButton onClick={() => handleUnenroll(enrollment)}>Desuscribirse</CourseCardButton>
+                    </>
+                ) : (
+                    <>
+                        <CourseCardButton onClick={handleCourseView}>Ver curso</CourseCardButton>
+                    </>
+                )}
             </EnrollmentCardContainer>
             <Modal isOpen={isModalOpen}>
                 <h2>¿Seguro que deseas cancelar tu suscripción a este curso?</h2>

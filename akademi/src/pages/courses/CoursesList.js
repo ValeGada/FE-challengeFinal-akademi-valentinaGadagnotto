@@ -9,9 +9,9 @@ import CourseTableView from "./CourseTableView";
 
 const CoursesList = ({ user, courses, isLoading, getCourses, getCoursesByProfId }) => {
     useEffect(() => {
-        if (user && user.role === 'professor' && user.id) {
+        if (user.role === 'professor') {
             getCoursesByProfId(user.id);
-        } else if (user && user.role !== 'professor') {
+        } else if (user.role !== 'professor') {
             getCourses();
         }
     }, [user, getCourses, getCoursesByProfId])

@@ -15,7 +15,6 @@ import CoursesList from "../pages/courses/CoursesList";
 import CourseDetail from "../pages/courses/CourseDetail";
 import NewCourse from "../pages/courses/NewCourse";
 import EnrollmentsList from "../pages/enrollments/EnrollmentsList";
-import EnrollmentsTableView from "../pages/enrollments/EnrollmentsTableView";
 import GradesList from "../pages/grades/GradesList";
 
 const AppRoutes = () => {
@@ -36,7 +35,8 @@ const AppRoutes = () => {
         <Route path="courses" element={<CoursesList />} />
         <Route path="courses/:id" element={<CourseDetail />} />
         <Route path="enrollments" element={<EnrollmentsList />} />
-        <Route path="grades" element={<EnrollmentsTableView />} />
+        <Route path="enrollments/course/:id" element={<EnrollmentsList />} />
+        <Route path="grades/course/:id" element={<EnrollmentsList />} />
         {/* más rutas admin */}
       </Route>
 
@@ -47,6 +47,7 @@ const AppRoutes = () => {
         <Route path="courses/:id" element={<CourseDetail />} />
         <Route path="enrollments/course/:id" element={<EnrollmentsList />} />
         <Route path="grades/course/:id" element={<EnrollmentsList />} />
+        <Route path="grades" element={<GradesList />} />
         <Route path="new-course" element={<NewCourse />} />
 
         {/* más rutas teacher */}
@@ -59,7 +60,7 @@ const AppRoutes = () => {
         <Route path="catalog" element={<CoursesList />} />
         <Route path="courses/:id" element={<CourseDetail />} />
         <Route path="my-enrollments" element={<EnrollmentsList />} />
-        {/* <Route path="my-grades" element={<GradesList />} /> */}
+        <Route path="my-grades" element={<EnrollmentsList />} />
         {/* más rutas alumno */}
       </Route>
 

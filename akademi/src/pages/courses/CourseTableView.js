@@ -69,8 +69,14 @@ const CourseTableView = ({ user, courses, deleteCourse, isLoading }) => {
                                         </>
                                     :
                                         <>
+                                            <AdminLogoutButton onClick={() => navigate(`/admin/enrollments/course/${course.id}`)}>
+                                                Ver inscriptos 👁️
+                                            </AdminLogoutButton>
+                                            <AdminLogoutButton onClick={() => navigate(`/admin/grades/course/${course.id}`)}>
+                                                Calificaciones 💯
+                                            </AdminLogoutButton>
                                             <AdminLogoutButton onClick={() => navigate(`/admin/courses/${course.id}`)}>
-                                                Ver/Editar ✏️
+                                                Editar ✏️
                                             </AdminLogoutButton>
                                             <AdminLogoutButton onClick={() => handleDeleteCourse(course)}>
                                                 Eliminar 🗑️
