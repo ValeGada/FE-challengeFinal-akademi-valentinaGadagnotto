@@ -5,7 +5,7 @@ const StudentNavbar = ({ studentName, onLogout }) => {
     <StudentNavbarContainer>
       <div>
         Hola,{' '} 
-        <StudentSidebarLink to="/student/profile">
+        <StudentSidebarLink to="/student/my-profile">
           {studentName}
         </StudentSidebarLink>
         !

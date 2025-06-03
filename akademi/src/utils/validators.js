@@ -36,12 +36,12 @@ export const validateRegisterForm = (formData, validatePassword = true) => {
 
     if (validatePassword) {
         if (!formData.password) {
-        errors.password = '* La contraseña es obligatoria.';
+            errors.password = '* La contraseña es obligatoria.';
         } else if (formData.password.length < 6) {
-        errors.password = '* La contraseña debe contener al menos 6 caracteres.';
+            errors.password = '* La contraseña debe contener al menos 6 caracteres.';
         } else if (
-        formData.password.toLowerCase().includes('password') ||
-        formData.password.toLowerCase().includes('contraseña')
+            formData.password.toLowerCase().includes('password') ||
+            formData.password.toLowerCase().includes('contraseña')
         ) {
         errors.password = '* La contraseña no puede incluir la palabra "contraseña" o "password".';
         }
@@ -66,14 +66,14 @@ export const validateUserForm = (formData, validatePassword = true) => {
 
     if (validatePassword) {
         if (!formData.password) {
-        errors.password = '* La contraseña es obligatoria.';
+            errors.password = '* La contraseña es obligatoria.';
         } else if (formData.password.length < 6) {
-        errors.password = '* La contraseña debe contener al menos 6 caracteres.';
+            errors.password = '* La contraseña debe contener al menos 6 caracteres.';
         } else if (
-        formData.password.toLowerCase().includes('password') ||
-        formData.password.toLowerCase().includes('contraseña')
+            formData.password.toLowerCase().includes('password') ||
+            formData.password.toLowerCase().includes('contraseña')
         ) {
-        errors.password = '* La contraseña no puede incluir la palabra "contraseña" o "password".';
+            errors.password = '* La contraseña no puede incluir la palabra "contraseña" o "password".';
         }
     }
 
@@ -129,6 +129,7 @@ export const validatePassword = (password) => {
     } else if (password.includes(' ')) {
         errors.password = '* La contraseña no puede incluir espacios en blanco.';
     }
+
     return errors;
 };
 

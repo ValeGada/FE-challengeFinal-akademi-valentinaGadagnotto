@@ -17,7 +17,7 @@ const ProfessorSidebar = () => {
                 </ProfessorSidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <ProfessorSidebarLink to="/prof/profile">
+                <ProfessorSidebarLink to="/prof/my-profile">
                     Mi perfil
                 </ProfessorSidebarLink>
             </SidebarItem>

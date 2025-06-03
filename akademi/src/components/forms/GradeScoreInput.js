@@ -10,7 +10,7 @@ const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
     const gradeId = enroll.student?.profile?.receivedGrades?.[0]?.id || null;
 
     const handleOpenModal = () => {
-        if (!canEditGrades) return;
+        // if (!canEditGrades) return;
         setIsModalOpen(true);
     };
 

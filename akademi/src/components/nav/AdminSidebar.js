@@ -14,7 +14,7 @@ const AdminSidebar = () => {
                 <AdminSidebarLink to="/admin/dashboard">🏠 Home</AdminSidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <AdminSidebarLink to="/admin/profile">Mi perfil</AdminSidebarLink>
+                <AdminSidebarLink to="/admin/my-profile">Mi perfil</AdminSidebarLink>
             </SidebarItem>
             <SidebarItem>
                 <AdminSidebarLink to="/admin/users">Usuarios</AdminSidebarLink>
@@ -26,7 +26,7 @@ const AdminSidebar = () => {
                 <AdminSidebarLink to="/admin/enrollments">Suscripciones</AdminSidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <AdminLogoutButton onClick={() => navigate('/new-user')}>
+                <AdminLogoutButton onClick={() => navigate('/admin/new-user')}>
                     Crear nuevo usuario
                 </AdminLogoutButton>
             </SidebarItem>

@@ -65,7 +65,7 @@ export const enroll = (id) => async dispatch => {
     try {
         const response = await axiosInstance.post('/enrollments', { id });
 
-        dispatch ({ type: ENROLL_SUCCESS, payload: response.data.enrollment });
+        dispatch ({ type: ENROLL_SUCCESS, payload: response.data });
         dispatch(setMessage('Suscripción exitosa.'));
     } catch (error) {
         dispatch({ type: ENROLL_FAILURE, payload: error.message })

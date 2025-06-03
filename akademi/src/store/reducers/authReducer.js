@@ -7,7 +7,8 @@ import {
     PASSWORD_RESET,
     REGISTER_REQUEST,
     REGISTER_SUCCESS,
-    REGISTER_FAILURE
+    REGISTER_FAILURE,
+    EDIT_USER_SUCCESS
 } from "../types";
 
 const initialState = {
@@ -62,6 +63,12 @@ const authReducer = (state = initialState, action) => {
 
         case REGISTER_FAILURE:
             return { ...state, isLoading: false, error: action.payload };
+
+        case EDIT_USER_SUCCESS:
+            return {
+                ...state,
+                user: { ...action.payload }
+            };
 
         default:
             return state;

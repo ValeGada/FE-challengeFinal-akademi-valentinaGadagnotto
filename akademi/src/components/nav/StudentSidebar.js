@@ -11,7 +11,7 @@ const StudentSidebar = () => {
                 <StudentSidebarLink to="/student/dashboard">🏠 Home</StudentSidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <StudentSidebarLink to="/student/profile">Mi perfil</StudentSidebarLink>
+                <StudentSidebarLink to="/student/my-profile">Mi perfil</StudentSidebarLink>
             </SidebarItem>
             <SidebarItem>
                 <StudentSidebarLink to="/student/catalog">Catálogo</StudentSidebarLink>

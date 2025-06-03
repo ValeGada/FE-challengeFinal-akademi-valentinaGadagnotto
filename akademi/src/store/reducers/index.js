@@ -3,6 +3,7 @@ import authReducer from "./authReducer";
 import courseReducer from "./courseReducer";
 import enrollmentReducer from "./enrollmentReducer";
 import gradeReducer from "./gradeReducer";
+import userReducer from "./userReducer";
 import messageReducer from "./messageReducer";
 
 export default combineReducers({
@@ -10,6 +11,6 @@ export default combineReducers({
     courses: courseReducer,
     enrollments: enrollmentReducer,
     grades: gradeReducer,
-    message: messageReducer,
+    users: userReducer,
+    message: messageReducer
 });
-//     users: userReducer,

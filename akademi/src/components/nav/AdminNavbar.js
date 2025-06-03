@@ -5,7 +5,7 @@ const AdminNavbar = ({ adminName, onLogout }) => {
         <AdminNavbarContainer>
         <div>
             Hola,{' '} 
-            <AdminSidebarLink to="/admin/profile">
+            <AdminSidebarLink to="/admin/my-profile">
                 {adminName}
             </AdminSidebarLink>
             !
