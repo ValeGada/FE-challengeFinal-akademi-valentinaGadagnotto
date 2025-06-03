@@ -8,29 +8,21 @@ import Spinner from "../../UI/Spinner";
 import EnrollmentsCardsView from "./EnrollmentsCardsView";
 import EnrollmentsTableView from "./EnrollmentsTableView";
 import GradesTable from "../grades/GradesTable";
-// import AdminGradesTable from "../grades/AdminGradesTable";
 
 const EnrollmentsList = ({ user, enrollments, isLoading, getCourseEnrollments, getEnrollments }) => {
     const { id } = useParams();
     const location = useLocation();
 
-    const isStudentEnrollmentsPath = location.pathname.includes('/student/my-enrollments/');
-    const isStudentGradesPath = location.pathname.includes('/student/my-grades/');
-    const isProfEnrollmentsPath = location.pathname.includes('/prof/enrollments/');
-    const isProfGradesPath = location.pathname.includes('/prof/grades/')
-    const isAdminEnrollmentsPath = location.pathname.includes('/admin/enrollments');
-    const isAdminGradesPath = location.pathname.includes('/admin/grades');
-    
-    useEffect(() => {       
-        if (user.role !== 'student') {
-            getCourseEnrollments(id);
-        } else {
-            getEnrollments(user.id);
-        }
-    }, [id, user, user?.id, user?.role, getEnrollments, getCourseEnrollments]);
+    // Paths
+    const isStudentEnrollmentsPath = location.pathname.includes('/student/my-enrollments');
+    const isStudentGradesPath = location.pathname.includes('/student/my-grades');
+    const isProfEnrollmentsPath = location.pathname.includes('/prof/enrollments/course/');
+    const isProfGradesPath = location.pathname.includes('/prof/grades/course/');
+    const isAdminEnrollmentsPath = location.pathname.includes('/admin/enrollments') && 
+        !location.pathname.includes('/course');
+    const isAdminGradesPath = location.pathname.includes('/admin/grades/course/');
 
-
-    
+    // Title logic
     const getTitle = () => {
         if (!user?.id) return 'Suscripciones';
 
@@ -43,30 +35,48 @@ const EnrollmentsList = ({ user, enrollments, isLoading, getCourseEnrollments, g
         return 'Suscripciones';
     };
 
+    // Message based on state
+    const getMessage = () => {
+        if (isLoading) return <Spinner />;
+
+        if (!enrollments || enrollments.length === 0) {
+            if (isStudentEnrollmentsPath) return 'Aún no te has inscripto a ningún curso.';
+            if (isStudentGradesPath) return 'Todavía no tienes calificaciones registradas.';
+            if (isProfEnrollmentsPath || isProfGradesPath) return 'No hay estudiantes inscriptos aún.';
+            if (isAdminEnrollmentsPath) return 'No hay suscripciones registradas.';
+            if (isAdminGradesPath) return 'No hay calificaciones disponibles.';
+            return 'No hay información que mostrar.';
+        }
+
+        return null;
+    };
+    
+    useEffect(() => {       
+        if (user.role !== 'student') {
+            getCourseEnrollments(id);
+        } else {
+            getEnrollments(user.id);
+        }
+    }, [id, user, user?.id, user?.role, getEnrollments, getCourseEnrollments]);
+
     return (
         <div>
-            <CourseListTitle>{getTitle(location, user)}</CourseListTitle>
+            <CourseListTitle>{getTitle()}</CourseListTitle>
 
-            {!user || isLoading ? (
-                <Spinner />
-            ) : user.role === 'student' ? (
+            {!isLoading && enrollments?.length > 0 ? (
+                user.role === 'student' ? (
                 <EnrollmentsCardsView enrollments={enrollments} />
-            ) : location.pathname.includes('/grades') ? (
-                
+                ) : location.pathname.includes('/grades') ? (
                     <GradesTable courseId={id} enrollments={enrollments} />
-                
+                ) : (
+                    <EnrollmentsTableView
+                        enrollments={enrollments}
+                        canEditGrades={isProfGradesPath || isAdminGradesPath}
+                        showGradeColumn={false}
+                    />
+                )
             ) : (
-                <EnrollmentsTableView
-                    enrollments={enrollments}
-                    canEditGrades={isProfGradesPath || isAdminGradesPath}
-                    showGradeColumn={false}
-                />
-            )}
-
-            {!isLoading && isStudentEnrollmentsPath && enrollments?.length === 0 ? (
-                <p>Aún no te has suscripto a ningún curso.</p>
-            ) : (!isLoading && !isStudentEnrollmentsPath && enrollments?.length === 0) && (
-                <p>Aún no hay suscripciones a ningún curso.</p>
+                <p>{getMessage()}</p>
             )}
         </div>
     );

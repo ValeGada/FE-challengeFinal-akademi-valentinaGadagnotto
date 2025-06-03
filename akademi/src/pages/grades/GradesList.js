@@ -40,10 +40,8 @@ const GradesList = ({ user, courses, editGrade, postGrade, getCoursesByProfId, i
                                 );
                             }
 
-                            // Mostrar una fila por cada estudiante inscripto
                             return course.enrollments.map((enroll, index) => (
                                 <tr key={`${course.id}-enroll-${index}`}>
-                                    {/* Solo mostramos el título del curso en la primera fila */}
                                     {index === 0 ? (
                                         <CoursesTd rowSpan={course.enrollments.length}>{course.title}</CoursesTd>
                                     ) : null}

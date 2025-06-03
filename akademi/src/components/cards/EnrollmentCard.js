@@ -44,7 +44,10 @@ const EnrollmentCard = ({ enrollment, cancelEnrollment }) => {
                     <CourseCardDescription>{enrollment.course?.description}</CourseCardDescription>
                     : null
                 }
-                <CourseCardDescription>{enrollment.student?.profile?.receivedGrades?.[0]}</CourseCardDescription>
+                {location.pathname.includes('/my-grades') ?
+                    <h3>{enrollment.student?.profile?.receivedGrades?.[0]?.score}</h3>
+                    : <CourseCardDescription style={{fontWeight: '600'}}>{enrollment.student?.profile?.receivedGrades?.[0]?.score}</CourseCardDescription>
+                }
                 <CourseCardProfessor>Prof. {enrollment.course?.professor?.name}</CourseCardProfessor>
                 {location.pathname.includes('/my-enrollments') ? (
                     <>

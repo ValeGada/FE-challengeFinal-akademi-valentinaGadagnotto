@@ -49,8 +49,7 @@ const AppRoutes = () => {
         <Route path="grades/course/:id" element={<EnrollmentsList />} />
         <Route path="grades" element={<GradesList />} />
         <Route path="new-course" element={<NewCourse />} />
-
-        {/* más rutas teacher */}
+        {/* más rutas professor */}
       </Route>
 
       {/* Rutas de alumno */}
