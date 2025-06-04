@@ -1,24 +1,19 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
 import { Error, OverlayDiv, ContentDiv } from "../../styles";
 
-const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
+const StudentsGradeScoreInput = ({ grade, postGrade, editGrade }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [inputValue, setInputValue] = useState(
-        enroll.student?.profile?.receivedGrades?.[0]?.score ?? ''
-    );
+    const [inputValue, setInputValue] = useState(grade.score || '');
     const [error, setError] = useState('');
-    const location = useLocation();
 
-    const gradeId = enroll.student?.profile?.receivedGrades?.[0]?.id || null;
+    const gradeId = grade.id || null;
 
     const handleOpenModal = () => {
-        if (!canEditGrades) return;
         setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
-        setInputValue(enroll.student?.profile?.receivedGrades?.[0]?.score ?? '');
+        setInputValue(grade.score || '');
         setError('');
         setIsModalOpen(false);
     };
@@ -35,8 +30,8 @@ const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
         } else {
             postGrade({
                 score: parsed,
-                student: enroll.student.id,
-                course: enroll.course.id
+                student: grade.student.id,
+                course: grade.course.id
             });
         }
 
@@ -44,19 +39,13 @@ const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
         setIsModalOpen(false);
     };
 
-    const currentGrade = enroll.student?.profile?.receivedGrades?.[0]?.score;
+    const currentGrade = grade.score;
 
     return (
         <>
-            {location.pathname.includes('/grades') ? (
-                <span style={{ cursor: 'pointer' }} onClick={handleOpenModal}>
-                    {!currentGrade ? "Cargar Nota ✍️ " : `${currentGrade} ✏️`}
-                </span>
-            ) : (
-                <>
-                    {!currentGrade ? "Sin Nota" : `${currentGrade}`}
-                </>
-            )}          
+            <span style={{ cursor: 'pointer' }} onClick={handleOpenModal}>
+                {!currentGrade ? "Cargar Nota ✍️ " : `${currentGrade} ✏️`}
+            </span>
 
             {isModalOpen && (
                 <OverlayDiv>
@@ -83,4 +72,4 @@ const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
     );
 };
 
-export default GradeScoreInput;
+export default StudentsGradeScoreInput;

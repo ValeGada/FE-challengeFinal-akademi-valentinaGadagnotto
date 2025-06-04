@@ -1,12 +1,18 @@
 import React from "react";
-import { Error } from "../../styles";
+import { 
+    FormGroup, 
+    Label, 
+    Input,
+    Error,
+    GenericButton
+} from "../../styles";
 
 const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
     return (
         <form onSubmit={onSubmit}>
-            <div>
-                <label>Nombre:</label>
-                <input 
+            <FormGroup>
+                <Label>Nombre:</Label>
+                <Input 
                     type="text" 
                     placeholder="Nombre" 
                     name="name"
@@ -14,10 +20,10 @@ const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
                     onChange={onChange}
                 />
                 {errors.name && <Error>{errors.name}</Error>}
-            </div>
-            <div>
-                <label>Email:</label>
-                <input 
+            </FormGroup>
+            <FormGroup>
+                <Label>Email:</Label>
+                <Input 
                     type="text" 
                     placeholder="Email" 
                     name="email"
@@ -25,10 +31,10 @@ const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
                     onChange={onChange}
                 />
                 {errors.email && <Error>{errors.email}</Error>}
-            </div>
-            <div>
-                <label>Contraseña:</label>
-                <input 
+            </FormGroup>
+            <FormGroup>
+                <Label>Contraseña:</Label>
+                <Input 
                     type="password" 
                     placeholder="Contraseña" 
                     name="password"
@@ -36,8 +42,8 @@ const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
                     onChange={onChange}
                 />
                 {errors.password && <Error>{errors.password}</Error>}
-            </div>
-            <button type="submit">SIGN UP</button>
+            </FormGroup>
+            <GenericButton type="submit">SIGN UP</GenericButton>
         </form>
     )
 };

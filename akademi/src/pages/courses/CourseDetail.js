@@ -6,7 +6,7 @@ import { getCourse, editCourse } from "../../store/actions/coursesActions";
 import { enroll, cancelEnrollment } from "../../store/actions/enrollmentsActions";
 import CourseForm from "../../components/forms/CourseForm";
 import Spinner from "../../UI/Spinner";
-import { CourseCardButton } from "../../styles";
+import { CourseCardButton, CourseListTitle } from "../../styles";
 
 const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, cancelEnrollment }) => {
     const { id } = useParams();
@@ -54,7 +54,7 @@ const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, 
 
     return (
         <>
-            <h2>Detalle del Curso</h2>
+            <CourseListTitle>Detalle del Curso</CourseListTitle>
             {isLoading ?
                 <Spinner /> :         
                 <>     

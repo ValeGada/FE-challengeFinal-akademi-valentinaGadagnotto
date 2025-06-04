@@ -9,7 +9,15 @@ import EnrollmentsCardsView from "./EnrollmentsCardsView";
 import EnrollmentsTableView from "./EnrollmentsTableView";
 import GradesTable from "../grades/GradesTable";
 
-const EnrollmentsList = ({ user, grades, enrollments, isLoading, getCourseEnrollments, getEnrollments }) => {
+const EnrollmentsList = ({ 
+    user, 
+    grades,
+    enrollments, 
+    isLoading, 
+    getCourseEnrollments, 
+    getEnrollments, 
+    queryParams
+}) => {
     const { id } = useParams();
     const location = useLocation();
 
@@ -53,11 +61,11 @@ const EnrollmentsList = ({ user, grades, enrollments, isLoading, getCourseEnroll
     
     useEffect(() => {       
         if (user.role !== 'student') {
-            getCourseEnrollments(id);
+            getCourseEnrollments(id, queryParams);
         } else {
-            getEnrollments(user.id);
+            getEnrollments(user.id, queryParams);
         }
-    }, [id, grades, user, user?.id, user?.role, getEnrollments, getCourseEnrollments]);
+    }, [id, grades, user, user?.id, user?.role, getEnrollments, getCourseEnrollments, queryParams]);
 
     return (
         <div>
@@ -87,7 +95,8 @@ const mapStateToProps = state => {
         user: state.auth.user,
         isLoading: state.enrollments.isLoading,
         enrollments: state.enrollments.all,
-        grades: state.grades.all
+        grades: state.grades.all,
+        queryParams: state.enrollments.queryParams
     }
 };
 

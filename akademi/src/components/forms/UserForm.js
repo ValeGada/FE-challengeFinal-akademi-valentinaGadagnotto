@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import { handleInputChange, handleSelectChange } from "../../utils/handlers";
 import { validateUserForm } from "../../utils/validators";
-import { Error, AdminLogoutButton } from "../../styles";
+import { Error, GenericButton, FormGroup, Input, Label, Select } from "../../styles";
 
 const UserForm = ({ 
     formUser,
@@ -55,9 +55,9 @@ const UserForm = ({
 
     return (
         <form onSubmit={handleSubmit} noValidate>
-            <div>
-                <label>Nombre:</label>
-                <input 
+            <FormGroup>
+                <Label>Nombre:</Label>
+                <Input 
                     type="text" 
                     placeholder="Nombre" 
                     name="name"
@@ -66,10 +66,10 @@ const UserForm = ({
                     readOnly={!isEditable}
                 />
                 {errors.name && <Error>{errors.name}</Error>}
-            </div>
-            <div>
-                <label>Email:</label>
-                <input 
+            </FormGroup>
+            <FormGroup>
+                <Label>Email:</Label>
+                <Input 
                     type="text" 
                     placeholder="Email" 
                     name="email"
@@ -78,11 +78,11 @@ const UserForm = ({
                     readOnly={!isEditable}
                 />
                 {errors.email && <Error>{errors.email}</Error>}
-            </div>
+            </FormGroup>
             {userRole === 'superadmin' && isEditable
-                ? <div>
-                    <label>Contraseña:</label>
-                    <input 
+                ? <FormGroup>
+                    <Label>Contraseña:</Label>
+                    <Input 
                         type="password" 
                         placeholder="Contraseña" 
                         name="password"
@@ -91,13 +91,13 @@ const UserForm = ({
                         readOnly={!isEditable}
                     />
                     {errors.password && <Error>{errors.password}</Error>}
-                </div>
+                </FormGroup>
                 : null
             }
             {userRole === 'superadmin' && 
-            <div>
-                <label>Rol:</label>
-                <select
+            <FormGroup>
+                <Label>Rol:</Label>
+                <Select
                     type="text" 
                     placeholder="Rol" 
                     name="role"
@@ -107,22 +107,22 @@ const UserForm = ({
                 >
                     <option value='superadmin'>Superadmin</option>
                     <option value='professor'>Professor</option>
-                </select>
+                </Select>
                 
                 {errors.name && <Error>{errors.name}</Error>}
-            </div>}
+            </FormGroup>}
             <div>
                 {showEditButtons && isEditable && (
                     <>
-                        <AdminLogoutButton type="submit">Confirmar</AdminLogoutButton>
-                        <AdminLogoutButton type="button" onClick={onCancel}>Cancelar</AdminLogoutButton>
+                        <GenericButton type="submit">Confirmar</GenericButton>
+                        <GenericButton type="button" onClick={onCancel}>Cancelar</GenericButton>
                     </>
                 )}
 
                 {showCreateButtons && isEditable && (
                     <>
-                        <AdminLogoutButton type="submit">Crear</AdminLogoutButton>
-                        <AdminLogoutButton type="button" onClick={onCancel}>Cancelar</AdminLogoutButton>
+                        <GenericButton type="submit">Crear</GenericButton>
+                        <GenericButton type="button" onClick={onCancel}>Cancelar</GenericButton>
                     </>
                 )}
             </div>

@@ -3,7 +3,7 @@ import {
     AdminSidebarContainer,
     SidebarItem,
     AdminSidebarLink,
-    AdminLogoutButton
+    GenericButton
 } from "../../styles";
 
 const AdminSidebar = () => {
@@ -23,12 +23,9 @@ const AdminSidebar = () => {
                 <AdminSidebarLink to="/admin/courses">Cursos</AdminSidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <AdminSidebarLink to="/admin/enrollments">Suscripciones</AdminSidebarLink>
-            </SidebarItem>
-            <SidebarItem>
-                <AdminLogoutButton onClick={() => navigate('/admin/new-user')}>
+                <GenericButton onClick={() => navigate('/admin/new-user')}>
                     Crear nuevo usuario
-                </AdminLogoutButton>
+                </GenericButton>
             </SidebarItem>
         </AdminSidebarContainer>
     );

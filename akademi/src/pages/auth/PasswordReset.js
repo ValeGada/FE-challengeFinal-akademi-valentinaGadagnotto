@@ -4,7 +4,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { passwordReset } from "../../store/actions/authActions";
 import { validatePassword } from "../../utils/validators";
-import { Error } from "../../styles";
+import { 
+    FormGroup, 
+    Label, 
+    Input,
+    Error,
+    GenericButton 
+} from "../../styles";
 
 const PasswordReset = ({ passwordReset, message }) => {
     const [password, setPassword] = useState('');
@@ -32,9 +38,9 @@ const PasswordReset = ({ passwordReset, message }) => {
     return (
         <form onSubmit={handleSubmit}>
             <h1>Recuperación de Contraseña</h1>
-            <div>
-                <label>Ingresá tu nueva contraseña:</label>
-                <input 
+            <FormGroup>
+                <Label>Ingresá tu nueva contraseña:</Label>
+                <Input 
                     type="password" 
                     placeholder="Contraseña" 
                     name="password"
@@ -42,8 +48,8 @@ const PasswordReset = ({ passwordReset, message }) => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 {errors.password && <Error>{errors.password}</Error>}
-            </div>
-            <button type="submit">CONFIRMAR</button>
+            </FormGroup>
+            <GenericButton type="submit">CONFIRMAR</GenericButton>
         </form>
     )
 };

@@ -1,8 +1,8 @@
-import { StudentNavbarContainer, StudentUserInfo, StudentLogoutButton, StudentSidebarLink } from "../../styles";
+import { NavbarContainer, UserInfo, GenericButton, StudentSidebarLink } from "../../styles";
 
 const StudentNavbar = ({ studentName, onLogout }) => {
   return (
-    <StudentNavbarContainer>
+    <NavbarContainer>
       <div>
         Hola,{' '} 
         <StudentSidebarLink to="/student/my-profile">
@@ -10,11 +10,11 @@ const StudentNavbar = ({ studentName, onLogout }) => {
         </StudentSidebarLink>
         !
       </div>
-      <StudentUserInfo>
+      <UserInfo>
         <span>Estudiante</span>
-        <StudentLogoutButton onClick={onLogout}>Cerrar sesión</StudentLogoutButton>
-      </StudentUserInfo>
-    </StudentNavbarContainer>
+        <GenericButton onClick={onLogout}>Cerrar sesión</GenericButton>
+      </UserInfo>
+    </NavbarContainer>
   );
 };
 

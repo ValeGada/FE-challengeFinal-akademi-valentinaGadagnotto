@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { createCourse } from "../../store/actions/coursesActions";
 import CourseForm from "../../components/forms/CourseForm";
+import { CourseListTitle } from "../../styles";
 
 const NewCourse = ({ user, createCourse }) => {
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ const NewCourse = ({ user, createCourse }) => {
 
     return (
         <div>
-            <h2>Crear Nuevo Curso</h2>
+            <CourseListTitle>Crear Nuevo Curso</CourseListTitle>
             <CourseForm
                 userRole={user.role}
                 userName={user.name}

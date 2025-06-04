@@ -1,13 +1,19 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import { Error } from "../../styles";
+import { 
+    FormGroup, 
+    Label, 
+    Input, 
+    Error,
+    GenericButton 
+} from "../../styles";
 
 const LoginForm = ({ formData, errors, onChange, onSubmit }) => {
     return (
         <form onSubmit={onSubmit}>
-            <div>
-                <label>Email:</label>
-                <input 
+            <FormGroup>
+                <Label>Email:</Label>
+                <Input 
                     type="text" 
                     placeholder="Email" 
                     name="email"
@@ -15,10 +21,10 @@ const LoginForm = ({ formData, errors, onChange, onSubmit }) => {
                     onChange={onChange}
                 />
                 {errors.email && <Error>{errors.email}</Error>}
-            </div>
-            <div>
-                <label>Contraseña:</label>
-                <input 
+            </FormGroup>
+            <FormGroup>
+                <Label>Contraseña:</Label>
+                <Input 
                     type="password" 
                     placeholder="Contraseña" 
                     name="password"
@@ -26,14 +32,14 @@ const LoginForm = ({ formData, errors, onChange, onSubmit }) => {
                     onChange={onChange}
                 />
                 {errors.password && <Error>{errors.password}</Error>}
-            </div>
-            <div>
+            </FormGroup>
+            <FormGroup>
                 <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
-            </div>
-            <div>
+            </FormGroup>
+            <FormGroup>
                 <Link to="/register">Registrarse</Link>
-            </div>
-            <button type="submit">LOG IN</button>
+            </FormGroup>
+            <GenericButton type="submit">LOG IN</GenericButton>
         </form>
     )
 };

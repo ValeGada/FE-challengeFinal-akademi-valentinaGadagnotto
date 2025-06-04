@@ -1,47 +1,60 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser, editUser, deleteUser } from "../../store/actions/usersActions";
 import UserForm from "../../components/forms/UserForm";
 import Modal from "../../UI/Modal";
 import Spinner from "../../UI/Spinner";
-import { CourseCardButton } from "../../styles";
+import { CourseCardButton, CourseListTitle } from "../../styles";
 
 const UserProfile = ({ user, userProfile, isLoading, getUser, editUser, deleteUser }) => {
+    const { id: paramId } = useParams();
     const [isEditing, setIsEditing] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
+    const userIdToView = paramId || user.id;
+    const isOwnProfile = String(userIdToView) === String(user.id); 
+    // el user.id puede no ser String, rompe el comparador
+    const isSuperadmin = user.role === 'superadmin';
+    const canEditOrDelete = isOwnProfile || isSuperadmin;
+
+
     useEffect(() => {
-        getUser(user.id);
-    }, [user, user.id, getUser]);
+        getUser(userIdToView);
+    }, [userIdToView, getUser]);
 
     const handleUpdateUser = (userProfile) => {
-        editUser(user.id, userProfile);
+        editUser(userIdToView, userProfile);
         setIsEditing(false);
-        getUser(user.id);
+        getUser(userIdToView);
     };
 
     const handleCancelEdit = () => {
         setIsEditing(false);
-        getUser(user.id);
-    }
+        getUser(userIdToView);
+    };
 
     const handleSelfDelete = () => {
         setIsModalOpen(true);
-    }
+    };
 
     const confirmDelete = () => {
-        deleteUser(user.id);
+        deleteUser(userIdToView);
         setIsModalOpen(false);
-        navigate('/login');
-    }
+
+        if (isOwnProfile) {
+            navigate('/login');
+        } else {
+            navigate('/admin/users');
+        }
+    };
 
     return (
         <>
-            <h2>Perfil de Usuario</h2>
-            {isLoading ?
+            <CourseListTitle>Perfil de Usuario</CourseListTitle>
+            {isLoading || !userProfile ?
                 <Spinner /> :         
                 <>     
                     <UserForm 
@@ -52,7 +65,7 @@ const UserProfile = ({ user, userProfile, isLoading, getUser, editUser, deleteUs
                         showEditButtons={isEditing}
                     />
                     
-                    {!isEditing && (
+                    {canEditOrDelete && !isEditing && (
                         <>
                             <CourseCardButton onClick={() => setIsEditing(true)}>Editar</CourseCardButton>
                             <CourseCardButton onClick={handleSelfDelete}>Eliminar</CourseCardButton>
@@ -61,10 +74,14 @@ const UserProfile = ({ user, userProfile, isLoading, getUser, editUser, deleteUs
                 </>  
             }
             <Modal isOpen={isModalOpen}>
-                <h2>{user.name}, ¿seguro que deseas eliminar tu cuenta?</h2>
+                <h2>
+                    {isOwnProfile
+                        ? `${user.name}, ¿seguro que deseas eliminar tu cuenta?`
+                        : `¿Seguro que deseas eliminar al usuario "${userProfile.name}"?`}
+                </h2>
                 <br />
-                <button className="ui button negative" onClick={confirmDelete} style={{justifySelf: 'center'}}>Confirmar</button>
-                <button className="ui button" onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</button>
+                <button onClick={confirmDelete} style={{justifySelf: 'center'}}>Confirmar</button>
+                <button onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</button>
             </Modal>
         </>
     );

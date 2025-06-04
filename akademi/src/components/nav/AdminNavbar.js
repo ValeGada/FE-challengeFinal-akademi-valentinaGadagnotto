@@ -1,8 +1,8 @@
-import { AdminNavbarContainer, AdminUserInfo, AdminLogoutButton, AdminSidebarLink } from "../../styles";
+import { NavbarContainer, UserInfo, GenericButton, AdminSidebarLink } from "../../styles";
 
 const AdminNavbar = ({ adminName, onLogout }) => {
     return (
-        <AdminNavbarContainer>
+        <NavbarContainer>
         <div>
             Hola,{' '} 
             <AdminSidebarLink to="/admin/my-profile">
@@ -10,11 +10,11 @@ const AdminNavbar = ({ adminName, onLogout }) => {
             </AdminSidebarLink>
             !
         </div>
-        <AdminUserInfo>
+        <UserInfo>
             <span>Administrador</span>
-            <AdminLogoutButton onClick={onLogout}>Cerrar sesión</AdminLogoutButton>
-        </AdminUserInfo>
-        </AdminNavbarContainer>
+            <GenericButton onClick={onLogout}>Cerrar sesión</GenericButton>
+        </UserInfo>
+        </NavbarContainer>
     );
 };
 

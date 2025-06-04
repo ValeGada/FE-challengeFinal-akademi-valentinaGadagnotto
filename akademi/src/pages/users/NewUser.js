@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { createUser } from "../../store/actions/usersActions";
 import UserForm from "../../components/forms/UserForm";
+import { CourseListTitle } from "../../styles";
 
 const NewUser = ({ user, createUser }) => {
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ const NewUser = ({ user, createUser }) => {
 
     return (
         <div>
-            <h2>Crear Nuevo Usuario</h2>
+            <CourseListTitle>Crear Nuevo Usuario</CourseListTitle>
             <UserForm
                 userRole={user.role}
                 isEditable={true}

@@ -14,11 +14,14 @@ import {
   AppContainer,
   Success 
 } from "./styles";
+import { ThemeProvider } from "styled-components";
+import { getTheme } from "./styles/theme";
 import { setMessage } from "./store/actions/messagesAction";
 
 const App = ({ message }) => {
   const dispatch = useDispatch();
   const [authInitialized, setAuthInitialized] = useState(false);
+  const [theme, setTheme] = useState(getTheme("student"));
   useTokenExpirationChecker();
 
   useEffect(() => {
@@ -39,10 +42,16 @@ const App = ({ message }) => {
               }
             },
           });
+
+          const selectedTheme = getTheme(decoded.role);
+          setTheme(selectedTheme);
         } catch (error) {
           dispatch(setMessage('Token inválido o expirado'))
           localStorage.clear();
+          setTheme(getTheme("student"));
         }
+      } else {
+        setTheme(getTheme("student"));
       }
 
       setAuthInitialized(true);
@@ -51,18 +60,21 @@ const App = ({ message }) => {
   if (!authInitialized) {
     return <Spinner />;
   }
+  console.log(theme);
   return (
-    <>
-      <GlobalStyles />
-      <AppContainer>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-        <Modal isOpen={Boolean(message)}>
-          <Success>{message}</Success>
-        </Modal>
-      </AppContainer>
-    </>
+    <ThemeProvider theme={theme}>
+      <>
+        <GlobalStyles />
+        <AppContainer>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+          <Modal isOpen={Boolean(message)}>
+            <Success>{message}</Success>
+          </Modal>
+        </AppContainer>
+      </>
+    </ThemeProvider>
   );
 }
 

@@ -3,7 +3,7 @@ import {
     ProfessorSidebarContainer,
     SidebarItem,
     ProfessorSidebarLink,
-    ProfessorLogoutButton
+    GenericButton
 } from "../../styles";
 
 const ProfessorSidebar = () => {
@@ -32,9 +32,9 @@ const ProfessorSidebar = () => {
                 </ProfessorSidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <ProfessorLogoutButton onClick={() => navigate("/prof/new-course")}>
+                <GenericButton onClick={() => navigate("/prof/new-course")}>
                     Crear Nuevo Curso
-                </ProfessorLogoutButton>
+                </GenericButton>
             </SidebarItem>
         </ProfessorSidebarContainer>
     );

@@ -31,6 +31,7 @@ const initialState = {
         sortOrder: 'asc',
         search: '',
         name: '',
+        email: '',
         role: ''
     },
     isLoading: false,

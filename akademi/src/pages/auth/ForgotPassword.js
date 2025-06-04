@@ -3,7 +3,13 @@ import { useState } from "react";
 import { connect } from "react-redux";
 import { passwordRecovery } from "../../store/actions/authActions";
 import { validateEmail } from "../../utils/validators";
-import { Error } from "../../styles";
+import { 
+    FormGroup, 
+    Label, 
+    Input,
+    Error,
+    GenericButton
+} from "../../styles";
 
 const ForgotPassword = ({ passwordRecovery }) => {
     const [email, setEmail] = useState('');
@@ -23,9 +29,9 @@ const ForgotPassword = ({ passwordRecovery }) => {
     return (
         <form onSubmit={handleSubmit}>
             <h1>Recuperación de Contraseña</h1>
-            <div>
-                <label>Ingresá tu Email:</label>
-                <input 
+            <FormGroup>
+                <Label>Ingresá tu Email:</Label>
+                <Input 
                     type="text" 
                     placeholder="Email" 
                     name="email"
@@ -33,8 +39,8 @@ const ForgotPassword = ({ passwordRecovery }) => {
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 {errors.email && <Error>{errors.email}</Error>}
-            </div>
-            <button type="submit">ENVIAR</button>
+            </FormGroup>
+            <GenericButton type="submit">ENVIAR</GenericButton>
         </form>
     )
 };

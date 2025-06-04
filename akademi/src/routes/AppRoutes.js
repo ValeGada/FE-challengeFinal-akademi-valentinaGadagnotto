@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { connect } from "react-redux";
 import AuthLayout from "../layouts/AuthLayout";
 import AdminLayout from "../layouts/AdminLayout";
 import ProfessorLayout from "../layouts/ProfessorLayout";
@@ -16,11 +17,16 @@ import CourseDetail from "../pages/courses/CourseDetail";
 import NewCourse from "../pages/courses/NewCourse";
 import EnrollmentsList from "../pages/enrollments/EnrollmentsList";
 import GradesList from "../pages/grades/GradesList";
+import StudentGradesTable from "../pages/grades/StudentGradesTable";
 import UsersList from "../pages/users/UsersList";
 import UserProfile from "../pages/users/UserProfile";
 import NewUser from "../pages/users/NewUser";
 
-const AppRoutes = () => {
+const AppRoutes = ({ isAuthenticated }) => {
+  if (!isAuthenticated) {
+    Navigate('/login');
+  }
+  
   return (
     <Routes>
       {/* Rutas públicas */}
@@ -38,10 +44,11 @@ const AppRoutes = () => {
         <Route path="my-profile" element={<UserProfile />} />
         <Route path="courses" element={<CoursesList />} />
         <Route path="courses/:id" element={<CourseDetail />} />
-        <Route path="enrollments" element={<EnrollmentsList />} />
         <Route path="enrollments/course/:id" element={<EnrollmentsList />} />
+        <Route path="grades/student/:id" element={<StudentGradesTable />} />
         <Route path="grades/course/:id" element={<EnrollmentsList />} />
         <Route path="users" element={<UsersList />} />
+        <Route path="users/:id" element={<UserProfile />} />
         <Route path="new-user" element={<NewUser />} />
         {/* más rutas admin */}
       </Route>
@@ -53,6 +60,7 @@ const AppRoutes = () => {
         <Route path="my-courses" element={<CoursesList />} />
         <Route path="courses/:id" element={<CourseDetail />} />
         <Route path="enrollments/course/:id" element={<EnrollmentsList />} />
+        <Route path="grades/student/:id" element={<StudentGradesTable />} />
         <Route path="grades/course/:id" element={<EnrollmentsList />} />
         <Route path="grades" element={<GradesList />} />
         <Route path="new-course" element={<NewCourse />} />
@@ -76,4 +84,10 @@ const AppRoutes = () => {
   );
 }
 
-export default AppRoutes;
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated
+  }
+}
+
+export default connect(mapStateToProps, null)(AppRoutes);

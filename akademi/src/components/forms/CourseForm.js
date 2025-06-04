@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { validateCourseForm } from '../../utils/validators';
 import { handleInputChange } from '../../utils/handlers';
-import { Error, CourseCardButton } from '../../styles';
+import { Error, CourseCardButton, FormGroup, Label, Input, Textarea, GenericButton } from '../../styles';
 
 const extractEditableFields = (data, editableFields) => {
     const clean = {};
@@ -65,10 +65,10 @@ const CourseForm = ({
 
     return (
         <form onSubmit={handleSubmit} noValidate>
-            <div>
-                <label>Título:</label>
+            <FormGroup>
+                <Label>Título:</Label>
                 <br />
-                <input
+                <Input
                     type="text"
                     name="title"
                     value={formData.title || ''}
@@ -76,11 +76,11 @@ const CourseForm = ({
                     readOnly={!isEditable}
                 />
                 <Error>{errors.title}</Error>
-            </div>
-            <div>
-                <label>Descripción:</label>
+            </FormGroup>
+            <FormGroup>
+                <Label>Descripción:</Label>
                 <br />
-                <textarea
+                <Textarea
                     type="text"
                     name="description"
                     min={5}
@@ -90,11 +90,11 @@ const CourseForm = ({
                     rows={3}
                 />
                 <Error>{errors.description}</Error>
-            </div>
-            <div>
-                <label>Capacidad máxima:</label>
+            </FormGroup>
+            <FormGroup>
+                <Label>Capacidad máxima:</Label>
                 <br />
-                <input
+                <Input
                     type="number"
                     name="maximumCapacity"
                     min={0}
@@ -103,11 +103,11 @@ const CourseForm = ({
                     readOnly={!isEditable}
                 />
                 <Error>{errors.maximumCapacity}</Error>
-            </div>
-            <div>
-                <label>Profesor:</label>
+            </FormGroup>
+            <FormGroup>
+                <Label>Profesor:</Label>
                 <br />
-                <input
+                <Input
                     type="text"
                     name="professor"
                     value={userRole === 'professor' ? userName : (formData.professor || '')}
@@ -116,20 +116,20 @@ const CourseForm = ({
                     readOnly={true}
                 />
                 {userRole === 'admin' && <Error>{errors.professor}</Error>}
-            </div>
+            </FormGroup>
             <br />
             <div>
                 {showEditButtons && isEditable && (
                     <>
-                        <CourseCardButton type="submit">Confirmar</CourseCardButton>
-                        <CourseCardButton type="button" onClick={onCancel}>Cancelar</CourseCardButton>
+                        <GenericButton type="submit">Confirmar</GenericButton>
+                        <GenericButton type="button" onClick={onCancel}>Cancelar</GenericButton>
                     </>
                 )}
 
                 {showCreateButtons && isEditable && (
                     <>
-                        <CourseCardButton type="submit">Crear</CourseCardButton>
-                        <CourseCardButton type="button" onClick={onCancel}>Cancelar</CourseCardButton>
+                        <GenericButton type="submit">Crear</GenericButton>
+                        <GenericButton type="button" onClick={onCancel}>Cancelar</GenericButton>
                     </>
                 )}
 

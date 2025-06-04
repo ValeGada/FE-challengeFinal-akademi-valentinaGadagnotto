@@ -1,36 +1,7 @@
 import styled from "styled-components";
 import { createGlobalStyle } from 'styled-components';
 import { NavLink } from "react-router-dom";
-
-export const colors = {
-    lightMint: "#d9f5f1",
-    mint: "#a2e7db",
-    deepMint: "#2ec25a",
-    darkMint: "#2e6854",
-    studentHover: "#25a24b",
-    success: "#4caf50",
-    error: "#f44336",
-    info: "#29b6f6",
-    adminNavbarBg: "#fceece",
-    adminText: "#ffa726",
-    lightAdmin: "#ffe8b3",
-    adminDashboardBg: "#fff2e1",
-    adminDeep: "#fb8c00",
-    adminContent: "#32291d",
-    adminHover: "#e65100",
-    professor: "#009688",
-    professorNavbar: "#e0f2ef",
-    professorDeep: "#00695c",
-    professorHover: "#01503a",
-    lightBg: "#e3fcf7",
-    cardBg: "#ffffff",
-    mainContent: "#f5fefe",
-    textPrimary: "#333333",
-    textSecondary: "#666666",
-    modalBg: "#f1f1f1",
-    tableTh: "#dddddd",
-    tableTd: "#eeeeee"
-};
+import { colors } from "./colors";
 
 export const softShadow = "0 2px 10px rgba(0, 0, 0, 0.05)";
 
@@ -88,7 +59,7 @@ export const SpinnerCircle = styled.div`
 
     @keyframes spin {
         to {
-        transform: rotate(360deg);
+            transform: rotate(360deg);
         }
     }
 `;
@@ -160,8 +131,7 @@ export const MainContent = styled.main`
 `;
 
 // Navbars
-// Student Navbar
-export const StudentNavbarContainer = styled.header`
+export const NavbarContainer = styled.header`
     position: fixed;
     top: 0;
     left: 0;
@@ -169,9 +139,9 @@ export const StudentNavbarContainer = styled.header`
     height: 60px;
     width: 100%;
     z-index: 1000;
-    color: ${colors.darkMint};
-    background-color: white;
-    border-bottom: 1px solid ${colors.lightMint};
+    color: ${props => props.theme.text};
+    background-color: ${props => props.theme.navbarBg};
+    border-bottom: 1px solid ${props => props.theme.borderColor || colors.lightMint};
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -179,16 +149,16 @@ export const StudentNavbarContainer = styled.header`
     box-shadow: 0 1px 4px ${softShadow};
 `;
 
-export const StudentUserInfo = styled.div`
+export const UserInfo = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
     font-weight: 500;
-    color: ${colors.darkMint};
+    color: ${props => props.theme.text};
 `;
 
-export const StudentLogoutButton = styled.button`
-    background-color: ${colors.deepMint};
+export const GenericButton = styled.button`
+    background-color: ${props => props.theme.buttonBg};
     color: white;
     border: none;
     padding: 0.4rem 0.9rem;
@@ -198,92 +168,9 @@ export const StudentLogoutButton = styled.button`
     transition: background-color 0.2s ease;
 
     &:hover {
-        background-color: ${colors.studentHover};
+        background-color: ${props => props.theme.buttonHover};
     }
 `;
-
-// Professor Navbar
-export const ProfessorNavbarContainer = styled.header`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    width: 100%;
-    z-index: 1000;
-    color: ${colors.professor};
-    background-color: ${colors.professorNavbar};
-    border-bottom: 1px solid ${colors.mint};
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1.5rem;
-    box-shadow: 0 1px 4px ${softShadow};
-`;
-
-export const ProfessorUserInfo = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-weight: 500;
-    color: ${colors.professor};
-`;
-
-export const ProfessorLogoutButton = styled.button`
-    background-color: ${colors.professorDeep};
-    color: white;
-    border: none;
-    padding: 0.4rem 0.9rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-        background-color: ${colors.professorHover};
-    }
-`;
-
-// Admin Navbar
-export const AdminNavbarContainer = styled.header`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    width: 100%;
-    z-index: 1000;
-    background-color: ${colors.adminNavbarBg};
-    border-bottom: 1px solid ${colors.lightAdmin};
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1.5rem;
-    box-shadow: 0 1px 4px ${softShadow};
-`;
-
-export const AdminUserInfo = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-weight: 500;
-    color: ${colors.adminText};
-`;
-
-export const AdminLogoutButton = styled.button`
-    background-color: ${colors.adminDeep};
-    color: white;
-    border: none;
-    padding: 0.4rem 0.9rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-        background-color: ${colors.adminHover};
-    }
-    `;
     
 // Sidebars
 export const SidebarItem = styled.div`
@@ -426,18 +313,21 @@ export const CourseGridContainer = styled.div`
 export const CoursesTable = styled.table`
     width: 100%;
     border-collapse: collapse;
+    background-color: ${({ theme }) => theme.background};
 `;
 
 export const CoursesTh = styled.th`
     padding: 0.75rem;
     text-align: left;
     border-bottom: 2px solid ${colors.tableTh};
-    background-color: white;
+    background-color: ${({ theme }) => theme.navbar};
+    color: ${({ theme }) => theme.text};
 `;
 
 export const CoursesTd = styled.td`
     padding: 0.75rem;
     border-bottom: 1px solid ${colors.tableTd};
+    color: ${({ theme }) => theme.text};
 `;
 
 export const CoursesActions = styled.td`
@@ -491,18 +381,21 @@ export const CourseCardProfessor = styled.span`
 `;
 
 export const CourseCardButton = styled.button`
-    align-self: flex-start;
+    // background-color: ${({ theme }) => theme.buttonBg};
+    background-color: ${colors.success};
     padding: 0.5rem 1rem;
-    background-color: ${colors.studentHover};
     color: white;
     border: none;
     border-radius: 0.5rem;
     font-weight: bold;
+    margin-right: 0.5rem;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.3s ease;
 
     &:hover {
-        background-color: ${colors.deepMint};
+        // background-color: ${({ theme }) => theme.buttonHover};
+        background-color: ${colors.studentHover};
     }
 `;
 
@@ -519,4 +412,75 @@ export const EnrollmentCardContainer = styled.div`
     border: 1px solid ${colors.lightBg};
 `;
 
+// Forms
+export const FormTitle = styled.h2`
+    margin-top: 2rem;
+`;
 
+export const FormGroup = styled.div`
+    margin-bottom: 1rem;
+`;
+
+export const Label = styled.label`
+    font-weight: bold;
+    color: ${({ theme }) => theme.text};
+`;
+
+export const Input = styled.input`
+    width: 50%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    border: none;
+    border-bottom: 1px solid ${({ theme }) => theme.primary};
+    background-color: transparent;
+    color: ${({ theme }) => theme.text};
+    outline: none;
+
+    &:read-only {
+        border: none;
+        background-color: transparent;
+        color: ${({ theme }) => theme.text};
+        pointer-events: none;
+    }
+`;
+
+export const Textarea = styled.textarea`
+    width: 50%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    font-family: Helvetica, sans-serif;
+    border: none;
+    resize: none;
+    border-bottom: 1px solid ${({ theme }) => theme.primary};
+    background-color: transparent;
+    color: ${({ theme }) => theme.text};
+    outline: none;
+
+    &:read-only {
+        border: none;
+        background-color: transparent;
+        color: ${({ theme }) => theme.text};
+        pointer-events: none;
+    }
+`;
+
+export const Select = styled.select`
+    width: 50%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    border: none;
+    border-bottom: 1px solid ${({ theme }) => theme.primary};
+    background-color: transparent;
+    color: ${({ theme }) => theme.text};
+    outline: none;
+    font-family: inherit;
+    font-size: 1rem;
+
+    &:disabled,
+    &[readonly] {
+        border: none;
+        background-color: transparent;
+        color: ${({ theme }) => theme.text};
+        pointer-events: none;
+    }
+`;
