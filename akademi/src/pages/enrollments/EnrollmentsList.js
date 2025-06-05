@@ -57,12 +57,12 @@ const EnrollmentsList = ({
         if (isLoading) return <Spinner />;
 
         if (!enrollments || enrollments.length === 0) {
-            if (isStudentEnrollmentsPath) return 'Aún no te has inscripto a ningún curso.';
-            if (isStudentGradesPath) return 'Todavía no tienes calificaciones registradas.';
-            if (isProfEnrollmentsPath || isProfGradesPath) return 'No hay estudiantes inscriptos aún.';
-            if (isAdminEnrollmentsPath) return 'No hay suscripciones registradas.';
-            if (isAdminGradesPath) return 'No hay calificaciones disponibles.';
-            return 'No hay información que mostrar.';
+            if (isStudentEnrollmentsPath) return <p>Aún no te has inscripto a ningún curso.</p>;
+            if (isStudentGradesPath) return <p>Todavía no tienes calificaciones registradas.</p>;
+            if (isProfEnrollmentsPath || isProfGradesPath) return <p>No hay estudiantes inscriptos aún.</p>;
+            if (isAdminEnrollmentsPath) return <p>No hay suscripciones registradas.</p>;
+            if (isAdminGradesPath) return <p>No hay calificaciones disponibles.</p>;
+            return <p>No hay información que mostrar.</p>;
         }
 
         return null;
@@ -85,7 +85,7 @@ const EnrollmentsList = ({
                     />
                 )
             ) : (
-                <p>{getMessage()}</p>
+                <>{getMessage()}</>
             )}
         </div>
     );

@@ -122,24 +122,24 @@ const CourseForm = ({
                 {showEditButtons && isEditable && (
                     <GenericButtonsContainer>
                         <GenericButton type="submit">Confirmar</GenericButton>
-                        <GenericButton onClick={onCancel}>Cancelar</GenericButton>
+                        <GenericButton type="button" onClick={onCancel}>Cancelar</GenericButton>
                     </GenericButtonsContainer>
                 )}
 
                 {showCreateButtons && isEditable && (
                     <GenericButtonsContainer>
                         <GenericButton type="submit">Crear</GenericButton>
-                        <GenericButton onClick={onCancel}>Cancelar</GenericButton>
+                        <GenericButton type="button"onClick={onCancel}>Cancelar</GenericButton>
                     </GenericButtonsContainer>
                 )}
 
                 {showEnrollButton && (
                     isEnrolled ? (
-                        <GenericButton onClick={onUnenroll}>
+                        <GenericButton type="button" onClick={onUnenroll}>
                             Cancelar suscripción
                         </GenericButton>
                     ) : (
-                        <GenericButton onClick={onEnroll}>
+                        <GenericButton type="button" onClick={onEnroll}>
                             Suscribirse
                         </GenericButton>
                     )
