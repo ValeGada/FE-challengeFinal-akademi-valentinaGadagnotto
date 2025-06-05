@@ -2,7 +2,22 @@ import React from "react";
 import { connect } from "react-redux";
 import { setEnrollmentQueries } from "../../store/actions/enrollmentsActions";
 import { postGrade, editGrade } from "../../store/actions/gradesActions";
-import { CoursesTable, CoursesTd, CoursesTh, ProfessorSidebarLink } from "../../styles";
+import { 
+    Table, 
+    Td, 
+    Th, 
+    SidebarLink,
+    FiltersContainer,
+    ControlsGroup,
+    SearchInput,
+    SortButton,
+    SortContainer,
+    ClearFiltersButton,
+    PaginationContainer,
+    PerPageSelector,
+    PerPageNumber,
+    PageButton
+} from "../../styles";
 import Spinner from "../../UI/Spinner";
 import GradeScoreInput from "../../components/forms/GradeScoreInput";
 
@@ -51,87 +66,101 @@ const EnrollmentsTableView = ({
     
     return (
         <>
-            <div>
+            <FiltersContainer>
                 <div>
-                    <input 
+                    <SearchInput 
                         type='text' 
                         placeholder='Buscar...'
                         value={queryParams.search}
                         onChange={handleSearchChange}
                     />
                 </div>
-                <div>
-                    <div>
+                <ControlsGroup>
+                    <SortContainer>
                         Ordenar por:
-                        <button onClick={()=> handleSort('student.name')}>
+                        <SortButton onClick={()=> handleSort('student.name')}>
                             Nombre {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
-                        </button>
-                    </div>
-                    <button onClick={clearFilters}>Limpiar filtros</button>
-                </div>     
-            </div>
-            <CoursesTable>
+                        </SortButton>
+                        <SortButton onClick={()=> handleSort('student.receivedGrades.score')}>
+                            Nota {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
+                        </SortButton>
+                    </SortContainer>
+                    <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
+                </ControlsGroup>     
+            </FiltersContainer>
+            <Table>
                 <thead>
                     <tr>
                         {user.role === 'superadmin' &&
                             <>
-                                <CoursesTh rowSpan={2}>Curso</CoursesTh>
-                                <CoursesTh rowSpan={2}>Profesor</CoursesTh>
+                                <Th rowSpan={2}>Curso</Th>
+                                <Th rowSpan={2}>Profesor</Th>
                             </>
                         }
-                        <CoursesTh colSpan={2} rowSpan={1}>Estudiante</CoursesTh>
-                        <CoursesTh rowSpan={2}>Nota</CoursesTh>
+                        <Th colSpan={2} rowSpan={1}>Estudiante</Th>
+                        <Th rowSpan={2}>Nota</Th>
                     </tr>
                     <tr>
-                        <CoursesTh>Nombre</CoursesTh>
-                        <CoursesTh>Email</CoursesTh>
+                        <Th>Nombre</Th>
+                        <Th>Email</Th>
                     </tr>
                 </thead>
                 <tbody>
-                    {enrollments?.map(enroll => (
-                        <tr key={enroll.id}>
-                            {user.role === 'superadmin' &&
-                                <>
-                                    <CoursesTd>{enroll.course.title}</CoursesTd>
-                                    <CoursesTd>{enroll.course?.professor?.name}</CoursesTd>
-                                </>
-                            }
-                            <CoursesTd>
-                                <ProfessorSidebarLink to={`${prefix}/grades/student/${enroll.student.id}`}>
-                                    {enroll.student?.name}
-                                </ProfessorSidebarLink>
-                            </CoursesTd>
-                            <CoursesTd>{enroll.student?.email}</CoursesTd>
-                            <CoursesTd>
-                                <GradeScoreInput
-                                    enroll={enroll}
-                                    canEditGrades={canEditGrades}
-                                    editGrade={editGrade}
-                                    postGrade={postGrade}
-                                />
-                            </CoursesTd>
+                    {enrollments.length > 0 ? (
+                        enrollments.map(enroll => (
+                            <tr key={enroll.id}>
+                                {user.role === 'superadmin' &&
+                                    <>
+                                        <Td>{enroll.course.title}</Td>
+                                        <Td>{enroll.course.professor.name}</Td>
+                                    </>
+                                }
+                                <Td>
+                                    <SidebarLink to={`${prefix}/grades/student/${enroll.student.id}`}>
+                                        {enroll.student.name}
+                                    </SidebarLink>
+                                </Td>
+                                <Td>{enroll.student.email}</Td>
+                                <Td>
+                                    <GradeScoreInput
+                                        enroll={{
+                                            student: enroll.student,
+                                            course: enroll.course
+                                        }}  
+                                        canEditGrades={canEditGrades}
+                                        editGrade={editGrade}
+                                        postGrade={postGrade}
+                                    />
+                                </Td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <Td style={{textAlign: 'center'}} colSpan={5}>No hay inscriptos aún.</Td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
-            </CoursesTable>
+            </Table>
             {/* Paginación */}
-            <div>
-                Suscripciones por página: 
-                <span onClick={()=>handleChangePerPage(5)}>5</span> - 
-                <span onClick={()=>handleChangePerPage(10)}>10</span>
-            </div>
-            <div>
-                {pagination.totalPages > 0 && 
-                    Array.from({ length: pagination.totalPages }, (_, i) => (
-                        <button 
-                            key={i}
-                            onClick={() => handleChangePage(i + 1)}
-                            style={pagination.currentPage === i + 1 ? { background: '#555555', color: '#f1f1f1' } : {}}
-                        >
-                            {i + 1}
-                        </button>                   
-                    ))}
-            </div>
+            <PaginationContainer>
+                <PerPageSelector>
+                    Inscripciones por página: 
+                    <PerPageNumber onClick={()=>handleChangePerPage(5)}>5</PerPageNumber> - 
+                    <PerPageNumber onClick={()=>handleChangePerPage(10)}>10</PerPageNumber>
+                </PerPageSelector>
+                <div>
+                    {pagination.totalPages > 0 && 
+                        Array.from({ length: pagination.totalPages }, (_, i) => (
+                            <PageButton 
+                                key={i}
+                                active={pagination.currentPage === i + 1}
+                                onClick={() => handleChangePage(i + 1)}
+                            >
+                                {i + 1}
+                            </PageButton>                   
+                        ))}
+                </div>
+            </PaginationContainer>
         </>
     );
 };

@@ -9,18 +9,26 @@ import {
     CourseCardTitle, 
     CourseCardDescription,
     CourseCardProfessor,
-    CourseCardButton
+    CourseCardButton,
+    GenericButton,
+    CardButtonsContainer,
+    GenericButtonsContainer
 } from "../../styles";
 
 const EnrollmentCard = ({ enrollment, cancelEnrollment }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Modal states
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedEnrollment, setSelectedEnrollment] = useState(null);
 
     if (!enrollment.course || !enrollment.student) return null;
+
+    const grade = enrollment.student?.profile?.receivedGrades?.find(
+        g => g.course.toString() === enrollment.course.id.toString()
+    );
+
+    const currentGrade = grade?.score ?? null;
 
     const handleCourseView = () => {
         navigate(`/student/courses/${enrollment.course.id}`)
@@ -40,33 +48,45 @@ const EnrollmentCard = ({ enrollment, cancelEnrollment }) => {
         <>
             <EnrollmentCardContainer>
                 <CourseCardTitle>{enrollment.course?.title}</CourseCardTitle>
+
                 {location.pathname.includes('/my-enrollments') ?
                     <CourseCardDescription>{enrollment.course?.description}</CourseCardDescription>
                     : null
                 }
-                {location.pathname.includes('/my-grades') ?
-                    <h3>{enrollment.student?.profile?.receivedGrades?.[0]?.score}</h3>
-                    : <CourseCardDescription style={{fontWeight: '600'}}>{enrollment.student?.profile?.receivedGrades?.[0]?.score}</CourseCardDescription>
-                }
+
+                {currentGrade !== undefined && currentGrade !== null ? (
+                    <CourseCardDescription>
+                        Nota: {currentGrade}
+                    </CourseCardDescription>
+                ) : (
+                    <CourseCardDescription>
+                        Sin calificación
+                    </CourseCardDescription>
+                )}
+
                 <CourseCardProfessor>Prof. {enrollment.course?.professor?.name}</CourseCardProfessor>
+
                 {location.pathname.includes('/my-enrollments') ? (
-                    <>
+                    <CardButtonsContainer>
                         <CourseCardButton onClick={handleCourseView}>Ver curso</CourseCardButton>
                         <CourseCardButton onClick={() => handleUnenroll(enrollment)}>Desuscribirse</CourseCardButton>
-                    </>
+                    </CardButtonsContainer>
                 ) : (
-                    <>
+                    <CardButtonsContainer>
                         <CourseCardButton onClick={handleCourseView}>Ver curso</CourseCardButton>
-                    </>
+                    </CardButtonsContainer>
                 )}
             </EnrollmentCardContainer>
+
             <Modal isOpen={isModalOpen}>
                 <h2>¿Seguro que deseas cancelar tu suscripción a este curso?</h2>
                 <h3 style={{textAlign: 'center'}}>{selectedEnrollment?.course?.title}</h3>
                 <p style={{textAlign: 'center'}}>Prof. {selectedEnrollment?.course?.professor?.name}</p>
                 <br />
-                <button className="ui button negative" onClick={confirmCancel} style={{justifySelf: 'center'}}>Confirmar</button>
-                <button className="ui button" onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</button>
+                <GenericButtonsContainer>
+                    <GenericButton onClick={confirmCancel} style={{justifySelf: 'center'}}>Confirmar</GenericButton>
+                    <GenericButton onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</GenericButton>
+                </GenericButtonsContainer>
             </Modal>
         </>
     );

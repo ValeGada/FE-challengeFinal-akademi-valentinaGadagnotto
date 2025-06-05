@@ -2,18 +2,15 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { connect } from "react-redux";
-import { getEnrollments, enroll, cancelEnrollment } from "../../store/actions/enrollmentsActions";
+import { enroll, cancelEnrollment } from "../../store/actions/enrollmentsActions";
 import CourseForm from "../../components/forms/CourseForm";
 import Spinner from "../../UI/Spinner";
-import { CourseCardButton } from "../../styles";
+import { GenericButton } from "../../styles";
 
-const EnrollmentDetail = ({ user, course, isLoading, getCourse, editCourse, deleteCourse, enroll, cancelEnrollment }) => {
+const EnrollmentDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, cancelEnrollment }) => {
     const { id } = useParams();
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedCourse, setSelectedCourse] = useState(null);
 
     const isStudent = user.role === 'student';
     const isEnrolled = user.enrollments?.includes(course?.id);
@@ -64,8 +61,8 @@ const EnrollmentDetail = ({ user, course, isLoading, getCourse, editCourse, dele
                     
                     {!isEditing && !isStudent && (
                         <>
-                        <CourseCardButton onClick={() => setIsEditing(true)}>Editar</CourseCardButton>
-                        <CourseCardButton onClick={() => navigate('/prof/my-courses')}>Cancelar</CourseCardButton>
+                        <GenericButton onClick={() => setIsEditing(true)}>Editar</GenericButton>
+                        <GenericButton onClick={() => navigate('/prof/my-courses')}>Cancelar</GenericButton>
                         </>
                     )}
                 </>  
@@ -82,8 +79,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, { 
     getCourse, 
-    editCourse, 
-    deleteCourse, 
+    editCourse,
     enroll, 
     cancelEnrollment 
 })(EnrollmentDetail);

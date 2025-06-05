@@ -3,17 +3,19 @@ import { Link } from 'react-router-dom';
 import { 
     FormGroup, 
     Label, 
-    Input, 
+    AuthInput, 
     Error,
-    GenericButton 
+    AuthButton,
+    FormLinksContainer,
+    SidebarLink
 } from "../../styles";
 
 const LoginForm = ({ formData, errors, onChange, onSubmit }) => {
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} noValidate>
             <FormGroup>
                 <Label>Email:</Label>
-                <Input 
+                <AuthInput 
                     type="text" 
                     placeholder="Email" 
                     name="email"
@@ -24,7 +26,7 @@ const LoginForm = ({ formData, errors, onChange, onSubmit }) => {
             </FormGroup>
             <FormGroup>
                 <Label>Contraseña:</Label>
-                <Input 
+                <AuthInput 
                     type="password" 
                     placeholder="Contraseña" 
                     name="password"
@@ -33,13 +35,13 @@ const LoginForm = ({ formData, errors, onChange, onSubmit }) => {
                 />
                 {errors.password && <Error>{errors.password}</Error>}
             </FormGroup>
-            <FormGroup>
-                <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
-            </FormGroup>
-            <FormGroup>
-                <Link to="/register">Registrarse</Link>
-            </FormGroup>
-            <GenericButton type="submit">LOG IN</GenericButton>
+            <FormLinksContainer>
+                <SidebarLink to="/forgot-password">¿Olvidaste tu contraseña?</SidebarLink>
+            </FormLinksContainer>
+            <FormLinksContainer>
+                <SidebarLink to="/register">Registrarse</SidebarLink>
+            </FormLinksContainer>
+            <AuthButton type="submit">LOG IN</AuthButton>
         </form>
     )
 };

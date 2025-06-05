@@ -6,7 +6,8 @@ import {
     CourseCardDescription,
     CourseCardCapacity,
     CourseCardProfessor, 
-    CourseCardButton 
+    CourseCardButton,
+    CardButtonsContainer
 } from "../../styles";
 
 const CourseCard = ({ course }) => {
@@ -21,7 +22,9 @@ const CourseCard = ({ course }) => {
             <CourseCardDescription>{course.description}</CourseCardDescription>
             <CourseCardCapacity>Suscripciones: {course.enrollmentsCount} / {course.maximumCapacity}</CourseCardCapacity>
             <CourseCardProfessor>Prof. {course.professor.name}</CourseCardProfessor>
-            <CourseCardButton onClick={handleCourseView}>Ver curso</CourseCardButton>
+            <CardButtonsContainer>
+                <CourseCardButton onClick={handleCourseView}>Ver curso</CourseCardButton>
+            </CardButtonsContainer>
         </CourseCardContainer>
     );
 

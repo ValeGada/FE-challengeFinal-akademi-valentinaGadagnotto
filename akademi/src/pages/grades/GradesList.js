@@ -1,9 +1,25 @@
 import React from "react";
 import { useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
+import { getCourseEnrollments, setEnrollmentQueries } from "../../store/actions/enrollmentsActions";
 import { getCoursesByProfId } from "../../store/actions/coursesActions";
-import { editGrade, postGrade, setGradeQueries } from "../../store/actions/gradesActions";
-import { CoursesTable, CoursesTd, CoursesTh, CourseListTitle } from "../../styles";
+import { editGrade, postGrade } from "../../store/actions/gradesActions";
+import { 
+    Table, 
+    Td, 
+    Th, 
+    GenericTitle,
+    FiltersContainer,
+    SortButton,
+    SortContainer,
+    SearchInput,
+    ControlsGroup,
+    ClearFiltersButton,
+    PaginationContainer,
+    PerPageSelector,
+    PerPageNumber,
+    PageButton
+} from "../../styles";
 import Spinner from "../../UI/Spinner";
 import GradeScoreInput from "../../components/forms/GradeScoreInput";
 
@@ -14,36 +30,53 @@ const GradesList = ({
     editGrade, 
     postGrade, 
     getCoursesByProfId, 
-    isLoading,
-    setGradeQueries,
+    getCourseEnrollments,
+    isLoadingCourses,
+    isLoadingEnrollments,
+    setEnrollmentsQueries,
     queryParams,
     pagination
 }) => {   
+    const courseEnrollmentsList = useSelector(state =>
+        courses.map(course => ({
+            ...course,
+            courseEnrollments: state.enrollments.byCourseId[course.id] || []
+        }))
+    );
+
     useEffect(() => {
         getCoursesByProfId(user.id, queryParams);
     }, [user, grades, getCoursesByProfId, queryParams]);
+    
+    useEffect(() => {
+        if (courses.length > 0) {
+            courses.forEach(course => {
+                getCourseEnrollments(course.id, {});
+            });
+        }
+    }, [courses, getCourseEnrollments]);
 
     const handleSearchChange = (e) => {
-        setGradeQueries({ search: e.target.value, page: 1 });
+        setEnrollmentsQueries({ search: e.target.value, page: 1 });
     };
 
     const handleSort = (field) => {
         const newOrder = queryParams.sortOrder === "asc" ? "desc" : "asc";
-        setGradeQueries({ sortBy: field, sortOrder: newOrder });
+        setEnrollmentsQueries({ sortBy: field, sortOrder: newOrder });
     };
 
     const handleChangePage = (page) => {
-        setGradeQueries({ page });
+        setEnrollmentsQueries({ page });
     };
 
     const handleChangePerPage = (limit) => {
-        setGradeQueries({ limit, page: 1 });
+        setEnrollmentsQueries({ limit, page: 1 });
     };
 
     const clearFilters = () => {
-        setGradeQueries({
+        setEnrollmentsQueries({
             search: "",
-            sortBy: "name",
+            sortBy: "title",
             sortOrder: "asc",
             page: 1,
             limit: 10,
@@ -53,93 +86,102 @@ const GradesList = ({
 
     return (
         <div>
-            <CourseListTitle>Calificaciones</CourseListTitle>
-            {isLoading 
+            <GenericTitle>Calificaciones</GenericTitle>
+            {isLoadingCourses
                 ? <Spinner /> 
                 : <>
-                    <div>
+                    <FiltersContainer>
                         <div>
-                            <input 
+                            <SearchInput 
                                 type='text' 
                                 placeholder='Buscar...'
                                 value={queryParams.search}
                                 onChange={handleSearchChange}
                             />
                         </div>
-                        <div>
-                            <div>
+                        <ControlsGroup>
+                            <SortContainer>
                                 Ordenar por:
-                                <button onClick={()=> handleSort('name')}>
+                                <SortButton onClick={()=> handleSort('title')}>
+                                    Curso {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
+                                </SortButton>
+                                <SortButton onClick={()=> handleSort('student.name')}>
                                     Nombre {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
-                                </button>
-                                <button onClick={()=> handleSort('grade')}>
-                                    Nota {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
-                                </button>
-                            </div>
-                            <button onClick={clearFilters}>Limpiar filtros</button>
-                        </div>     
-                    </div>
-                    <CoursesTable>
+                                </SortButton>
+                                <SortButton onClick={()=> handleSort('student.receivedGrades')}>
+                                    Nota {queryParams.sortOrder === 'desc' ? "↑" : "↓"}
+                                </SortButton>
+                            </SortContainer>
+                            <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
+                        </ControlsGroup>     
+                    </FiltersContainer>
+                    <Table>
                         <thead>
                             <tr>
-                                <CoursesTh rowSpan={2}>Curso</CoursesTh>
-                                <CoursesTh colSpan={2} rowSpan={1}>Estudiante</CoursesTh>
-                                <CoursesTh rowSpan={2}>Nota</CoursesTh>
+                                <Th rowSpan={2}>Curso</Th>
+                                <Th colSpan={2} rowSpan={1}>Estudiante</Th>
+                                <Th rowSpan={2}>Nota</Th>
                             </tr>
                             <tr>
-                                <CoursesTh>Nombre</CoursesTh>
-                                <CoursesTh>Email</CoursesTh>
+                                <Th>Nombre</Th>
+                                <Th>Email</Th>
                             </tr>
                         </thead>
                         <tbody>
-                            {courses.map(course => {
-                                // Si no hay enrollments, mostramos algo vacío o mensaje
-                                if (!course.enrollments || course.enrollments.length === 0) {
+                            {courseEnrollmentsList.map(courseData => {
+                                const { courseEnrollments } = courseData;
+                                if (isLoadingEnrollments && (!courseEnrollments || courseEnrollments.length === 0)) {
                                     return (
-                                        <tr key={course.id}>
-                                            <CoursesTd colSpan="4">No hay estudiantes inscriptos.</CoursesTd>
+                                        <Spinner />
+                                    );
+                                } else if (!isLoadingEnrollments && (!courseEnrollmentsList || courseEnrollmentsList.length === 0)) {
+                                    return (
+                                        <tr key={courseData.id}>
+                                            <Td colSpan="4">No hay estudiantes inscriptos.</Td>
                                         </tr>
                                     );
                                 }
-
-                                return course.enrollments.map((enroll, index) => (
-                                    <tr key={`${course.id}-enroll-${index}`}>
+                                
+                                return courseEnrollments.map((courseEnroll, index) => (
+                                    <tr key={`${courseData.id}-enroll-${index}`}>
                                         {index === 0 ? (
-                                            <CoursesTd rowSpan={course.enrollments.length}>{course.title}</CoursesTd>
+                                            <Td rowSpan={courseEnrollments.length}>{courseData.title}</Td>
                                         ) : null}
-                                        <CoursesTd>{enroll.student.name}</CoursesTd>
-                                        <CoursesTd>{enroll.student.email}</CoursesTd>
-                                        <CoursesTd>
+                                        <Td>{courseEnroll.student.name}</Td>
+                                        <Td>{courseEnroll.student.email}</Td>
+                                        <Td>
                                             <GradeScoreInput
-                                                enroll={enroll}
+                                                enroll={courseEnroll}
                                                 canEditGrades={true}
                                                 editGrade={editGrade}
                                                 postGrade={postGrade}
                                             />
-                                        </CoursesTd>
+                                        </Td>
                                     </tr>
                                 ));
                             })}
                         </tbody>
-                    </CoursesTable>
+                    </Table>
                     {/* Paginación */}
-                    <div>
-                        Calificaciones por página: 
-                        <span onClick={()=>handleChangePerPage(5)}>5</span> - 
-                        <span onClick={()=>handleChangePerPage(10)}>10</span>
-                    </div>
-                    <div>
-                        {pagination.totalPages > 0 && 
+                    <PaginationContainer>  
+                        <PerPageSelector>
+                            Calificaciones por página: 
+                            <PerPageNumber onClick={()=>handleChangePerPage(5)}>5</PerPageNumber> - 
+                            <PerPageNumber onClick={()=>handleChangePerPage(10)}>10</PerPageNumber>
+                        </PerPageSelector>
+                        <div>
+                            {pagination.totalPages > 0 && 
                             Array.from({ length: pagination.totalPages }, (_, i) => (
-                                <button 
+                                <PageButton 
                                     key={i}
+                                    active={pagination.currentPage === i + 1}
                                     onClick={() => handleChangePage(i + 1)}
-                                    style={pagination.currentPage === i + 1 ? { background: '#555555', color: '#f1f1f1' } : {}}
                                 >
                                     {i + 1}
-                                </button>                   
+                                </PageButton>                  
                             ))}
-                    </div>
+                        </div>
+                    </PaginationContainer>
                 </>
             }
         </div>
@@ -149,7 +191,8 @@ const GradesList = ({
 const mapStateToProps = state => {
     return {
         user: state.auth.user,
-        isLoading: state.grades.isLoading,
+        isLoadingCourses: state.courses.isLoading,
+        isLoadingEnrollments: state.enrollments.isLoading,
         courses: state.courses.all,
         grades: state.grades.all,
         queryParams: state.courses.queryParams,
@@ -157,4 +200,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { getCoursesByProfId, editGrade, postGrade, setGradeQueries })(GradesList);
+export default connect(mapStateToProps, { 
+    getCoursesByProfId, 
+    editGrade, 
+    postGrade, 
+    setEnrollmentQueries, 
+    getCourseEnrollments 
+})(GradesList);

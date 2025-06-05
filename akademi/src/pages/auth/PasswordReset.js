@@ -7,9 +7,10 @@ import { validatePassword } from "../../utils/validators";
 import { 
     FormGroup, 
     Label, 
-    Input,
+    AuthInput,
     Error,
-    GenericButton 
+    AuthButton,
+    AuthTitle
 } from "../../styles";
 
 const PasswordReset = ({ passwordReset, message }) => {
@@ -37,10 +38,10 @@ const PasswordReset = ({ passwordReset, message }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h1>Recuperación de Contraseña</h1>
+            <AuthTitle>Recuperación de Contraseña</AuthTitle>
             <FormGroup>
                 <Label>Ingresá tu nueva contraseña:</Label>
-                <Input 
+                <AuthInput 
                     type="password" 
                     placeholder="Contraseña" 
                     name="password"
@@ -49,7 +50,7 @@ const PasswordReset = ({ passwordReset, message }) => {
                 />
                 {errors.password && <Error>{errors.password}</Error>}
             </FormGroup>
-            <GenericButton type="submit">CONFIRMAR</GenericButton>
+            <AuthButton type="submit">CONFIRMAR</AuthButton>
         </form>
     )
 };

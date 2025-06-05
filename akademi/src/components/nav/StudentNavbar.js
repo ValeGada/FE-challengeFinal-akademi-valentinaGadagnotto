@@ -1,13 +1,13 @@
-import { NavbarContainer, UserInfo, GenericButton, StudentSidebarLink } from "../../styles";
+import { NavbarContainer, UserInfo, GenericButton, SidebarLink } from "../../styles";
 
 const StudentNavbar = ({ studentName, onLogout }) => {
   return (
     <NavbarContainer>
       <div>
         Hola,{' '} 
-        <StudentSidebarLink to="/student/my-profile">
+        <SidebarLink to="/student/my-profile">
           {studentName}
-        </StudentSidebarLink>
+        </SidebarLink>
         !
       </div>
       <UserInfo>

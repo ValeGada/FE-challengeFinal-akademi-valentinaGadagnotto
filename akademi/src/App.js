@@ -18,49 +18,59 @@ import { ThemeProvider } from "styled-components";
 import { getTheme } from "./styles/theme";
 import { setMessage } from "./store/actions/messagesAction";
 
-const App = ({ message }) => {
+const App = ({ message, authUser }) => {
   const dispatch = useDispatch();
   const [authInitialized, setAuthInitialized] = useState(false);
   const [theme, setTheme] = useState(getTheme("student"));
   useTokenExpirationChecker();
 
   useEffect(() => {
-      const token = localStorage.getItem("token");
+    if (authUser && authUser.role) {
+      const selectedTheme = getTheme(authUser.role);
+      setTheme(selectedTheme);
+    } else {
+      setTheme(getTheme("student"));
+    }
+  }, [authUser]);
 
-      if (token) {
-        try {
-          const decoded = jwtDecode(token);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-          dispatch({
-            type: LOGIN_SUCCESS,
-            payload: {
-              token,
-              user: {
-                id: decoded.id,
-                name: decoded.name,
-                role: decoded.role
-              }
-            },
-          });
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
 
-          const selectedTheme = getTheme(decoded.role);
-          setTheme(selectedTheme);
-        } catch (error) {
-          dispatch(setMessage('Token inválido o expirado'))
-          localStorage.clear();
-          setTheme(getTheme("student"));
-        }
-      } else {
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: {
+            token,
+            user: {
+              id: decoded.id,
+              name: decoded.name,
+              role: decoded.role
+            }
+          },
+        });
+
+        const selectedTheme = getTheme(decoded.role);
+        console.log("Rol decodificado:", decoded.role); // Al loguearme no veo nada, al recargar veo el rol correcto
+        console.log("Tema seleccionado:", getTheme(decoded.role)); // Al loguearme, nada. Al recargar veo la paleta correcta
+        setTheme(selectedTheme);
+      } catch (error) {
+        dispatch(setMessage('Token inválido o expirado'))
+        localStorage.clear();
         setTheme(getTheme("student"));
-      }
-
-      setAuthInitialized(true);
-  }, [dispatch]);
+      } 
+    } else {
+      setTheme(getTheme("student")); // Forzar tema student si no hay token
+    }
+    setAuthInitialized(true);
+  }, [dispatch, getTheme]);
 
   if (!authInitialized) {
     return <Spinner />;
   }
-  console.log(theme);
+
   return (
     <ThemeProvider theme={theme}>
       <>
@@ -80,7 +90,8 @@ const App = ({ message }) => {
 
 const mapStateToProps = state => {
   return {
-    message: state.message
+    message: state.message,
+    authUser: state.auth.user
   }
 }
 

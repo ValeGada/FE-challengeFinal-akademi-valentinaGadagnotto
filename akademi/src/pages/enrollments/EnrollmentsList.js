@@ -1,9 +1,9 @@
 import React from "react";
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { getCourseEnrollments, getEnrollments } from "../../store/actions/enrollmentsActions";
-import { CourseListTitle } from "../../styles";
+import { GenericTitle } from "../../styles";
 import Spinner from "../../UI/Spinner";
 import EnrollmentsCardsView from "./EnrollmentsCardsView";
 import EnrollmentsTableView from "./EnrollmentsTableView";
@@ -12,13 +12,14 @@ import GradesTable from "../grades/GradesTable";
 const EnrollmentsList = ({ 
     user, 
     grades,
-    enrollments, 
+    enrollments,
     isLoading, 
     getCourseEnrollments, 
     getEnrollments, 
     queryParams
 }) => {
-    const { id } = useParams();
+    const { id: courseId } = useParams();
+    const courseEnrollments = useSelector(state => state.enrollments.byCourseId[courseId] || []);
     const location = useLocation();
 
     // Paths
@@ -30,7 +31,15 @@ const EnrollmentsList = ({
         !location.pathname.includes('/course');
     const isAdminGradesPath = location.pathname.includes('/admin/grades/course/');
 
-    // Title logic
+    useEffect(() => {       
+        if (user.role !== 'student') {
+            getCourseEnrollments(courseId, queryParams);
+        } else {
+            getEnrollments(user.id, queryParams);
+        }
+    }, [courseId, grades, user, user?.id, user?.role, getEnrollments, getCourseEnrollments, queryParams]);
+
+    // Título según la ruta
     const getTitle = () => {
         if (!user?.id) return 'Suscripciones';
 
@@ -43,7 +52,7 @@ const EnrollmentsList = ({
         return 'Suscripciones';
     };
 
-    // Message based on state
+    // Mensaje según la ruta
     const getMessage = () => {
         if (isLoading) return <Spinner />;
 
@@ -58,27 +67,19 @@ const EnrollmentsList = ({
 
         return null;
     };
-    
-    useEffect(() => {       
-        if (user.role !== 'student') {
-            getCourseEnrollments(id, queryParams);
-        } else {
-            getEnrollments(user.id, queryParams);
-        }
-    }, [id, grades, user, user?.id, user?.role, getEnrollments, getCourseEnrollments, queryParams]);
 
     return (
         <div>
-            <CourseListTitle>{getTitle()}</CourseListTitle>
+            <GenericTitle>{getTitle()}</GenericTitle>
 
             {!isLoading && enrollments?.length > 0 ? (
                 user.role === 'student' ? (
                 <EnrollmentsCardsView enrollments={enrollments} />
                 ) : location.pathname.includes('/grades') ? (
-                    <GradesTable courseId={id} enrollments={enrollments} />
+                    <GradesTable courseId={courseId} enrollments={courseEnrollments} />
                 ) : (
                     <EnrollmentsTableView
-                        enrollments={enrollments}
+                        enrollments={courseEnrollments}
                         canEditGrades={isProfGradesPath || isAdminGradesPath}
                         showGradeColumn={false}
                     />
@@ -94,7 +95,11 @@ const mapStateToProps = state => {
     return {
         user: state.auth.user,
         isLoading: state.enrollments.isLoading,
-        enrollments: state.enrollments.all,
+        enrollments: state.enrollments.all.map(e => ({
+            ...e,
+            course: e.course || {},
+            student: e.student || {}
+        })),
         grades: state.grades.all,
         queryParams: state.enrollments.queryParams
     }

@@ -3,30 +3,50 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCourse, editCourse } from "../../store/actions/coursesActions";
-import { enroll, cancelEnrollment } from "../../store/actions/enrollmentsActions";
+import { enroll, cancelEnrollment, getEnrollments } from "../../store/actions/enrollmentsActions";
 import CourseForm from "../../components/forms/CourseForm";
 import Spinner from "../../UI/Spinner";
-import { CourseCardButton, CourseListTitle } from "../../styles";
+import Modal from "../../UI/Modal";
+import { GenericButton, GenericTitle, GenericButtonsContainer } from "../../styles";
 
-const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, cancelEnrollment }) => {
-    const { id } = useParams();
+const CourseDetail = ({ 
+    user, 
+    course, 
+    isLoading, 
+    getCourse, 
+    editCourse, 
+    enroll, 
+    cancelEnrollment,
+    getEnrollments,
+    enrollments
+}) => {
+    const { id: courseId } = useParams();
     const [isEditing, setIsEditing] = useState(false);
+    const [enrollmentToDelete, setEnrollmentToDelete] = useState(null);
     const navigate = useNavigate();
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedCourse, setSelectedCourse] = useState(null);
+
     const isStudent = user.role === 'student';
-    const isEnrolled = user.enrollments?.includes(course?.id);
+    const isEnrolled = enrollments.some(e => e.course.id === courseId)
 
     useEffect(() => {
-        if (!course || course.id !== id) {
-            getCourse(id);
+        console.log(user)
+        if (!course || course.id !== courseId) {
+            getCourse(courseId);
         }
-    }, [id, course, getCourse]);
 
-    const handleUpdateCourse = async (updatedCourse) => {
+        if (isStudent) {
+            getEnrollments(user.id);
+        }
+    }, [courseId, user, course, isStudent, getCourse, getEnrollments]);
+
+    const handleUpdateCourse = (updatedCourse) => {
         const { professor, ...cleanCourseUpdates } = updatedCourse;
-        await editCourse(course.id, cleanCourseUpdates);
+        editCourse(course.id, cleanCourseUpdates);
         setIsEditing(false);
-        getCourse(course.id);
+        getCourse(courseId);
     };
 
     const handleCancelEdit = () => {
@@ -39,9 +59,22 @@ const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, 
         navigate('/student/catalog');
     }
 
-    const handleUnenroll = () => {
-        cancelEnrollment(course.id);
-        navigate('/student/my-enrollments');
+    const handleUnenroll = (course) => {
+        const enrollmentFound = enrollments.find(e => e.course.id === courseId );
+        if (enrollmentFound) {
+            setEnrollmentToDelete(enrollmentFound.id);
+            setSelectedCourse(course);
+            setIsModalOpen(true);
+        }
+    }
+    
+    const handleUnenrollConfirmation = () => {
+        if (enrollmentToDelete) {
+            cancelEnrollment(enrollmentToDelete);
+            setEnrollmentToDelete(null);
+        }
+        setIsModalOpen(false);
+        navigate('/student/catalog');
     }
 
     const handleCancelNavigation = () => {
@@ -54,7 +87,7 @@ const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, 
 
     return (
         <>
-            <CourseListTitle>Detalle del Curso</CourseListTitle>
+            <GenericTitle>Detalle del Curso</GenericTitle>
             {isLoading ?
                 <Spinner /> :         
                 <>     
@@ -71,13 +104,24 @@ const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, 
                     />
                     
                     {!isEditing && !isStudent && (
-                        <>
-                        <CourseCardButton onClick={() => setIsEditing(true)}>Editar</CourseCardButton>
-                        <CourseCardButton onClick={handleCancelNavigation}>Cancelar</CourseCardButton>
-                        </>
+                        <GenericButtonsContainer>
+                            <GenericButton onClick={() => setIsEditing(true)}>Editar</GenericButton>
+                            <GenericButton onClick={handleCancelNavigation}>Cancelar</GenericButton>
+                        </GenericButtonsContainer>
+                        
                     )}
                 </>  
             }
+            <Modal isOpen={isModalOpen}>
+                <h2>¿Seguro que deseas cancelar tu suscripción a este curso?</h2>
+                <h3 style={{textAlign: 'center'}}>{selectedCourse?.title}</h3>
+                <p style={{textAlign: 'center'}}>Prof. {selectedCourse?.professor?.name}</p>
+                <br />
+                <GenericButtonsContainer>
+                    <GenericButton onClick={handleUnenrollConfirmation} style={{justifySelf: 'center'}}>Confirmar</GenericButton>
+                    <GenericButton onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</GenericButton>
+                </GenericButtonsContainer>
+            </Modal>
         </>
     );
 };
@@ -85,7 +129,14 @@ const CourseDetail = ({ user, course, isLoading, getCourse, editCourse, enroll, 
 const mapStateToProps = state => ({
     user: state.auth.user,
     course: state.courses.selected,
+    enrollments: state.enrollments.all,
     isLoading: state.courses.isLoading
 });
 
-export default connect(mapStateToProps, { getCourse, editCourse, enroll, cancelEnrollment })(CourseDetail);
+export default connect(mapStateToProps, { 
+    getCourse, 
+    editCourse, 
+    enroll, 
+    cancelEnrollment, 
+    getEnrollments 
+})(CourseDetail);

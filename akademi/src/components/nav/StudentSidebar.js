@@ -1,28 +1,28 @@
 import {
-    StudentSidebarContainer,
+    SidebarContainer,
     SidebarItem,
-    StudentSidebarLink
+    SidebarLink
 } from "../../styles";
 
 const StudentSidebar = () => {
   return (
-        <StudentSidebarContainer>
+        <SidebarContainer>
             <SidebarItem>
-                <StudentSidebarLink to="/student/dashboard">🏠 Home</StudentSidebarLink>
+                <SidebarLink to="/student/dashboard">🏠 Home</SidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <StudentSidebarLink to="/student/my-profile">Mi perfil</StudentSidebarLink>
+                <SidebarLink to="/student/my-profile">Mi perfil</SidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <StudentSidebarLink to="/student/catalog">Catálogo</StudentSidebarLink>
+                <SidebarLink to="/student/catalog">Catálogo</SidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <StudentSidebarLink to="/student/my-grades">Mis calificaciones</StudentSidebarLink>
+                <SidebarLink to="/student/my-grades">Mis calificaciones</SidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <StudentSidebarLink to="/student/my-enrollments">Mis suscripciones</StudentSidebarLink>
+                <SidebarLink to="/student/my-enrollments">Mis suscripciones</SidebarLink>
             </SidebarItem>
-        </StudentSidebarContainer>
+        </SidebarContainer>
     );
 };
 

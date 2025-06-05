@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import { handleInputChange, handleSelectChange } from "../../utils/handlers";
 import { validateUserForm } from "../../utils/validators";
-import { Error, GenericButton, FormGroup, Input, Label, Select } from "../../styles";
+import { Error, GenericButton, FormGroup, Input, Label, Select, GenericButtonsContainer } from "../../styles";
 
 const UserForm = ({ 
     formUser,
@@ -113,17 +113,17 @@ const UserForm = ({
             </FormGroup>}
             <div>
                 {showEditButtons && isEditable && (
-                    <>
+                    <GenericButtonsContainer>
                         <GenericButton type="submit">Confirmar</GenericButton>
-                        <GenericButton type="button" onClick={onCancel}>Cancelar</GenericButton>
-                    </>
+                        <GenericButton onClick={onCancel}>Cancelar</GenericButton>
+                    </GenericButtonsContainer>
                 )}
 
                 {showCreateButtons && isEditable && (
-                    <>
+                    <GenericButtonsContainer>
                         <GenericButton type="submit">Crear</GenericButton>
-                        <GenericButton type="button" onClick={onCancel}>Cancelar</GenericButton>
-                    </>
+                        <GenericButton onClick={onCancel}>Cancelar</GenericButton>
+                    </GenericButtonsContainer>
                 )}
             </div>
         </form>

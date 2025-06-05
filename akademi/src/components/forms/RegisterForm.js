@@ -2,9 +2,9 @@ import React from "react";
 import { 
     FormGroup, 
     Label, 
-    Input,
+    AuthInput,
     Error,
-    GenericButton
+    AuthButton
 } from "../../styles";
 
 const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
@@ -12,7 +12,7 @@ const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
         <form onSubmit={onSubmit}>
             <FormGroup>
                 <Label>Nombre:</Label>
-                <Input 
+                <AuthInput 
                     type="text" 
                     placeholder="Nombre" 
                     name="name"
@@ -23,7 +23,7 @@ const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
             </FormGroup>
             <FormGroup>
                 <Label>Email:</Label>
-                <Input 
+                <AuthInput 
                     type="text" 
                     placeholder="Email" 
                     name="email"
@@ -34,7 +34,7 @@ const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
             </FormGroup>
             <FormGroup>
                 <Label>Contraseña:</Label>
-                <Input 
+                <AuthInput 
                     type="password" 
                     placeholder="Contraseña" 
                     name="password"
@@ -43,7 +43,7 @@ const RegisterForm = ({ formData, errors, onChange, onSubmit }) => {
                 />
                 {errors.password && <Error>{errors.password}</Error>}
             </FormGroup>
-            <GenericButton type="submit">SIGN UP</GenericButton>
+            <AuthButton type="submit">SIGN UP</AuthButton>
         </form>
     )
 };

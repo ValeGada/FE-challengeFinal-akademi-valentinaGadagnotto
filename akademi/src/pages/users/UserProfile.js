@@ -6,7 +6,7 @@ import { getUser, editUser, deleteUser } from "../../store/actions/usersActions"
 import UserForm from "../../components/forms/UserForm";
 import Modal from "../../UI/Modal";
 import Spinner from "../../UI/Spinner";
-import { CourseCardButton, CourseListTitle } from "../../styles";
+import { GenericTitle, GenericButton, GenericButtonsContainer } from "../../styles";
 
 const UserProfile = ({ user, userProfile, isLoading, getUser, editUser, deleteUser }) => {
     const { id: paramId } = useParams();
@@ -53,7 +53,7 @@ const UserProfile = ({ user, userProfile, isLoading, getUser, editUser, deleteUs
 
     return (
         <>
-            <CourseListTitle>Perfil de Usuario</CourseListTitle>
+            <GenericTitle>Perfil de Usuario</GenericTitle>
             {isLoading || !userProfile ?
                 <Spinner /> :         
                 <>     
@@ -66,10 +66,10 @@ const UserProfile = ({ user, userProfile, isLoading, getUser, editUser, deleteUs
                     />
                     
                     {canEditOrDelete && !isEditing && (
-                        <>
-                            <CourseCardButton onClick={() => setIsEditing(true)}>Editar</CourseCardButton>
-                            <CourseCardButton onClick={handleSelfDelete}>Eliminar</CourseCardButton>
-                        </>
+                        <GenericButtonsContainer>
+                            <GenericButton onClick={() => setIsEditing(true)}>Editar</GenericButton>
+                            <GenericButton onClick={handleSelfDelete}>Eliminar</GenericButton>
+                        </GenericButtonsContainer>
                     )}
                 </>  
             }
@@ -80,8 +80,10 @@ const UserProfile = ({ user, userProfile, isLoading, getUser, editUser, deleteUs
                         : `¿Seguro que deseas eliminar al usuario "${userProfile.name}"?`}
                 </h2>
                 <br />
-                <button onClick={confirmDelete} style={{justifySelf: 'center'}}>Confirmar</button>
-                <button onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</button>
+                <GenericButtonsContainer>
+                    <GenericButton onClick={confirmDelete}>Confirmar</GenericButton>
+                    <GenericButton onClick={() => setIsModalOpen(false)}>Cancelar</GenericButton>
+                </GenericButtonsContainer>
             </Modal>
         </>
     );

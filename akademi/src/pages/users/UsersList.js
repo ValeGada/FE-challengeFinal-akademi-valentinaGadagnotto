@@ -3,7 +3,24 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { deleteUser, getUsers, setUserQueries } from "../../store/actions/usersActions";
-import { CoursesTable, CoursesTd, CoursesTh, CourseListTitle, GenericButton } from "../../styles";
+import { 
+    Table, 
+    Td, 
+    Th, 
+    GenericTitle, 
+    GenericButton, 
+    GenericButtonsContainer,
+    FiltersContainer,
+    ControlsGroup,
+    SearchInput,
+    SortButton,
+    SortContainer,
+    ClearFiltersButton,
+    PaginationContainer,
+    PerPageSelector,
+    PerPageNumber,
+    PageButton
+} from "../../styles";
 import Spinner from "../../UI/Spinner";
 import Modal from "../../UI/Modal";
 
@@ -63,18 +80,19 @@ const UsersList = ({users, getUsers, isLoading, deleteUser, setUserQueries, quer
 
     return (
         <div>
-            <CourseListTitle>Total de Usuarios</CourseListTitle>
-            <div>
-                <div className='item'>
-                    <input 
+            <GenericTitle>Total de Usuarios</GenericTitle>
+            <FiltersContainer>
+                <div>
+                    <SearchInput 
                         type='text' 
                         placeholder='Buscar usuario...'
                         value={queryParams.search}
                         onChange={handleSearchChange}
                     />
                 </div>
-                <div>
-                    <div>
+                <br />
+                <ControlsGroup>
+                    <GenericButtonsContainer>
                         <GenericButton onClick={() => filterByRole('superadmin')}>
                             Superadmin
                         </GenericButton>
@@ -84,78 +102,84 @@ const UsersList = ({users, getUsers, isLoading, deleteUser, setUserQueries, quer
                         <GenericButton onClick={() => filterByRole('student')}>
                             Estudiantes
                         </GenericButton>
-                    </div>
-                    <div>
+                    </GenericButtonsContainer>
+                </ControlsGroup>
+                <ControlsGroup>
+                    <SortContainer>
                         Ordenar por:
-                        <button onClick={()=> handleSort('name')}>
+                        <SortButton onClick={()=> handleSort('name')}>
                             Nombre {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
-                        </button>
-                    </div>
-                    <button onClick={clearFilters}>Limpiar filtros</button>
-                </div>     
-            </div>
+                        </SortButton>
+                    </SortContainer>
+                    <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
+                </ControlsGroup>     
+            </FiltersContainer>
             {isLoading 
                 ? <Spinner /> 
                 : <>
-                    <CoursesTable>
+                    <Table>
                         <thead>
                             <tr>
-                                <CoursesTh>Nombre</CoursesTh>
-                                <CoursesTh>Email</CoursesTh>
-                                <CoursesTh>Rol</CoursesTh>
-                                <CoursesTh>Acciones</CoursesTh>
+                                <Th>Nombre</Th>
+                                <Th>Email</Th>
+                                <Th>Rol</Th>
+                                <Th>Acciones</Th>
                             </tr>
                         </thead>
                         <tbody>
                             {users && users.length > 0 ? (
                                 users.map(user => (
                                     <tr key={user.id}>
-                                        <CoursesTd>{user.name}</CoursesTd>
-                                        <CoursesTd>{user.email}</CoursesTd>
-                                        <CoursesTd>{user.role}</CoursesTd>
-                                        <CoursesTd>
+                                        <Td>{user.name}</Td>
+                                        <Td>{user.email}</Td>
+                                        <Td>{user.role}</Td>
+                                        <Td>
                                             <GenericButton onClick={() => navigate(`/admin/users/${user.id}`)}>
                                                 Ver/Editar ✏️
                                             </GenericButton>
                                             <GenericButton onClick={() => handleDeleteUser(user)}>
                                                 Eliminar 🗑️
                                             </GenericButton>
-                                        </CoursesTd>
+                                        </Td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <CoursesTd colSpan={4}>No hay usuarios registrados.</CoursesTd>
+                                    <Td colSpan={4}>No hay usuarios registrados.</Td>
                                 </tr>
                             )}
                         </tbody>
-                    </CoursesTable>
+                    </Table>
                     {/* Paginación */}
-                    <div>
-                        Usuarios por página: 
-                        <span onClick={()=>handleChangePerPage(5)}>5</span> - 
-                        <span onClick={()=>handleChangePerPage(10)}>10</span>
-                    </div>
-                    <div>
-                        {pagination.totalPages > 0 && 
-                            Array.from({ length: pagination.totalPages }, (_, i) => (
-                                <button 
-                                    key={i}
-                                    onClick={() => handleChangePage(i + 1)}
-                                    style={pagination.currentPage === i + 1 ? { background: '#555555', color: '#f1f1f1' } : {}}
-                                >
-                                    {i + 1}
-                                </button>                   
-                            ))}
-                    </div>
+                    <PaginationContainer>
+                        <PerPageSelector>
+                            Usuarios por página: 
+                            <PerPageNumber onClick={()=>handleChangePerPage(5)}>5</PerPageNumber> - 
+                            <PerPageNumber onClick={()=>handleChangePerPage(10)}>10</PerPageNumber>
+                        </PerPageSelector>
+                        <div>
+                            {pagination.totalPages > 0 && 
+                                Array.from({ length: pagination.totalPages }, (_, i) => (
+                                    <PageButton 
+                                        key={i}
+                                        active={pagination.currentPage === i + 1}
+                                        onClick={() => handleChangePage(i + 1)}
+                                    >
+                                        {i + 1}
+                                    </PageButton>                   
+                                ))}
+                        </div>
+                    </PaginationContainer>
                 </>
             }
             <Modal isOpen={isModalOpen}>
                 <h2>¿Seguro que deseas eliminar este usuario?</h2>
                 <h3 style={{textAlign: 'center'}}>{selectedUser?.name}</h3>
                 <br />
-                <button onClick={confirmDelete} style={{justifySelf: 'center'}}>Eliminar</button>
-                <button onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</button>
+                <GenericButtonsContainer>
+                    <GenericButton onClick={confirmDelete} style={{justifySelf: 'center'}}>Eliminar</GenericButton>
+                    <GenericButton onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</GenericButton>
+                </GenericButtonsContainer>
             </Modal>
         </div>
     );

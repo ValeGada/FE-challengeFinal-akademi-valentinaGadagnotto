@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import {
-    ProfessorSidebarContainer,
+    SidebarContainer,
     SidebarItem,
-    ProfessorSidebarLink,
+    SidebarLink,
     GenericButton
 } from "../../styles";
 
@@ -10,33 +10,33 @@ const ProfessorSidebar = () => {
     const navigate = useNavigate();
 
     return (
-        <ProfessorSidebarContainer>
+        <SidebarContainer>
             <SidebarItem>
-                <ProfessorSidebarLink to="/prof/dashboard">
+                <SidebarLink to="/prof/dashboard">
                     🏠 Home
-                </ProfessorSidebarLink>
+                </SidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <ProfessorSidebarLink to="/prof/my-profile">
+                <SidebarLink to="/prof/my-profile">
                     Mi perfil
-                </ProfessorSidebarLink>
+                </SidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <ProfessorSidebarLink to="/prof/grades">
+                <SidebarLink to="/prof/grades">
                     Mis calificaciones
-                </ProfessorSidebarLink>
+                </SidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <ProfessorSidebarLink to="/prof/my-courses">
+                <SidebarLink to="/prof/my-courses">
                     Mis cursos
-                </ProfessorSidebarLink>
+                </SidebarLink>
             </SidebarItem>
             <SidebarItem>
                 <GenericButton onClick={() => navigate("/prof/new-course")}>
                     Crear Nuevo Curso
                 </GenericButton>
             </SidebarItem>
-        </ProfessorSidebarContainer>
+        </SidebarContainer>
     );
 };
 

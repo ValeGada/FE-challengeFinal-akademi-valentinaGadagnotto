@@ -21,6 +21,7 @@ const initialState = {
         currentPage: 1,
         totalPages: 1
     },
+    byCourseId: {},
     queryParams: {
         page: 1,
         limit: 10,
@@ -66,7 +67,10 @@ export default (state = initialState, action) => {
         case GET_COURSE_ENROLLMENTS_SUCCESS:
             return { 
                 ...state, 
-                all: action.payload.enrollments, 
+                byCourseId: {
+                    ...state.byCourseId,
+                    [action.payload.courseId]: action.payload.enrollments
+                }, 
                 pagination: {
                 ...state.pagination,
                 currentPage: action.payload.currentPage,

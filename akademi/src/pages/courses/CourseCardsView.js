@@ -3,7 +3,19 @@ import { connect } from "react-redux";
 import { setCourseQueries } from "../../store/actions/coursesActions";
 import Spinner from "../../UI/Spinner";
 import CourseCard from "../../components/cards/CourseCard";
-import { CourseGridContainer } from "../../styles";
+import { 
+    GridContainer,
+    FiltersContainer,
+    ControlsGroup,
+    SearchInput,
+    SortButton,
+    SortContainer,
+    ClearFiltersButton,
+    PaginationContainer,
+    PerPageSelector,
+    PerPageNumber,
+    PageButton
+} from "../../styles";
 
 const CoursesCardsView = ({ isLoading, courses, setCourseQueries, pagination, queryParams }) => {
     // Filtros
@@ -39,48 +51,50 @@ const CoursesCardsView = ({ isLoading, courses, setCourseQueries, pagination, qu
             {isLoading ? 
                 <Spinner /> :
                 <>
-                    <div>
+                    <FiltersContainer>
                         <div>
-                            <input 
+                            <SearchInput 
                                 type='text' 
                                 placeholder='Buscar curso...'
                                 value={queryParams.search}
                                 onChange={handleSearchChange}
                             />
                         </div>
-                        <div>
-                            <div>
+                        <ControlsGroup>
+                            <SortContainer>
                                 Ordenar por:
-                                <button onClick={()=> handleSort('title')}>
+                                <SortButton onClick={()=> handleSort('title')}>
                                     Título {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
-                                </button>
-                            </div>
-                            <button onClick={clearFilters}>Limpiar filtros</button>
-                        </div>     
-                    </div>
-                    <CourseGridContainer>
+                                </SortButton>
+                            </SortContainer>
+                            <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
+                        </ControlsGroup>     
+                    </FiltersContainer>
+                    <GridContainer>
                         {courses.map(course => (
                             <CourseCard key={course.id} course={course} />
                         ))}
-                    </CourseGridContainer>
+                    </GridContainer>
                     {/* Paginación */}
-                    <div>
-                        Cursos por página: 
-                        <span onClick={()=>handleChangePerPage(5)}>5</span> - 
-                        <span onClick={()=>handleChangePerPage(10)}>10</span>
-                    </div>
-                    <div>
-                        {pagination.totalPages > 0 && 
-                            Array.from({ length: pagination.totalPages }, (_, i) => (
-                                <button 
-                                    key={i}
-                                    onClick={() => handleChangePage(i + 1)}
-                                    style={pagination.currentPage === i + 1 ? { background: '#555555', color: '#f1f1f1' } : {}}
-                                >
-                                    {i + 1}
-                                </button>                   
-                            ))}
-                    </div>
+                    <PaginationContainer>
+                        <PerPageSelector>
+                            Cursos por página: 
+                            <PerPageNumber onClick={()=>handleChangePerPage(3)}>3</PerPageNumber> - 
+                            <PerPageNumber onClick={()=>handleChangePerPage(6)}>6</PerPageNumber>
+                        </PerPageSelector>
+                        <div>
+                            {pagination.totalPages > 0 && 
+                                Array.from({ length: pagination.totalPages }, (_, i) => (
+                                    <PageButton 
+                                        key={i}
+                                        active={pagination.currentPage === i + 1}
+                                        onClick={() => handleChangePage(i + 1)}
+                                    >
+                                        {i + 1}
+                                    </PageButton>                   
+                                ))}
+                        </div>
+                    </PaginationContainer>
                 </>
             }
         </div>

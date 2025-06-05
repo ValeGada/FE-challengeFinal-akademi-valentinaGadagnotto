@@ -6,6 +6,7 @@ import { register } from "../../store/actions/authActions";
 import { validateRegisterForm } from "../../utils/validators";
 import { handleInputChange } from "../../utils/handlers";
 import RegisterForm from "../../components/forms/RegisterForm";
+import { AuthTitle } from "../../styles";
 
 const Register = ({ register }) => {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -28,15 +29,15 @@ const Register = ({ register }) => {
     };
 
     return (
-        <div>
-            <h1>Sign up</h1>
+        <>
+            <AuthTitle>Registrarse</AuthTitle>
             <RegisterForm 
                 formData={formData}
                 errors={errors}
                 onChange={handleChange}
                 onSubmit={handleSubmit}
             />
-        </div>
+        </>
     )
 };
 

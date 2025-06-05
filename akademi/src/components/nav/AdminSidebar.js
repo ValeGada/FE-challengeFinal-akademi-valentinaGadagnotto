@@ -1,33 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import {
-    AdminSidebarContainer,
+    SidebarContainer,
     SidebarItem,
-    AdminSidebarLink,
+    SidebarLink,
     GenericButton
 } from "../../styles";
 
 const AdminSidebar = () => {
     const navigate = useNavigate();
     return (
-        <AdminSidebarContainer>
+        <SidebarContainer>
             <SidebarItem>
-                <AdminSidebarLink to="/admin/dashboard">🏠 Home</AdminSidebarLink>
+                <SidebarLink to="/admin/dashboard">🏠 Home</SidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <AdminSidebarLink to="/admin/my-profile">Mi perfil</AdminSidebarLink>
+                <SidebarLink to="/admin/my-profile">Mi perfil</SidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <AdminSidebarLink to="/admin/users">Usuarios</AdminSidebarLink>
+                <SidebarLink to="/admin/users">Usuarios</SidebarLink>
             </SidebarItem>
             <SidebarItem>
-                <AdminSidebarLink to="/admin/courses">Cursos</AdminSidebarLink>
+                <SidebarLink to="/admin/courses">Cursos</SidebarLink>
             </SidebarItem>
             <SidebarItem>
                 <GenericButton onClick={() => navigate('/admin/new-user')}>
                     Crear nuevo usuario
                 </GenericButton>
             </SidebarItem>
-        </AdminSidebarContainer>
+        </SidebarContainer>
     );
 };
 

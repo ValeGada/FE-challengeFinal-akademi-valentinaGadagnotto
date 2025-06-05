@@ -50,7 +50,7 @@ export const getTheme = (role) => {
         info: colors.info
       };
 
-    case "admin":
+    case "superadmin":
       return {
         primary: colors.admin.primary,
         hover: colors.admin.hover,

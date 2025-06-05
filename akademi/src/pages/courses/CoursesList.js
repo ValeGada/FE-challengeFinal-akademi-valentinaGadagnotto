@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import { getCourses, getCoursesByProfId, setCourseQueries } from "../../store/actions/coursesActions";
-import { CourseListTitle } from "../../styles";
+import { GenericTitle } from "../../styles";
 import Spinner from "../../UI/Spinner";
 import CourseCardsView from "./CourseCardsView";
 import CourseTableView from "./CourseTableView";
@@ -18,13 +18,13 @@ const CoursesList = ({ user, courses, isLoading, getCourses, getCoursesByProfId,
 
     return (
         <div>
-            <CourseListTitle>
+            <GenericTitle>
                 {user.role === 'student'
                     ? 'Cursos disponibles'
                     : user.role === 'professor'
                     ? 'Mis cursos'
                     : 'Todos los cursos'}
-            </CourseListTitle>
+            </GenericTitle>
             {isLoading ? (
                 <Spinner />
             ) : user.role === 'student'

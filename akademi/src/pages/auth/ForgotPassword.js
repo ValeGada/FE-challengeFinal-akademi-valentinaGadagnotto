@@ -6,9 +6,10 @@ import { validateEmail } from "../../utils/validators";
 import { 
     FormGroup, 
     Label, 
-    Input,
+    AuthInput,
     Error,
-    GenericButton
+    AuthTitle,
+    AuthButton
 } from "../../styles";
 
 const ForgotPassword = ({ passwordRecovery }) => {
@@ -28,10 +29,10 @@ const ForgotPassword = ({ passwordRecovery }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h1>Recuperación de Contraseña</h1>
+            <AuthTitle>Recuperación de Contraseña</AuthTitle>
             <FormGroup>
                 <Label>Ingresá tu Email:</Label>
-                <Input 
+                <AuthInput 
                     type="text" 
                     placeholder="Email" 
                     name="email"
@@ -40,7 +41,7 @@ const ForgotPassword = ({ passwordRecovery }) => {
                 />
                 {errors.email && <Error>{errors.email}</Error>}
             </FormGroup>
-            <GenericButton type="submit">ENVIAR</GenericButton>
+            <AuthButton type="submit">ENVIAR</AuthButton>
         </form>
     )
 };

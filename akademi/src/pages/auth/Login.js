@@ -7,6 +7,7 @@ import { validateLogInForm } from "../../utils/validators";
 import { handleInputChange } from "../../utils/handlers";
 import LoginForm from "../../components/forms/LoginForm";
 import Spinner from "../../UI/Spinner";
+import { AuthFormContainer, AuthTitle } from "../../styles";
 
 const Login = ({ user, login, isAuthenticated, isLoading }) => {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -50,15 +51,15 @@ const Login = ({ user, login, isAuthenticated, isLoading }) => {
     }
 
     return (
-        <div>
-            <h1>Log In</h1>
+        <>
+            <AuthTitle>Log In</AuthTitle>
             <LoginForm 
                 formData={formData}
                 errors={errors}
                 onChange={handleChange}
                 onSubmit={handleSubmit}
             />
-        </div>
+        </>
     )
 };
 

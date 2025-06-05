@@ -4,111 +4,134 @@ import { connect } from "react-redux";
 import { setEnrollmentQueries } from "../../store/actions/enrollmentsActions";
 import { postGrade, editGrade } from "../../store/actions/gradesActions";
 import GradeScoreInput from "../../components/forms/GradeScoreInput";
+import { 
+  Table, 
+  Td, 
+  Th,
+  FiltersContainer,
+  ControlsGroup,
+  SearchInput,
+  SortButton,
+  SortContainer,
+  ClearFiltersButton,
+  PaginationContainer,
+  PerPageSelector,
+  PerPageNumber,
+  PageButton
+} from "../../styles";
 
 const GradesTable = ({ enrollments, editGrade, postGrade, queryParams, pagination, setEnrollmentQueries }) => {
   const location = useLocation();
   const courseGradesPath = location.pathname.includes('/course');
 
   const handleSearchChange = (e) => {
-        setEnrollmentQueries({ search: e.target.value, page: 1 });
-    };
+    setEnrollmentQueries({ search: e.target.value, page: 1 });
+  };
 
-    const handleSort = (field) => {
-        const newOrder = queryParams.sortOrder === "asc" ? "desc" : "asc";
-        setEnrollmentQueries({ sortBy: field, sortOrder: newOrder });
-    };
+  const handleSort = (field) => {
+    const newOrder = queryParams.sortOrder === "asc" ? "desc" : "asc";
+    setEnrollmentQueries({ sortBy: field, sortOrder: newOrder });
+  };
 
-    const handleChangePage = (page) => {
-        setEnrollmentQueries({ page });
-    };
+  const handleChangePage = (page) => {
+    setEnrollmentQueries({ page });
+  };
 
-    const handleChangePerPage = (limit) => {
-        setEnrollmentQueries({ limit, page: 1 });
-    };
+  const handleChangePerPage = (limit) => {
+    setEnrollmentQueries({ limit, page: 1 });
+  };
 
-    const clearFilters = () => {
-        setEnrollmentQueries({
-            search: "",
-            sortBy: "name",
-            sortOrder: "asc",
-            page: 1,
-            limit: 10,
-            role: ""
-        });
-    };
+  const clearFilters = () => {
+    setEnrollmentQueries({
+      search: "",
+      sortBy: "name",
+      sortOrder: "asc",
+      page: 1,
+      limit: 10,
+      role: ""
+    });
+  };
 
   return (
     <>
-      <div>
+      <FiltersContainer>
         <div>
-            <input 
-                type='text' 
-                placeholder='Buscar...'
-                value={queryParams.search}
-                onChange={handleSearchChange}
-            />
+          <SearchInput 
+            type='text' 
+            placeholder='Buscar...'
+            value={queryParams.search}
+            onChange={handleSearchChange}
+          />
         </div>
-        <div>
-            <div>
-                Ordenar por:
-                <button onClick={()=> handleSort('student.name')}>
-                    Nombre {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
-                </button>
-            </div>
-            <button onClick={clearFilters}>Limpiar filtros</button>
-        </div>     
-    </div>
-      <table>
+        <ControlsGroup>
+          <SortContainer>
+            Ordenar por:
+            <SortButton onClick={()=> handleSort('student.name')}>
+              Nombre {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
+            </SortButton>
+            <SortButton onClick={()=> handleSort('student.receivedGrades.score')}>
+              Nota {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
+            </SortButton>
+          </SortContainer>
+          <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
+        </ControlsGroup>     
+      </FiltersContainer>
+      <Table>
         <thead>
           <tr>
-            {courseGradesPath
-              ? null
-              : <th>Curso</th>
-            }
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Nota</th>
+            {!courseGradesPath && <Th>Curso</Th>}
+            <Th>Nombre</Th>
+            <Th>Email</Th>
+            <Th>Nota</Th>
           </tr>
         </thead>
         <tbody>
-          {enrollments.map(enroll => (
-            <tr key={enroll.id}>
-              {courseGradesPath 
-                ? null
-                : <td>{enroll.course.title}</td>
-              }
-              <td>{enroll.student.name}</td>
-              <td>{enroll.student.email}</td>
-              <td>
-                <GradeScoreInput
-                  enroll={enroll}
-                  canEditGrades={true}
-                  editGrade={editGrade}
-                  postGrade={postGrade}
-                />
-              </td>
+          {enrollments.length > 0 ? (
+            enrollments.map(enroll => (
+              <tr key={enroll.id}>
+                {!courseGradesPath && <Td>{enroll.course.title}</Td>}
+                <Td>{enroll.student.name}</Td>
+                <Td>{enroll.student.email}</Td>
+                <Td>
+                  <GradeScoreInput
+                    enroll={{
+                      student: enroll.student,
+                      course: enroll.course
+                    }}  
+                    canEditGrades={true}
+                    editGrade={editGrade}
+                    postGrade={postGrade}
+                  />
+                </Td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <Td style={{textAlign: 'center'}} colSpan={5}>No hay inscriptos aún.</Td>
             </tr>
-          ))}
+          )}
         </tbody>
-      </table>
+      </Table>
       {/* Paginación */}
-      <div>
+      <PaginationContainer>  
+        <PerPageSelector>
           Calificaciones por página: 
-          <span onClick={()=>handleChangePerPage(5)}>5</span> - 
-          <span onClick={()=>handleChangePerPage(10)}>10</span>
-      </div>
-      <div>
+          <PerPageNumber onClick={()=>handleChangePerPage(5)}>5</PerPageNumber> - 
+          <PerPageNumber onClick={()=>handleChangePerPage(10)}>10</PerPageNumber>
+        </PerPageSelector>
+        <div>
           {pagination.totalPages > 0 && 
-              Array.from({ length: pagination.totalPages }, (_, i) => (
-                  <button 
-                      key={i}
-                      onClick={() => handleChangePage(i + 1)}
-                      style={pagination.currentPage === i + 1 ? { background: '#555555', color: '#f1f1f1' } : {}}
-                  >
-                      {i + 1}
-                  </button>                   
-              ))}
-      </div>
+            Array.from({ length: pagination.totalPages }, (_, i) => (
+                <PageButton 
+                    key={i}
+                    active={pagination.currentPage === i + 1}
+                    onClick={() => handleChangePage(i + 1)}
+                >
+                    {i + 1}
+                </PageButton>                  
+            ))}
+        </div>
+      </PaginationContainer>
     </>
   );
 };

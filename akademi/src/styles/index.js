@@ -20,7 +20,6 @@ export const GlobalStyles = createGlobalStyle`
     }
 `;
 
-
 // App
 export const AppContainer = styled.div`
     min-height: 100vh;
@@ -94,21 +93,25 @@ export const ContentDiv = styled.div`
 // Auth
 export const AuthWrapper = styled.div`
     min-height: 100vh;
-    background-color: ${colors.lightBg};
+    background-color: ${({ theme }) => theme.mainContent};
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 0;
-    margin: 0;
+    padding: 2rem;
 `;
 
 export const AuthCard = styled.div`
     background: white;
     padding: 2rem;
     border-radius: 8px;
-    min-width: 400px;
+    gap: 1.5rem;
+    max-width: 450px;
     box-shadow: ${softShadow};
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
 `;
 
 // Admin, Student, Professor
@@ -129,6 +132,7 @@ export const MainContent = styled.main`
     padding: 2rem;
     background-color: ${colors.mainContent};
 `;
+
 
 // Navbars
 export const NavbarContainer = styled.header`
@@ -166,136 +170,84 @@ export const GenericButton = styled.button`
     cursor: pointer;
     font-weight: 500;
     transition: background-color 0.2s ease;
-
+    min-width: max-content;
+    
     &:hover {
         background-color: ${props => props.theme.buttonHover};
     }
 `;
+
+export const GenericButtonsContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+    justify-content: center;
+`;
     
 // Sidebars
+export const SidebarContainer = styled.nav`
+    margin-top: 60px;
+    width: 240px;
+    min-height: calc(100vh - 60px);
+    background-color: ${props => props.theme.sidebarBg};
+    border-right: 1px solid ${props => props.theme.borderColor || colors.lightMint};
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+    box-shadow: ${softShadow};
+`;
+
 export const SidebarItem = styled.div`
     padding: 0.75rem 1.5rem;
 `;
 
-// Student sidebar
-export const StudentSidebarContainer = styled.nav`
-    margin-top: 60px;
-    width: 240px;
-    min-height: calc(100vh - 60px);
-    background-color: white;
-    border-right: 1px solid ${colors.lightMint};
-    display: flex;
-    flex-direction: column;
-    padding-top: 1rem;
-    box-shadow: ${softShadow};
-`;
-
-export const StudentSidebarLink = styled(NavLink)`
+export const SidebarLink = styled(NavLink)`
     text-decoration: none;
-    color: ${colors.darkMint};
+    color: ${props => props.theme.text};
     font-weight: 500;
     font-size: 1rem;
     transition: color 0.2s ease;
 
     &.active {
-        color: ${colors.deepMint};
+        color: ${props => props.theme.primary};
     }
 
     &:hover {
-        color: ${colors.studentHover};
+        color: ${props => props.theme.hover};
     }
 `;
 
-// Professor sidebar
-export const ProfessorSidebarContainer = styled.nav`
-    margin-top: 60px;
-    width: 240px;
-    min-height: calc(100vh - 60px);
-    background-color: ${colors.professorNavbar};
-    border-right: 1px solid ${colors.lightMint};
-    display: flex;
-    flex-direction: column;
-    padding-top: 1rem;
-    box-shadow: ${softShadow};
-`;
-
-export const ProfessorSidebarLink = styled(NavLink)`
-    text-decoration: none;
-    color: ${colors.professor};
-    font-weight: 500;
-    font-size: 1rem;
-    transition: color 0.2s ease;
-
-    &.active {
-        color: ${colors.professorDeep};
-    }
-
-    &:hover {
-        color: ${colors.professorHover};
-    }
-`;
-
-// Admin sidebar
-export const AdminSidebarContainer = styled.nav`
-    margin-top: 60px;
-    width: 240px;
-    min-height: calc(100vh - 60px);
-    background-color: ${colors.adminNavbarBg};
-    border-right: 1px solid ${colors.lightAdmin};
-    display: flex;
-    flex-direction: column;
-    padding-top: 1rem;
-    box-shadow: ${softShadow};
-`;
-
-export const AdminSidebarLink = styled(NavLink)`
-    text-decoration: none;
-    color: ${colors.adminText};
-    font-weight: 500;
-    font-size: 1rem;
-    transition: color 0.2s ease;
-
-    &.active {
-        color: ${colors.adminDeep};
-    }
-
-    &:hover {
-        color: ${colors.adminHover};
-    }
-`;
 
 // Dashboards
 export const Title = styled.h1`
     font-size: 1.8rem;
     margin-bottom: 1rem;
+    color: ${props => props.theme.text};
 `;
 
 export const WelcomeText = styled.p`
     font-size: 1.1rem;
     line-height: 1.6;
+    color: ${props => props.theme.textSecondary || "#666"};
 `;
 
-// Student & Professor Dashboard
 export const DashboardContainer = styled.div`
     padding: 2rem;
-    color: ${colors.professorDeep};
+    color: ${props => props.theme.text};
 `;
 
-// Admin Dashboard
-export const AdminDashboardContainer = styled.div`
-    padding: 2rem;
-    color: ${colors.adminContent};
-`;
-
-// Courses list
-export const CourseListTitle = styled.h2`
+export const GenericTitle = styled.h2`
     margin-top: 60px;
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 1rem;
+    color: ${props => props.theme.text};
 `;
 
-export const CourseGridContainer = styled.div`
+
+// List components
+export const GridContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 1rem;
@@ -309,14 +261,13 @@ export const CourseGridContainer = styled.div`
     }
 `;
 
-// Courses List Table view
-export const CoursesTable = styled.table`
+export const Table = styled.table`
     width: 100%;
     border-collapse: collapse;
     background-color: ${({ theme }) => theme.background};
 `;
 
-export const CoursesTh = styled.th`
+export const Th = styled.th`
     padding: 0.75rem;
     text-align: left;
     border-bottom: 2px solid ${colors.tableTh};
@@ -324,13 +275,13 @@ export const CoursesTh = styled.th`
     color: ${({ theme }) => theme.text};
 `;
 
-export const CoursesTd = styled.td`
+export const Td = styled.td`
     padding: 0.75rem;
     border-bottom: 1px solid ${colors.tableTd};
     color: ${({ theme }) => theme.text};
 `;
 
-export const CoursesActions = styled.td`
+export const Actions = styled.td`
     display: flex;
     gap: 0.5rem;
 `;
@@ -340,15 +291,18 @@ export const CourseCardContainer = styled.div`
     background-color: ${colors.cardBg};
     border-radius: 1rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
+    padding: 0.75rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: 1px solid ${colors.lightBg};
+    max-height: 260px;
+    max-width: 280px;
+    /* margin: 0 auto; */
 
     &:hover {
-        transform: translateY(-5px);
+        transform: translateY(-3px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 `;
@@ -375,27 +329,33 @@ export const CourseCardCapacity = styled.p`
 
 export const CourseCardProfessor = styled.span`
     font-size: 0.9rem;
-    color: ${colors.professor};
+    color: ${colors.professor.primary};
     margin-bottom: 1rem;
     display: block;
 `;
 
+export const CardButtonsContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+`;
+
 export const CourseCardButton = styled.button`
-    // background-color: ${({ theme }) => theme.buttonBg};
-    background-color: ${colors.success};
-    padding: 0.5rem 1rem;
+    background-color: ${({ theme }) => theme.buttonBg};
+    padding: 0.35rem 0.75rem;
     color: white;
     border: none;
     border-radius: 0.5rem;
+    font-size: 0.85rem;
     font-weight: bold;
     margin-right: 0.5rem;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
-        // background-color: ${({ theme }) => theme.buttonHover};
-        background-color: ${colors.studentHover};
+        background-color: ${({ theme }) => theme.buttonHover};
     }
 `;
 
@@ -404,21 +364,154 @@ export const EnrollmentCardContainer = styled.div`
     background-color: ${colors.cardBg};
     border-radius: 1rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
+    padding: 0.75rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: 1px solid ${colors.lightBg};
+    max-height: 260px;
+    max-width: 280px;
+    /* margin: 0 auto; */
+
+    &:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+`;
+
+export const FiltersContainer = styled.div`
+    margin-bottom: 2rem;
+`;
+
+export const SearchInput = styled.input`
+    width: 30%;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-bottom: 2px solid ${({ theme }) => theme.primary};
+    background-color: transparent;
+    font-size: 1rem;
+    outline: none;
+    color: ${({ theme }) => theme.text};
+    transition: border-color 0.3s ease;
+
+    &:focus {
+        border-color: ${({ theme }) => theme.buttonHover};
+    }
+`;
+
+export const SortContainer = styled.div`
+    display: flex;
+    align-items: center;
+    color: ${({ theme }) => theme.textSecondary};
+    gap: 1rem;
+    margin-top: 1rem;
+`;
+
+export const SortButton = styled.button`
+    background: none;
+    border: none;
+    color: ${({ theme }) => theme.text};
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: ${({ theme }) => theme.primary};
+    }
+`;
+
+export const ClearFiltersButton = styled.button`
+    background-color: ${colors.error};
+    color: white;
+    border: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-left: auto;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #c62828;
+    }
+`;
+
+export const PaginationContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    text-align: center;
+`;
+
+export const PerPageSelector = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: ${({ theme }) => theme.textSecondary || "#666"};
+`;
+
+export const PerPageNumber = styled.span`
+    cursor: pointer;
+    color: ${({ theme }) => theme.textSecondary || "#666"};
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: ${({ theme }) => theme.primary || "#666"};
+    }
+`;
+
+export const PageButton = styled.button`
+    background-color: ${({ theme, active }) =>
+        active ? theme.primary : "transparent"};
+    color: ${({ theme, active }) => (active ? "white" : theme.text)};
+    border: 1px solid ${({ theme }) => theme.primary};
+    padding: 0.4rem 0.7rem;
+    margin-right: 0.4rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: ${({ theme }) => theme.primary};
+        color: white;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+`;
+
+export const ControlsGroup = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 `;
 
 // Forms
-export const FormTitle = styled.h2`
-    margin-top: 2rem;
+export const AuthTitle = styled.h2`
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: ${({ theme }) => theme.text};
+    text-align: center;
+    font-weight: bold;
 `;
 
 export const FormGroup = styled.div`
     margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 0.5rem;
 `;
 
 export const Label = styled.label`
@@ -482,5 +575,32 @@ export const Select = styled.select`
         background-color: transparent;
         color: ${({ theme }) => theme.text};
         pointer-events: none;
+    }
+`;
+
+export const FormLinksContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+    padding: 0.4rem;
+`;
+
+export const AuthInput = styled(Input)`
+    width: 100%;
+`;
+
+export const AuthButton = styled(GenericButton)`
+    display: flex;
+    justify-self: center;
+    margin-top: 1rem;
+    width: auto;
+    font-weight: bold;
+    text-align: center;
+    background-color: ${props => props.theme.buttonBg};
+
+    &:hover {
+        background-color: ${props => props.theme.buttonHover};
     }
 `;

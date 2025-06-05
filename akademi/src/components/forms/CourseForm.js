@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { validateCourseForm } from '../../utils/validators';
 import { handleInputChange } from '../../utils/handlers';
-import { Error, CourseCardButton, FormGroup, Label, Input, Textarea, GenericButton } from '../../styles';
+import { Error, FormGroup, Label, Input, Textarea, GenericButton, GenericButtonsContainer } from '../../styles';
 
 const extractEditableFields = (data, editableFields) => {
     const clean = {};
@@ -120,28 +120,28 @@ const CourseForm = ({
             <br />
             <div>
                 {showEditButtons && isEditable && (
-                    <>
+                    <GenericButtonsContainer>
                         <GenericButton type="submit">Confirmar</GenericButton>
-                        <GenericButton type="button" onClick={onCancel}>Cancelar</GenericButton>
-                    </>
+                        <GenericButton onClick={onCancel}>Cancelar</GenericButton>
+                    </GenericButtonsContainer>
                 )}
 
                 {showCreateButtons && isEditable && (
-                    <>
+                    <GenericButtonsContainer>
                         <GenericButton type="submit">Crear</GenericButton>
-                        <GenericButton type="button" onClick={onCancel}>Cancelar</GenericButton>
-                    </>
+                        <GenericButton onClick={onCancel}>Cancelar</GenericButton>
+                    </GenericButtonsContainer>
                 )}
 
                 {showEnrollButton && (
                     isEnrolled ? (
-                        <CourseCardButton type="button" onClick={onUnenroll}>
+                        <GenericButton onClick={onUnenroll}>
                             Cancelar suscripción
-                        </CourseCardButton>
+                        </GenericButton>
                     ) : (
-                        <CourseCardButton type="button" onClick={onEnroll}>
+                        <GenericButton onClick={onEnroll}>
                             Suscribirse
-                        </CourseCardButton>
+                        </GenericButton>
                     )
                 )}
             </div>

@@ -1,13 +1,13 @@
-import { NavbarContainer, UserInfo, GenericButton, AdminSidebarLink } from "../../styles";
+import { NavbarContainer, UserInfo, GenericButton, SidebarLink } from "../../styles";
 
 const AdminNavbar = ({ adminName, onLogout }) => {
     return (
         <NavbarContainer>
         <div>
             Hola,{' '} 
-            <AdminSidebarLink to="/admin/my-profile">
+            <SidebarLink to="/admin/my-profile">
                 {adminName}
-            </AdminSidebarLink>
+            </SidebarLink>
             !
         </div>
         <UserInfo>

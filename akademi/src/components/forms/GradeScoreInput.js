@@ -1,16 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Error, OverlayDiv, ContentDiv } from "../../styles";
+import { Error, OverlayDiv, ContentDiv, GenericButton } from "../../styles";
 
 const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [inputValue, setInputValue] = useState(
-        enroll.student?.profile?.receivedGrades?.[0]?.score ?? ''
-    );
+    const [inputValue, setInputValue] = useState('');
     const [error, setError] = useState('');
     const location = useLocation();
 
-    const gradeId = enroll.student?.profile?.receivedGrades?.[0]?.id || null;
+    const currentGrade = enroll.student?.profile?.receivedGrades?.find(
+        grade => grade.course?.toString() === enroll.course?.id?.toString()
+    )?.score;
+
+    const gradeId = enroll.student?.profile?.receivedGrades?.find(
+        grade => grade.course?.toString() === enroll.course?.id?.toString()
+    )?.id;
+
+    useEffect(() => {
+        setInputValue(currentGrade ?? '');
+    }, [isModalOpen]);
 
     const handleOpenModal = () => {
         if (!canEditGrades) return;
@@ -18,7 +26,6 @@ const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
     };
 
     const handleCloseModal = () => {
-        setInputValue(enroll.student?.profile?.receivedGrades?.[0]?.score ?? '');
         setError('');
         setIsModalOpen(false);
     };
@@ -43,8 +50,6 @@ const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
         setError('');
         setIsModalOpen(false);
     };
-
-    const currentGrade = enroll.student?.profile?.receivedGrades?.[0]?.score;
 
     return (
         <>
@@ -73,8 +78,8 @@ const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
                         />
                         {error && <Error>{error}</Error>}
                         <div>
-                            <button onClick={handleCloseModal}>Cancelar</button>
-                            <button onClick={handleConfirm}>Guardar</button>
+                            <GenericButton onClick={handleCloseModal}>Cancelar</GenericButton>
+                            <GenericButton onClick={handleConfirm}>Guardar</GenericButton>
                         </div>
                     </ContentDiv>
                 </OverlayDiv>

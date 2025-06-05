@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Error, OverlayDiv, ContentDiv } from "../../styles";
+import { Error, OverlayDiv, ContentDiv, GenericButton } from "../../styles";
 
 const StudentsGradeScoreInput = ({ grade, postGrade, editGrade }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,8 +62,8 @@ const StudentsGradeScoreInput = ({ grade, postGrade, editGrade }) => {
                         />
                         {error && <Error>{error}</Error>}
                         <div>
-                            <button onClick={handleCloseModal}>Cancelar</button>
-                            <button onClick={handleConfirm}>Guardar</button>
+                            <GenericButton onClick={handleCloseModal}>Cancelar</GenericButton>
+                            <GenericButton onClick={handleConfirm}>Guardar</GenericButton>
                         </div>
                     </ContentDiv>
                 </OverlayDiv>

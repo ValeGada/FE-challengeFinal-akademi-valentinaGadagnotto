@@ -4,10 +4,36 @@ import { connect } from "react-redux";
 import { setEnrollmentQueries } from "../../store/actions/enrollmentsActions";
 import Spinner from "../../UI/Spinner";
 import EnrollmentCard from "../../components/cards/EnrollmentCard";
-import { CourseGridContainer } from "../../styles";
+import { 
+    GridContainer,
+    FiltersContainer,
+    ControlsGroup,
+    SearchInput,
+    SortButton,
+    SortContainer,
+    ClearFiltersButton,
+    PaginationContainer,
+    PerPageSelector,
+    PerPageNumber,
+    PageButton
+} from "../../styles";
 
 const EnrollmentsCardsView = ({ isLoading, enrollments, setEnrollmentQueries, pagination, queryParams }) => {
     const location = useLocation();
+
+    // Revisa en todos los cursos a los que el alumno está inscripto si existe al menos una nota asignada
+    const hasNoGrades = location.pathname.includes('/student/my-grades') &&
+        enrollments.every(enrollment => 
+            !enrollment.student?.profile?.receivedGrades?.some(
+                g => g.course.toString() === enrollment.course.id.toString()
+            )
+        );
+    
+    // si some nunca da "true", no hay ninguna nota en ningún curso al que está inscripto
+    // en Calificaciones que diga que no tiene ninguna nota aún
+    if (hasNoGrades) {
+        return <p>Aún no tienes calificaciones registradas.</p>;
+    }
 
     // Filtros
     const handleSearchChange = (e) => {
@@ -42,51 +68,64 @@ const EnrollmentsCardsView = ({ isLoading, enrollments, setEnrollmentQueries, pa
             {isLoading ? 
                 <Spinner /> :
                 <>
-                    <div>
+                    <FiltersContainer>
                         <div>
-                            <input 
+                            <SearchInput 
                                 type='text' 
                                 placeholder='Buscar...'
                                 value={queryParams.search}
                                 onChange={handleSearchChange}
                             />
                         </div>
-                        <div>
-                            <div>
+                        <ControlsGroup>
+                            <SortContainer>
                                 Ordenar por:
-                                <button onClick={()=> handleSort('title')}>
+                                <SortButton onClick={()=> handleSort('title')}>
                                     Título {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
-                                </button>
-                            </div>
-                            <button onClick={clearFilters}>Limpiar filtros</button>
-                        </div>     
-                    </div>
-                    <CourseGridContainer>
-                        {enrollments?.map(enrollment => (
-                            <EnrollmentCard key={enrollment.id} enrollment={enrollment} />
-                        ))}
-                    </CourseGridContainer>
+                                </SortButton>
+                            </SortContainer>
+                            <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
+                        </ControlsGroup>     
+                    </FiltersContainer>
+                    <GridContainer>
+                        {enrollments
+                            .filter(enrollment => {
+                                if (location.pathname.includes('/student/my-grades')) {
+                                    // some() para que comprobar si existe al menos una nota en algún curso
+                                    return enrollment.student?.profile?.receivedGrades?.some( 
+                                        g => g.course.toString() === enrollment.course.id.toString()
+                                    );
+                                }
+                                return true; // si existe, return true y mapea ese filtro
+                            })
+                            .map(enrollment => (
+                                <EnrollmentCard key={enrollment.id} enrollment={enrollment} />
+                            ))
+                        }
+                    </GridContainer>
                     {/* Paginación */}
-                    <div>
-                        {location.pathname.includes('my-enrollments') 
-                            ? 'Suscrpciones por página:'
-                            : 'Calificaciones por página:'
-                        } 
-                        <span onClick={()=>handleChangePerPage(5)}>5</span> - 
-                        <span onClick={()=>handleChangePerPage(10)}>10</span>
-                    </div>
-                    <div>
-                        {pagination.totalPages > 0 && 
-                            Array.from({ length: pagination.totalPages }, (_, i) => (
-                                <button 
-                                    key={i}
-                                    onClick={() => handleChangePage(i + 1)}
-                                    style={pagination.currentPage === i + 1 ? { background: '#555555', color: '#f1f1f1' } : {}}
-                                >
-                                    {i + 1}
-                                </button>                   
-                            ))}
-                    </div>
+                    <PaginationContainer>
+                        <PerPageSelector>
+                            {location.pathname.includes('my-enrollments') 
+                                ? 'Suscripciones por página:'
+                                : 'Calificaciones por página:'
+                            } 
+                            <PerPageNumber onClick={()=>handleChangePerPage(3)}>3</PerPageNumber> - 
+                            <PerPageNumber onClick={()=>handleChangePerPage(6)}>6</PerPageNumber>
+                        </PerPageSelector>
+                        <div style={{gap: '20px'}}>
+                            {pagination.totalPages > 0 && 
+                                Array.from({ length: pagination.totalPages }, (_, i) => (
+                                    <PageButton 
+                                        key={i}
+                                        active={pagination.currentPage === i + 1}
+                                        onClick={() => handleChangePage(i + 1)}
+                                    >
+                                        {i + 1}
+                                    </PageButton>                  
+                                ))}
+                        </div>
+                    </PaginationContainer>
                 </>
             }
         </div>
