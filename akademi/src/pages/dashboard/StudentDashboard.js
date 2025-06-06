@@ -1,4 +1,5 @@
 import { DashboardContainer, Title, WelcomeText } from "../../styles";
+import EnrollmentsList from "../enrollments/EnrollmentsList";
 
 const StudentDashboard = () => {
     return (
@@ -7,6 +8,7 @@ const StudentDashboard = () => {
             <WelcomeText>
                 ¡Hola! Desde aquí podés ver tus cursos, calificaciones y novedades.
             </WelcomeText>
+            <EnrollmentsList />
         </DashboardContainer>
     );
 };

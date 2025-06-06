@@ -1,4 +1,5 @@
 import { DashboardContainer, Title, WelcomeText } from "../../styles";
+import CoursesList from "../courses/CoursesList";
 
 const ProfessorDashboard = () => {
     return (
@@ -7,6 +8,7 @@ const ProfessorDashboard = () => {
             <WelcomeText>
                 ¡Hola! Desde aquí podés ver tus cursos, calificaciones y novedades.
             </WelcomeText>
+            <CoursesList />
         </DashboardContainer>
     );
 };
