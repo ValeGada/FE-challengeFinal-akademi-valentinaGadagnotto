@@ -48,28 +48,29 @@ const CoursesCardsView = ({ isLoading, courses, setCourseQueries, pagination, qu
 
     return (
         <div>
+            <FiltersContainer>
+                <div>
+                    <SearchInput 
+                        type='text' 
+                        placeholder='Buscar curso...'
+                        value={queryParams.search}
+                        onChange={handleSearchChange}
+                    />
+                </div>
+                <ControlsGroup>
+                    <SortContainer>
+                        Ordenar por:
+                        <SortButton onClick={()=> handleSort('title')}>
+                            Título {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
+                        </SortButton>
+                    </SortContainer>
+                    <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
+                </ControlsGroup>     
+            </FiltersContainer>
+
             {isLoading ? 
                 <Spinner /> :
-                <>
-                    <FiltersContainer>
-                        <div>
-                            <SearchInput 
-                                type='text' 
-                                placeholder='Buscar curso...'
-                                value={queryParams.search}
-                                onChange={handleSearchChange}
-                            />
-                        </div>
-                        <ControlsGroup>
-                            <SortContainer>
-                                Ordenar por:
-                                <SortButton onClick={()=> handleSort('title')}>
-                                    Título {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
-                                </SortButton>
-                            </SortContainer>
-                            <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
-                        </ControlsGroup>     
-                    </FiltersContainer>
+                <>                    
                     <GridContainer>
                         {courses.map(course => (
                             <CourseCard key={course.id} course={course} />
@@ -87,7 +88,7 @@ const CoursesCardsView = ({ isLoading, courses, setCourseQueries, pagination, qu
                                 Array.from({ length: pagination.totalPages }, (_, i) => (
                                     <PageButton 
                                         key={i}
-                                        active={pagination.currentPage === i + 1}
+                                        isActive={pagination.currentPage === i + 1}
                                         onClick={() => handleChangePage(i + 1)}
                                     >
                                         {i + 1}

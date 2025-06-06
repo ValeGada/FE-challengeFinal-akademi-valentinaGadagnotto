@@ -15,11 +15,9 @@ const UserProfile = ({ user, userProfile, isLoading, getUser, editUser, deleteUs
     const navigate = useNavigate();
 
     const userIdToView = paramId || user.id;
-    const isOwnProfile = String(userIdToView) === String(user.id); 
-    // el user.id puede no ser String, rompe el comparador
+    const isOwnProfile = userIdToView.toString() === user.id.toString();
     const isSuperadmin = user.role === 'superadmin';
     const canEditOrDelete = isOwnProfile || isSuperadmin;
-
 
     useEffect(() => {
         getUser(userIdToView);
@@ -58,6 +56,7 @@ const UserProfile = ({ user, userProfile, isLoading, getUser, editUser, deleteUs
                 <Spinner /> :         
                 <>     
                     <UserForm 
+                        userRole={user.role}
                         formUser={userProfile} 
                         isEditable={isEditing}
                         onSubmit={handleUpdateUser}

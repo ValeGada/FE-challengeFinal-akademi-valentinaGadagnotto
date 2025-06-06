@@ -3,11 +3,10 @@ import { useEffect } from "react";
 import { connect } from "react-redux";
 import { getCourses, getCoursesByProfId, setCourseQueries } from "../../store/actions/coursesActions";
 import { GenericTitle } from "../../styles";
-import Spinner from "../../UI/Spinner";
 import CourseCardsView from "./CourseCardsView";
 import CourseTableView from "./CourseTableView";
 
-const CoursesList = ({ user, courses, isLoading, getCourses, getCoursesByProfId, queryParams, pagination, setCourseQueries }) => {
+const CoursesList = ({ user, courses, getCourses, getCoursesByProfId, queryParams }) => {
     useEffect(() => {
         if (user.role === 'professor') {
             getCoursesByProfId(user.id, queryParams);
@@ -25,9 +24,7 @@ const CoursesList = ({ user, courses, isLoading, getCourses, getCoursesByProfId,
                     ? 'Mis cursos'
                     : 'Todos los cursos'}
             </GenericTitle>
-            {isLoading ? (
-                <Spinner />
-            ) : user.role === 'student'
+            {user.role === 'student'
                 ? <CourseCardsView courses={courses} />
                 : <CourseTableView courses={courses} />
             }
@@ -38,10 +35,8 @@ const CoursesList = ({ user, courses, isLoading, getCourses, getCoursesByProfId,
 const mapStateToProps = state => {
     return {
         user: state.auth.user,
-        isLoading: state.courses.isLoading,
         courses: state.courses.all,
-        queryParams: state.courses.queryParams,
-        pagination: state.courses.pagination
+        queryParams: state.courses.queryParams
     }
 };
 

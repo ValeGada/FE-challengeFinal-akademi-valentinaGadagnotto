@@ -94,23 +94,25 @@ const UserForm = ({
                 </FormGroup>
                 : null
             }
-            {userRole === 'superadmin' && 
-            <FormGroup>
-                <Label>Rol:</Label>
-                <Select
-                    type="text" 
-                    placeholder="Rol" 
-                    name="role"
-                    value={formData.role || ''}
-                    onChange={handleRole}
-                    readOnly={!isEditable}
-                >
-                    <option value='superadmin'>Superadmin</option>
-                    <option value='professor'>Professor</option>
-                </Select>
-                
-                {errors.name && <Error>{errors.name}</Error>}
-            </FormGroup>}
+            {userRole === 'superadmin' && location.pathname.includes('/my-profile') ?
+                null :
+                <FormGroup>
+                    <Label>Rol:</Label>
+                    <Select
+                        type="text" 
+                        placeholder="Rol" 
+                        name="role"
+                        value={formData.role || ''}
+                        onChange={handleRole}
+                        readOnly={true}
+                    >
+                        <option value='superadmin'>Superadmin</option>
+                        <option value='professor'>Professor</option>
+                        <option value='student'>Student</option>
+                    </Select>
+                    
+                    {errors.name && <Error>{errors.name}</Error>}
+                </FormGroup>}
             <div>
                 {showEditButtons && isEditable && (
                     <GenericButtonsContainer>

@@ -53,8 +53,6 @@ const App = ({ message, authUser }) => {
         });
 
         const selectedTheme = getTheme(decoded.role);
-        console.log("Rol decodificado:", decoded.role); // Al loguearme no veo nada, al recargar veo el rol correcto
-        console.log("Tema seleccionado:", getTheme(decoded.role)); // Al loguearme, nada. Al recargar veo la paleta correcta
         setTheme(selectedTheme);
       } catch (error) {
         dispatch(setMessage('Token inválido o expirado'))
@@ -62,10 +60,10 @@ const App = ({ message, authUser }) => {
         setTheme(getTheme("student"));
       } 
     } else {
-      setTheme(getTheme("student")); // Forzar tema student si no hay token
+      setTheme(getTheme("student"));
     }
     setAuthInitialized(true);
-  }, [dispatch, getTheme]);
+  }, [dispatch]);
 
   if (!authInitialized) {
     return <Spinner />;

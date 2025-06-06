@@ -70,7 +70,7 @@ export const enroll = (id) => async dispatch => {
         dispatch(setMessage('Suscripción exitosa.'));
     } catch (error) {
         dispatch({ type: ENROLL_FAILURE, payload: error.message })
-        dispatch(setMessage(error.response?.data?.message || 'No se pudo realizar la suscripción al curso.'));
+        dispatch(setMessage('No se pudo realizar la suscripción al curso.' || error.response?.data?.message));
     }
 };
 

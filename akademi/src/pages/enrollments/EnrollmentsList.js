@@ -2,21 +2,25 @@ import React from "react";
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
-import { getCourseEnrollments, getEnrollments } from "../../store/actions/enrollmentsActions";
-import { GenericTitle } from "../../styles";
+import { getCourseEnrollments, getEnrollments, setEnrollmentQueries } from "../../store/actions/enrollmentsActions";
+import { GenericTitle, WelcomeText } from "../../styles";
 import Spinner from "../../UI/Spinner";
 import EnrollmentsCardsView from "./EnrollmentsCardsView";
-import EnrollmentsTableView from "./EnrollmentsTableView";
-import GradesTable from "../grades/GradesTable";
+import DynamicEnrollmentsTable from "./DynamicEnrollmentsTable";
+import { editGrade, postGrade } from "../../store/actions/gradesActions";
 
 const EnrollmentsList = ({ 
     user, 
-    grades,
     enrollments,
     isLoading, 
     getCourseEnrollments, 
     getEnrollments, 
-    queryParams
+    setEnrollmentQueries,
+    editGrade,
+    postGrade,
+    queryParams,
+    pagination,
+    grades
 }) => {
     const { id: courseId } = useParams();
     const courseEnrollments = useSelector(state => state.enrollments.byCourseId[courseId] || []);
@@ -37,7 +41,7 @@ const EnrollmentsList = ({
         } else {
             getEnrollments(user.id, queryParams);
         }
-    }, [courseId, grades, user, user?.id, user?.role, getEnrollments, getCourseEnrollments, queryParams]);
+    }, [courseId, grades, user, getEnrollments, getCourseEnrollments, queryParams]);
 
     // Título según la ruta
     const getTitle = () => {
@@ -57,35 +61,48 @@ const EnrollmentsList = ({
         if (isLoading) return <Spinner />;
 
         if (!enrollments || enrollments.length === 0) {
-            if (isStudentEnrollmentsPath) return <p>Aún no te has inscripto a ningún curso.</p>;
-            if (isStudentGradesPath) return <p>Todavía no tienes calificaciones registradas.</p>;
-            if (isProfEnrollmentsPath || isProfGradesPath) return <p>No hay estudiantes inscriptos aún.</p>;
-            if (isAdminEnrollmentsPath) return <p>No hay suscripciones registradas.</p>;
-            if (isAdminGradesPath) return <p>No hay calificaciones disponibles.</p>;
-            return <p>No hay información que mostrar.</p>;
+            if (isStudentEnrollmentsPath) return <WelcomeText>Aún no te has inscripto a ningún curso.</WelcomeText>;
+            if (isStudentGradesPath) return <WelcomeText>Todavía no tienes calificaciones registradas.</WelcomeText>;
+            if (isProfEnrollmentsPath || isProfGradesPath) return <WelcomeText>No hay estudiantes inscriptos aún.</WelcomeText>;
+            if (isAdminEnrollmentsPath) return <WelcomeText>No hay suscripciones registradas.</WelcomeText>;
+            if (isAdminGradesPath) return <WelcomeText>No hay calificaciones disponibles.</WelcomeText>;
+            return <WelcomeText>No hay información que mostrar.</WelcomeText>;
         }
 
         return null;
     };
 
+    const shouldRenderCardsView = user.role === 'student';
+    const hasData = shouldRenderCardsView 
+        ? enrollments?.length > 0 
+        : courseEnrollments?.length > 0;
+
+    const renderTable = () => (
+        <DynamicEnrollmentsTable
+            user={user}
+            enrollments={courseEnrollments}
+            isLoading={isLoading}
+            queryParams={queryParams}
+            pagination={pagination}
+            setEnrollmentQueries={setEnrollmentQueries}
+            editGrade={editGrade}
+            postGrade={postGrade}
+            showCourseColumn={user.role === 'superadmin'}
+            showProfessorColumn={user.role === 'superadmin'}
+            enableGradeInput={user.role !== 'student'}
+        />
+    );
+
     return (
         <div>
             <GenericTitle>{getTitle()}</GenericTitle>
 
-            {!isLoading && enrollments?.length > 0 ? (
-                user.role === 'student' ? (
-                <EnrollmentsCardsView enrollments={enrollments} />
-                ) : location.pathname.includes('/grades') ? (
-                    <GradesTable courseId={courseId} enrollments={courseEnrollments} />
-                ) : (
-                    <EnrollmentsTableView
-                        enrollments={courseEnrollments}
-                        canEditGrades={isProfGradesPath || isAdminGradesPath}
-                        showGradeColumn={false}
-                    />
-                )
+            {hasData ? (
+                shouldRenderCardsView 
+                    ? <EnrollmentsCardsView enrollments={enrollments} />   
+                    : renderTable()
             ) : (
-                <>{getMessage()}</>
+                getMessage()
             )}
         </div>
     );
@@ -95,14 +112,17 @@ const mapStateToProps = state => {
     return {
         user: state.auth.user,
         isLoading: state.enrollments.isLoading,
-        enrollments: state.enrollments.all.map(e => ({
-            ...e,
-            course: e.course || {},
-            student: e.student || {}
-        })),
-        grades: state.grades.all,
-        queryParams: state.enrollments.queryParams
+        enrollments: state.enrollments.all,
+        queryParams: state.enrollments.queryParams,
+        pagination: state.enrollments.pagination,
+        grades: state.grades.all
     }
 };
 
-export default connect(mapStateToProps, { getEnrollments, getCourseEnrollments })(EnrollmentsList);
+export default connect(mapStateToProps, { 
+    getEnrollments, 
+    getCourseEnrollments,
+    editGrade,
+    postGrade,
+    setEnrollmentQueries
+})(EnrollmentsList);

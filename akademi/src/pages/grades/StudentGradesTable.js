@@ -6,17 +6,19 @@ import { getStudentGrades, postGrade, editGrade, setGradeQueries } from "../../s
 import StudentsGradeScoreInput from "../../components/forms/StudentsGradeScoreInput";
 import Spinner from "../../UI/Spinner";
 import { 
+    Table,
+    Th,
+    Td,
     GenericTitle,
     FiltersContainer,
-    SortButton,
-    SortContainer,
     SearchInput,
     ControlsGroup,
     ClearFiltersButton,
     PaginationContainer,
     PerPageSelector,
     PerPageNumber,
-    PageButton
+    PageButton,
+    WelcomeText
 } from "../../styles";
 
 const StudentGradesTable = ({ 
@@ -29,19 +31,14 @@ const StudentGradesTable = ({
     pagination,
     setGradeQueries 
 }) => {
-    const { id } = useParams();
+    const { id: studentId } = useParams();
 
     useEffect(() => {
-        getStudentGrades(id);
-    }, [getStudentGrades, id]);
+        getStudentGrades(studentId, queryParams);
+    }, [getStudentGrades, queryParams, studentId]);
 
     const handleSearchChange = (e) => {
         setGradeQueries({ search: e.target.value, page: 1 });
-    };
-
-    const handleSort = (field) => {
-        const newOrder = queryParams.sortOrder === "asc" ? "desc" : "asc";
-        setGradeQueries({ sortBy: field, sortOrder: newOrder });
     };
 
     const handleChangePage = (page) => {
@@ -55,68 +52,73 @@ const StudentGradesTable = ({
     const clearFilters = () => {
         setGradeQueries({
             search: "",
-            sortBy: "course.title",
-            sortOrder: "asc",
             page: 1,
-            limit: 10,
-            role: ""
+            limit: 10
         });
     };
 
+    const selectedStudent  = grades.find(g => g.student.id === studentId)?.student;
+    const selectedStudentName = selectedStudent?.name;
+    const validStudentName = selectedStudentName !== undefined || null;
+
     return (
         <>
+            <GenericTitle>
+                {!isLoading 
+                    ? validStudentName 
+                        ? ('Calificaciones de ' + selectedStudentName) 
+                        : 'Sin Calificaciones'
+                    : null
+                }
+            </GenericTitle>
+
+            {!validStudentName ?
+                null :
+                <FiltersContainer>
+                    <div>
+                        <SearchInput 
+                            type='text' 
+                            placeholder='Buscar...'
+                            value={queryParams.search}
+                            onChange={handleSearchChange}
+                        />
+                    </div>
+                    <ControlsGroup>
+                        <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
+                    </ControlsGroup>     
+                </FiltersContainer>}
+
             {isLoading ?
                 <Spinner /> :
                 <>  
-                    {grades.map(grade => 
-                        <GenericTitle>Calificaciones de {grade.student.name}</GenericTitle>
-                    )}
-                    <FiltersContainer>
-                        <div>
-                            <SearchInput 
-                                type='text' 
-                                placeholder='Buscar...'
-                                value={queryParams.search}
-                                onChange={handleSearchChange}
-                            />
-                        </div>
-                        <ControlsGroup>
-                            <SortContainer>
-                                Ordenar por:
-                                <SortButton onClick={()=> handleSort('course.title')}>
-                                    Curso {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
-                                </SortButton>
-                                <SortButton onClick={()=> handleSort('score')}>
-                                    Nota {queryParams.sortOrder === 'desc' ? "↑" : "↓"}
-                                </SortButton>
-                            </SortContainer>
-                            <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
-                        </ControlsGroup>     
-                    </FiltersContainer>
-                    <table>
+                    {!validStudentName ?
+                        <WelcomeText>Aún no hay calificaciones para mostrar.</WelcomeText> :
+                        <Table>
                         <thead>
                             <tr>
-                                <th>Curso</th>
-                                <th>Nota</th>
+                                <Th>Curso</Th>
+                                <Th>Nota</Th>
                             </tr>
                         </thead>
                         <tbody>
                             {grades.map(grade => (
                             <tr key={grade.id}>
-                                <td>{grade.course.title}</td>
-                                <td>
-                                <StudentsGradeScoreInput
-                                    grade={grade}
-                                    editGrade={editGrade}
-                                    postGrade={postGrade}
-                                />
-                                </td>
+                                <Td>{grade.course.title}</Td>
+                                <Td>
+                                    <StudentsGradeScoreInput
+                                        grade={grade}
+                                        editGrade={editGrade}
+                                        postGrade={postGrade}
+                                    />
+                                </Td>
                             </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </Table>}
                     {/* Paginación */}
-                    <PaginationContainer>  
+                    {!validStudentName ?
+                        null :
+                        <PaginationContainer>  
                         <PerPageSelector>
                             Calificaciones por página: 
                             <PerPageNumber onClick={()=>handleChangePerPage(5)}>5</PerPageNumber> - 
@@ -127,14 +129,14 @@ const StudentGradesTable = ({
                             Array.from({ length: pagination.totalPages }, (_, i) => (
                                 <PageButton 
                                     key={i}
-                                    active={pagination.currentPage === i + 1}
+                                    isActive={pagination.currentPage === i + 1}
                                     onClick={() => handleChangePage(i + 1)}
                                 >
                                     {i + 1}
                                 </PageButton>                  
                             ))}
                         </div>
-                    </PaginationContainer>
+                    </PaginationContainer>}
                 </>
             }
         </>

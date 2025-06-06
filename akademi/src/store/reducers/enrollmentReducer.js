@@ -25,10 +25,7 @@ const initialState = {
     queryParams: {
         page: 1,
         limit: 10,
-        sortBy: 'title',
-        sortOrder: 'asc',
-        search: '',
-        title: ''
+        search: ''
     },
     isLoading: false,
     error: null
@@ -72,9 +69,9 @@ export default (state = initialState, action) => {
                     [action.payload.courseId]: action.payload.enrollments
                 }, 
                 pagination: {
-                ...state.pagination,
-                currentPage: action.payload.currentPage,
-                totalPages: action.payload.totalPages
+                    ...state.pagination,
+                    currentPage: action.payload.currentPage,
+                    totalPages: action.payload.totalPages
                 },
                 isLoading: false, 
                 error: null 

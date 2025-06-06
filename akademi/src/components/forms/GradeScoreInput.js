@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Error, OverlayDiv, ContentDiv, GenericButton } from "../../styles";
+import { Error, OverlayDiv, ContentDiv, GenericButton, GenericButtonsContainer } from "../../styles";
 
 const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,7 +18,7 @@ const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
 
     useEffect(() => {
         setInputValue(currentGrade ?? '');
-    }, [isModalOpen]);
+    }, [isModalOpen, currentGrade]);
 
     const handleOpenModal = () => {
         if (!canEditGrades) return;
@@ -77,10 +77,10 @@ const GradeScoreInput = ({ enroll, canEditGrades, postGrade, editGrade }) => {
                             placeholder="Ej: 7.5"
                         />
                         {error && <Error>{error}</Error>}
-                        <div>
+                        <GenericButtonsContainer style={{marginTop: '12px'}}>
                             <GenericButton onClick={handleCloseModal}>Cancelar</GenericButton>
                             <GenericButton onClick={handleConfirm}>Guardar</GenericButton>
-                        </div>
+                        </GenericButtonsContainer>
                     </ContentDiv>
                 </OverlayDiv>
             )}

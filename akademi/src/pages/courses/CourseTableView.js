@@ -18,7 +18,8 @@ import {
     PaginationContainer,
     PerPageSelector,
     PerPageNumber,
-    PageButton
+    PageButton,
+    GenericButtonsContainer
 } from "../../styles";
 import Modal from "../../UI/Modal";
 import Spinner from "../../UI/Spinner";
@@ -72,35 +73,35 @@ const CourseTableView = ({
             sortBy: "title",
             sortOrder: "asc",
             page: 1,
-            limit: 10,
-            role: ""
+            limit: 10
         });
     };
     
     return (
         <>
+            <FiltersContainer>
+                <div>
+                    <SearchInput 
+                        type='text' 
+                        placeholder='Buscar curso...'
+                        value={queryParams.search}
+                        onChange={handleSearchChange}
+                    />
+                </div>
+                <ControlsGroup>
+                    <SortContainer>
+                        Ordenar por:
+                        <SortButton onClick={()=> handleSort('title')}>
+                            Título {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
+                        </SortButton>
+                    </SortContainer>
+                    <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
+                </ControlsGroup>     
+            </FiltersContainer>
+            
             {isLoading ? 
                 <Spinner /> :
                 <>
-                    <FiltersContainer>
-                        <div>
-                            <SearchInput 
-                                type='text' 
-                                placeholder='Buscar curso...'
-                                value={queryParams.search}
-                                onChange={handleSearchChange}
-                            />
-                        </div>
-                        <ControlsGroup>
-                            <SortContainer>
-                                Ordenar por:
-                                <SortButton onClick={()=> handleSort('title')}>
-                                    Título {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
-                                </SortButton>
-                            </SortContainer>
-                            <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
-                        </ControlsGroup>     
-                    </FiltersContainer>
                     <Table>
                         <thead>
                             <tr>
@@ -173,7 +174,7 @@ const CourseTableView = ({
                                 Array.from({ length: pagination.totalPages }, (_, i) => (
                                     <PageButton 
                                         key={i}
-                                        active={pagination.currentPage === i + 1}
+                                        isActive={pagination.currentPage === i + 1}
                                         onClick={() => handleChangePage(i + 1)}
                                     >
                                         {i + 1}
@@ -187,8 +188,10 @@ const CourseTableView = ({
                 <h2>¿Seguro que deseas eliminar este curso?</h2>
                 <h3 style={{textAlign: 'center'}}>{selectedCourse?.title}</h3>
                 <br />
-                <GenericButton onClick={confirmDelete} style={{justifySelf: 'center'}}>Eliminar</GenericButton>
-                <GenericButton onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</GenericButton>
+                <GenericButtonsContainer>
+                    <GenericButton onClick={confirmDelete} style={{justifySelf: 'center'}}>Eliminar</GenericButton>
+                    <GenericButton onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</GenericButton>
+                </GenericButtonsContainer>
             </Modal>
         </>
     );

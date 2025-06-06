@@ -162,7 +162,7 @@ const UsersList = ({users, getUsers, isLoading, deleteUser, setUserQueries, quer
                                 Array.from({ length: pagination.totalPages }, (_, i) => (
                                     <PageButton 
                                         key={i}
-                                        active={pagination.currentPage === i + 1}
+                                        isActive={pagination.currentPage === i + 1}
                                         onClick={() => handleChangePage(i + 1)}
                                     >
                                         {i + 1}

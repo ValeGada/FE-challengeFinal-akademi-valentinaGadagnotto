@@ -468,9 +468,8 @@ export const PerPageNumber = styled.span`
 `;
 
 export const PageButton = styled.button`
-    background-color: ${({ theme, active }) =>
-        active ? theme.primary : "transparent"};
-    color: ${({ theme, active }) => (active ? "white" : theme.text)};
+    background-color: ${({ theme, isActive }) => isActive ? theme.primary : "transparent"};
+    color: ${({ theme, isActive }) => (isActive ? "white" : theme.text)};
     border: 1px solid ${({ theme }) => theme.primary};
     padding: 0.4rem 0.7rem;
     margin-right: 0.4rem;

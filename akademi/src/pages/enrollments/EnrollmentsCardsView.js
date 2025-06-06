@@ -9,13 +9,12 @@ import {
     FiltersContainer,
     ControlsGroup,
     SearchInput,
-    SortButton,
-    SortContainer,
     ClearFiltersButton,
     PaginationContainer,
     PerPageSelector,
     PerPageNumber,
-    PageButton
+    PageButton,
+    WelcomeText
 } from "../../styles";
 
 const EnrollmentsCardsView = ({ isLoading, enrollments, setEnrollmentQueries, pagination, queryParams }) => {
@@ -32,17 +31,12 @@ const EnrollmentsCardsView = ({ isLoading, enrollments, setEnrollmentQueries, pa
     // si some nunca da "true", no hay ninguna nota en ningún curso al que está inscripto
     // en Calificaciones que diga que no tiene ninguna nota aún
     if (hasNoGrades) {
-        return <p>Aún no tienes calificaciones registradas.</p>;
+        return <WelcomeText>Aún no tienes calificaciones registradas.</WelcomeText>;
     }
 
     // Filtros
     const handleSearchChange = (e) => {
         setEnrollmentQueries({ search: e.target.value, page: 1 });
-    };
-
-    const handleSort = (field) => {
-        const newOrder = queryParams.sortOrder === "asc" ? "desc" : "asc";
-        setEnrollmentQueries({ sortBy: field, sortOrder: newOrder });
     };
 
     const handleChangePage = (page) => {
@@ -56,53 +50,49 @@ const EnrollmentsCardsView = ({ isLoading, enrollments, setEnrollmentQueries, pa
     const clearFilters = () => {
         setEnrollmentQueries({
             search: "",
-            sortBy: "title",
-            sortOrder: "asc",
             page: 1,
             limit: 10
         });
     };
 
+    const filteredEnrollments = enrollments.filter(enrollment => {
+        if (location.pathname.includes('/student/my-grades')) {
+            return enrollment.student?.profile?.receivedGrades?.some(
+                g => g.course.toString() === enrollment.course.id.toString()
+            );
+        }
+        return true;
+    });
+
     return (
         <div>
+            <FiltersContainer>
+                <div>
+                    <SearchInput 
+                        type='text' 
+                        placeholder='Buscar curso...'
+                        value={queryParams.search}
+                        onChange={handleSearchChange}
+                    />
+                </div>
+                <ControlsGroup>
+                    <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
+                </ControlsGroup>     
+            </FiltersContainer>
+
             {isLoading ? 
                 <Spinner /> :
                 <>
-                    <FiltersContainer>
-                        <div>
-                            <SearchInput 
-                                type='text' 
-                                placeholder='Buscar...'
-                                value={queryParams.search}
-                                onChange={handleSearchChange}
-                            />
-                        </div>
-                        <ControlsGroup>
-                            <SortContainer>
-                                Ordenar por:
-                                <SortButton onClick={()=> handleSort('title')}>
-                                    Título {queryParams.sortOrder === 'asc' ? "↓" : "↑"}
-                                </SortButton>
-                            </SortContainer>
-                            <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
-                        </ControlsGroup>     
-                    </FiltersContainer>
+                    {filteredEnrollments.length === 0 && (
+                        <WelcomeText>No se encontraron suscripciones activas.</WelcomeText>
+                    )}
+
                     <GridContainer>
-                        {enrollments
-                            .filter(enrollment => {
-                                if (location.pathname.includes('/student/my-grades')) {
-                                    // some() para que comprobar si existe al menos una nota en algún curso
-                                    return enrollment.student?.profile?.receivedGrades?.some( 
-                                        g => g.course.toString() === enrollment.course.id.toString()
-                                    );
-                                }
-                                return true; // si existe, return true y mapea ese filtro
-                            })
-                            .map(enrollment => (
-                                <EnrollmentCard key={enrollment.id} enrollment={enrollment} />
-                            ))
-                        }
+                        {filteredEnrollments.map(enrollment => (
+                            <EnrollmentCard key={enrollment.id} enrollment={enrollment} />
+                        ))}
                     </GridContainer>
+
                     {/* Paginación */}
                     <PaginationContainer>
                         <PerPageSelector>
@@ -118,7 +108,7 @@ const EnrollmentsCardsView = ({ isLoading, enrollments, setEnrollmentQueries, pa
                                 Array.from({ length: pagination.totalPages }, (_, i) => (
                                     <PageButton 
                                         key={i}
-                                        active={pagination.currentPage === i + 1}
+                                        isActive={pagination.currentPage === i + 1}
                                         onClick={() => handleChangePage(i + 1)}
                                     >
                                         {i + 1}
