@@ -58,6 +58,7 @@ const UserProfile = ({ user, userProfile, isLoading, getUser, editUser, deleteUs
                     <UserForm 
                         userRole={user.role}
                         formUser={userProfile} 
+                        userId={user.id}
                         isEditable={isEditing}
                         onSubmit={handleUpdateUser}
                         onCancel={handleCancelEdit}

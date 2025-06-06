@@ -7,6 +7,7 @@ import { Error, GenericButton, FormGroup, Input, Label, Select, GenericButtonsCo
 
 const UserForm = ({ 
     formUser,
+    userId,
     onSubmit, 
     userRole,
     isEditable, 
@@ -18,6 +19,27 @@ const UserForm = ({
     const [errors, setErrors] = useState({});
     const location = useLocation();
     const editableFields = ['name', 'email', 'password', 'role'];
+
+    const isCreatingNewUser = !formUser?.id; 
+    const isOwnProfile = formUser?.id === userId;
+    const isViewingOtherUser = formUser?.id && formUser.id !== userId;
+    const isSuperadmin = userRole === 'superadmin';
+
+    const shouldShowRole = () => {
+        if (!isSuperadmin) return false;
+        if (isCreatingNewUser) return true;
+        if (isOwnProfile) return false;
+        if (isViewingOtherUser) return true;
+        
+        return false;
+    };
+
+    const shouldShowPassword = () => {
+        if (!isSuperadmin || !isEditable) return false;
+        if (isCreatingNewUser) return true;
+
+        return false;
+    };
 
     const extractEditableFields = (data) => {
         const clean = {};
@@ -79,8 +101,8 @@ const UserForm = ({
                 />
                 {errors.email && <Error>{errors.email}</Error>}
             </FormGroup>
-            {userRole === 'superadmin' && isEditable
-                ? <FormGroup>
+            {shouldShowPassword() && (
+                <FormGroup>
                     <Label>Contraseña:</Label>
                     <Input 
                         type="password" 
@@ -92,27 +114,31 @@ const UserForm = ({
                     />
                     {errors.password && <Error>{errors.password}</Error>}
                 </FormGroup>
-                : null
-            }
-            {userRole === 'superadmin' && location.pathname.includes('/my-profile') ?
-                null :
+            )}
+            {shouldShowRole() && (
                 <FormGroup>
                     <Label>Rol:</Label>
-                    <Select
-                        type="text" 
-                        placeholder="Rol" 
-                        name="role"
-                        value={formData.role || ''}
-                        onChange={handleRole}
-                        readOnly={true}
-                    >
-                        <option value='superadmin'>Superadmin</option>
-                        <option value='professor'>Professor</option>
-                        <option value='student'>Student</option>
-                    </Select>
-                    
-                    {errors.name && <Error>{errors.name}</Error>}
-                </FormGroup>}
+                    {isEditable ? (
+                        <Select
+                            name="role"
+                            value={formData.role || ''}
+                            onChange={handleRole}
+                        >
+                            <option value="">Seleccionar rol...</option>
+                            <option value="superadmin">Superadmin</option>
+                            <option value="professor">Professor</option>
+                            <option value="student">Student</option>
+                        </Select>
+                    ) : (
+                        <Input 
+                            type="text" 
+                            value={formData.role || ''}
+                            readOnly={true}
+                        />
+                    )}
+                    {errors.role && <Error>{errors.role}</Error>}
+                </FormGroup>
+            )}
             <div>
                 {showEditButtons && isEditable && (
                     <GenericButtonsContainer>

@@ -177,8 +177,8 @@ const UsersList = ({users, getUsers, isLoading, deleteUser, setUserQueries, quer
                 <h3 style={{textAlign: 'center'}}>{selectedUser?.name}</h3>
                 <br />
                 <GenericButtonsContainer>
-                    <GenericButton onClick={confirmDelete} style={{justifySelf: 'center'}}>Eliminar</GenericButton>
-                    <GenericButton onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</GenericButton>
+                    <GenericButton onClick={confirmDelete}>Eliminar</GenericButton>
+                    <GenericButton onClick={() => setIsModalOpen(false)}>Cancelar</GenericButton>
                 </GenericButtonsContainer>
             </Modal>
         </div>

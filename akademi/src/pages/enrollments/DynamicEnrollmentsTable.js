@@ -19,9 +19,7 @@ const DynamicEnrollmentsTable = ({
     showCourseColumn = false,
     showProfessorColumn = false,
     enableGradeInput = false
-}) => {
-    const prefix = user?.role === 'superadmin' ? '/admin' : '/prof';
-    
+}) => {    
     const handleSearchChange = (e) => {
         setEnrollmentQueries({ search: e.target.value, page: 1 });
     };
@@ -48,7 +46,7 @@ const DynamicEnrollmentsTable = ({
                 <div>
                     <SearchInput
                         type='text'
-                        placeholder='Buscar...'
+                        placeholder='Buscar estudiante...'
                         value={queryParams.search}
                         onChange={handleSearchChange}
                     />
@@ -78,9 +76,13 @@ const DynamicEnrollmentsTable = ({
                                     {showCourseColumn && <Td>{enroll.course.title}</Td>}
                                     {showProfessorColumn && <Td>{enroll.course.professor?.name}</Td>}
                                     <Td>
-                                        <SidebarLink to={`${prefix}/grades/student/${enroll.student.id}`}>
-                                            {enroll.student.name}
-                                        </SidebarLink>
+                                        {user.role === 'professor' ? (
+                                            <SidebarLink to={'prof/grades/student/${enroll.student.id}'}>
+                                                {enroll.student.name}
+                                            </SidebarLink>
+                                        ) : (
+                                            <>{enroll.student.name}</>
+                                        )}
                                     </Td>
                                     <Td>{enroll.student.email}</Td>
                                     <Td>

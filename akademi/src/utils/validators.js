@@ -89,6 +89,8 @@ export const validateCourseForm = (formData) => {
 
     if (!formData.title) {
         errors.title = '* El título es obligatorio.';
+    } else if (formData.title.trim().length < 5) {
+        errors.title = '* El título debe contener al menos 5 caracteres.';
     }
 
     if (!formData.description) {
@@ -98,7 +100,7 @@ export const validateCourseForm = (formData) => {
     }
 
     if (!formData.maximumCapacity) {
-        errors.maximumCapacity = '* La capacidad máxima es obligatorio.';
+        errors.maximumCapacity = '* La capacidad máxima es obligatoria.';
     } else if (formData.maximumCapacity < 0) {
         errors.maximumCapacity = '* La capacidad máxima no puede ser un número negativo.';
     } else if (formData.maximumCapacity < 2) {

@@ -1,8 +1,8 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
-import { deleteCourse, setCourseQueries } from "../../store/actions/coursesActions";
+import { deleteCourse, setCourseQueries, getCoursesByProfId } from "../../store/actions/coursesActions";
 import { 
     Table, 
     Td, 
@@ -31,13 +31,20 @@ const CourseTableView = ({
     isLoading, 
     setCourseQueries, 
     pagination, 
-    queryParams 
+    queryParams,
+    getCoursesByProfId
 }) => {
     const navigate = useNavigate();
 
     // Modal states
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
+
+    useEffect(() => {
+        if (!isLoading && courses.length === 0 && pagination.currentPage > 1) {
+            setCourseQueries({ page: pagination.currentPage - 1 });
+        }
+    }, [courses, isLoading, pagination, setCourseQueries]);
 
     const handleDeleteCourse = (course) => {
         setSelectedCourse(course);
@@ -47,6 +54,7 @@ const CourseTableView = ({
     const confirmDelete = () => {
         deleteCourse(selectedCourse.id);
         setIsModalOpen(false);
+        getCoursesByProfId(user.id, queryParams);
     };
 
     // Filtros
@@ -109,7 +117,7 @@ const CourseTableView = ({
                                 <Th>Descripción</Th>
                                 {user.role === 'superadmin' && <Th>Profesor</Th>}
                                 <Th>Capacidad</Th>
-                                <Th>Suscripciones</Th>
+                                <Th>Inscripciones</Th>
                                 {/* <Th>Duración</Th> */}
                                 <Th>Acciones</Th>
                             </tr>
@@ -125,11 +133,11 @@ const CourseTableView = ({
                                     <Td>{course.maximumCapacity}</Td>
                                     <Td>{course.enrollmentsCount ?? 0}</Td>
                                     {/* <Td>{course.duration} hs</Td> */}
-                                    <Actions>
+                                    <Actions style={{width: '470px'}}>
                                         {user.role === 'professor' ? 
-                                            <>  
+                                            <GenericButtonsContainer>  
                                                 <GenericButton onClick={() => navigate(`/prof/enrollments/course/${course.id}`)}>
-                                                    Ver inscriptos 👁️
+                                                        Ver inscriptos 👁️
                                                 </GenericButton>
                                                 <GenericButton onClick={() => navigate(`/prof/grades/course/${course.id}`)}>
                                                     Calificaciones 💯
@@ -140,9 +148,9 @@ const CourseTableView = ({
                                                 <GenericButton onClick={() => handleDeleteCourse(course)}>
                                                     Eliminar 🗑️
                                                 </GenericButton>
-                                            </>
+                                            </GenericButtonsContainer>
                                         :
-                                            <>
+                                            <GenericButtonsContainer style={{marginTop: '5px'}}>
                                                 <GenericButton onClick={() => navigate(`/admin/enrollments/course/${course.id}`)}>
                                                     Ver inscriptos 👁️
                                                 </GenericButton>
@@ -155,7 +163,7 @@ const CourseTableView = ({
                                                 <GenericButton onClick={() => handleDeleteCourse(course)}>
                                                     Eliminar 🗑️
                                                 </GenericButton>
-                                            </>
+                                            </GenericButtonsContainer>
                                         }
                                     </Actions>
                                 </tr>
@@ -189,8 +197,8 @@ const CourseTableView = ({
                 <h3 style={{textAlign: 'center'}}>{selectedCourse?.title}</h3>
                 <br />
                 <GenericButtonsContainer>
-                    <GenericButton onClick={confirmDelete} style={{justifySelf: 'center'}}>Eliminar</GenericButton>
-                    <GenericButton onClick={() => setIsModalOpen(false)} style={{justifySelf: 'center'}}>Cancelar</GenericButton>
+                    <GenericButton onClick={confirmDelete}>Eliminar</GenericButton>
+                    <GenericButton onClick={() => setIsModalOpen(false)}>Cancelar</GenericButton>
                 </GenericButtonsContainer>
             </Modal>
         </>
@@ -206,4 +214,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { deleteCourse, setCourseQueries })(CourseTableView);
+export default connect(mapStateToProps, { deleteCourse, setCourseQueries, getCoursesByProfId })(CourseTableView);

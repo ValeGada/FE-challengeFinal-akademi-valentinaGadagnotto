@@ -66,10 +66,6 @@ const GradesList = ({
         }
     }, [courses, getCourseEnrollments, queryParams, enrollmentsInitialized]);
 
-    const handleSearchChange = (e) => {
-        setEnrollmentQueries({ search: e.target.value, page: 1 });
-    };
-
     const handleChangePage = (page) => {
         setEnrollmentQueries({ page });
     };
@@ -78,34 +74,11 @@ const GradesList = ({
         setEnrollmentQueries({ limit, page: 1 });
     };
 
-    const clearFilters = () => {
-        setEnrollmentQueries({
-            search: "",
-            page: 1,
-            limit: 10
-        });
-    };
-
     const isLoading = isLoadingCourses || loadingEnrollments;
 
     return (
         <div>
             <GenericTitle>Calificaciones</GenericTitle>
-
-            <FiltersContainer>
-                <div>
-                    <SearchInput 
-                        type='text' 
-                        placeholder='Buscar curso / alumno...'
-                        value={queryParams.search}
-                        onChange={handleSearchChange}
-                    />
-                </div>
-                <ControlsGroup>
-                    <ClearFiltersButton onClick={clearFilters}>Limpiar filtros</ClearFiltersButton>
-                </ControlsGroup>     
-            </FiltersContainer>
-
             {isLoading
                 ? <Spinner /> 
                 : <>

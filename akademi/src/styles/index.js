@@ -180,8 +180,8 @@ export const GenericButton = styled.button`
 export const GenericButtonsContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: auto;
+    gap: 0.3rem;
+    margin-top: 5px;
     justify-content: center;
 `;
     
